@@ -13,6 +13,5 @@ import org.springframework.stereotype.Repository;
  * -deleteById()
  */
 @Repository
-public class GradoRepository extends JpaRepository<Grado, Integer> {
-
+public interface GradoRepository extends JpaRepository<Grado, Integer> {
 }

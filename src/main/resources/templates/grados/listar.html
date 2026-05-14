@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Grados</title>
+</head>
+<body>
+
+<h1>Listado de Grados / Cinturones</h1>
+
+<p>
+    <a th:href="@{/grados/nuevo}">Crear nuevo grado</a>
+</p>
+
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Kyu / Dan</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="grado : ${grados}">
+        <td th:text="${grado.id}"></td>
+        <td th:text="${grado.nombre}"></td>
+        <td th:text="${grado.descripcion}"></td>
+        <td th:text="${grado.kyuDan}"></td>
+        <td>
+            <a th:href="@{/grados/editar/{id}(id=${grado.id})}">Editar</a>
+            |
+            <a th:href="@{/grados/eliminar/{id}(id=${grado.id})}"
+               onclick="return confirm('¿Desea eliminar este grado?')">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(grados)}">
+    No existen grados registrados.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Grado</title>
+</head>
+<body>
+
+<h1 th:text="${grado.id == null ? 'Nuevo grado' : 'Editar grado'}"></h1>
+
+<form th:action="@{/grados/guardar}" th:object="${grado}" method="post">
+
+    <!-- Campo oculto para mantener el ID cuando se edita -->
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label>Nombre cinturón:</label>
+        <input type="text" th:field="*{nombre}">
+        <span style="color:red;" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Descripción:</label>
+        <input type="text" th:field="*{descripcion}">
+        <span style="color:red;" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Kyu / Dan:</label>
+        <input type="text" th:field="*{kyuDan}">
+        <span style="color:red;" th:if="${#fields.hasErrors('kyuDan')}" th:errors="*{kyuDan}"></span>
+    </div>
+
+    <br>
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/grados}">Volver</a>
+
+</form>
+
+</body>
+</html>
