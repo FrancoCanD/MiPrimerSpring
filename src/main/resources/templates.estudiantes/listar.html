@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Estudiantes</title>
+</head>
+<body>
+
+<h1>Listado de Estudiantes</h1>
+
+<p>
+    <a th:href="@{/estudiante/nuevo}">Crear nuevo estudiante</a>
+</p>
+
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Grado</th>
+        <th>Fecha Ascenso</th>
+        <th>Activo</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="estudiante : ${estudiantes}">
+        <td th:text="${estudiante.id}"></td>
+        <td th:text="${estudiante.grado.nombre}"></td>
+        <td th:text="${estudiante.fechaAscenso}"></td>
+        <td th:text="${estudiante.activo}"></td>
+        <td>
+            <a th:href="@{/estudiante/editar/{id}(id=${estudiante.id})}">Editar</a>
+            |
+            <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
+               onclick="return confirm('¿Desea eliminar este estudiante?')">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(estudiantes)}">
+    No existen estudiantes registrados.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Estudiante</title>
+</head>
+<body>
+
+<h1 th:text="${estudiante.id == null ? 'Nuevo estudiante' : 'Editar estudiante'}"></h1>
+
+<form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post">
+
+    <!-- Campo oculto para mantener el ID cuando se edita -->
+    <input type="hidden" th:field="*{estudiante.id}">
+
+    <div>
+        <label>Grado:</label>
+        <input type="text" th:field="*{estudiante.grado.nombre}">
+        <span style="color:red;" th:if="${#fields.hasErrors('estudiante.grado.nombre')}" th:errors="*{estudiante.grado.nombre}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Fecha Ascenso:</label>
+        <input type="date" th:field="*{estudiante.fechaAscenso}">
+        <span style="color:red;" th:if="${#fields.hasErrors('estudiante.fechaAscenso')}" th:errors="*{estudiante.fechaAscenso}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Activo:</label>
+        <input type="checkbox" th:field="*{estudiante.activo}">
+        <span style="color:red;" th:if="${#fields.hasErrors('estudiante.activo')}" th:errors="*{estudiante.activo}"></span>
+    </div>
+
+    <br>
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/estudiantes}">Volver</a>
+
+</form>
+
+</body>
+</html>
