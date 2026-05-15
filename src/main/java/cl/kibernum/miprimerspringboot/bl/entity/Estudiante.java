@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-
 import java.time.LocalDate;
 
 /**
@@ -20,7 +18,6 @@ import java.time.LocalDate;
 @Getter @Setter
 @Entity
 @Table(name = "estudiantes")
-
 public class Estudiante {
     /**
      * Identificador del alumno
@@ -31,7 +28,8 @@ public class Estudiante {
     /**
      * ID del Grado actual del alumno
      */
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grado_id", referencedColumnName = "id")
     private Grado grado;
     /**
      * Fecha de ascenso del alumno al grado actual
