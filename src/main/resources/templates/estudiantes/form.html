@@ -11,28 +11,59 @@
 <form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post">
 
     <!-- Campo oculto para mantener el ID cuando se edita -->
-    <input type="hidden" th:field="*{estudiante.id}">
+    <input type="hidden" th:field="*{id}">
+    <!--<input type="hidden" th:field="*{persona.id}">-->
+
+    <div>
+        <label>Nombres:</label>
+        <input type="text" th:field="*{nombres}">
+        <span style="color:red;" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+    </div>
+
+    <div>
+        <label>Apellido 1:</label>
+        <input type="text" th:field="*{apellido1}">
+        <span style="color:red;" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+    </div>
+
+    <div>
+        <label>Apellido 2 </label>
+        <input type="text" th:field="*{apellido2}">
+        <span style="color:red;" th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}"></span>
+    </div>
+
+    <div>
+        <label>Fecha de Nacimiento:</label>
+        <input type="date" th:field="*{fechaNac}">
+        <span style="color:red;" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
+    </div>
+
+    <div>
+        <label>Rut:</label>
+        <input type="text" th:field="*{rut}">
+        <span style="color:red;" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
+    </div>
 
     <div>
         <label>Grado:</label>
-        <input type="text" th:field="*{estudiante.grado.nombre}">
-        <span style="color:red;" th:if="${#fields.hasErrors('estudiante.grado.nombre')}" th:errors="*{estudiante.grado.nombre}"></span>
+        <input type="text" th:field="*{grado.nombre}">
+        <span style="color:red;" th:if="${#fields.hasErrors('grado.nombre')}" th:errors="*{grado.nombre}"></span>
     </div>
 
     <br>
 
     <div>
         <label>Fecha Ascenso:</label>
-        <input type="date" th:field="*{estudiante.fechaAscenso}">
-        <span style="color:red;" th:if="${#fields.hasErrors('estudiante.fechaAscenso')}" th:errors="*{estudiante.fechaAscenso}"></span>
+        <input type="date" th:field="*{fechaAscenso}">
+        <span style="color:red;" th:if="${#fields.hasErrors('fechaAscenso')}" th:errors="*{fechaAscenso}"></span>
     </div>
 
     <br>
 
     <div>
         <label>Activo:</label>
-        <input type="checkbox" th:field="*{estudiante.activo}">
-        <span style="color:red;" th:if="${#fields.hasErrors('estudiante.activo')}" th:errors="*{estudiante.activo}"></span>
+        <input type="checkbox" th:field="*{activo}">
+        <span style="color:red;" th:if="${#fields.hasErrors('activo')}" th:errors="*{activo}"></span>
     </div>
 
     <br>

@@ -18,13 +18,7 @@ import java.time.LocalDate;
 @Getter @Setter
 @Entity
 @Table(name = "estudiantes")
-public class Estudiante {
-    /**
-     * Identificador del alumno
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Estudiante extends Persona{
     /**
      * ID del Grado actual del alumno
      */
@@ -42,4 +36,11 @@ public class Estudiante {
     @Column(nullable = false)
     private boolean activo;
 
+
+    public Estudiante(Integer id, String nombres, String apellido1, String apellido2, LocalDate fechaNac, String rut, Grado grado, LocalDate fechaAscenso, boolean activo) {
+        super(id, nombres, apellido1, apellido2, fechaNac, rut);
+        this.grado = grado;
+        this.fechaAscenso = fechaAscenso;
+        this.activo = activo;
+    }
 }
