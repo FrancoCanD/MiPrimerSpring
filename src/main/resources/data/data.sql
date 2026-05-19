@@ -46,9 +46,7 @@ CREATE TABLE asistencias (
                              FOREIGN KEY (clase_id)      REFERENCES clases(id)
 );
 
------------------------------------------------------------------------------------------------
-// Crear Tabla Instructor
-_______________________________________________________________________________________________
+-- Crear tabla instructores
 
 CREATE TABLE instructores (
                               id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,7 +55,8 @@ CREATE TABLE instructores (
                               especialidad VARCHAR(100) NOT NULL
                               fecha_inicio DATE NOT NULL,
                               activo BOOLEAN DEFAULT TRUE,
-                              anos_experiencia INT NULL ,
+                              anos_experiencia INT NULL,
+                              fecha_inicio int not null,
 
                               FOREIGN KEY (persona_id) REFERENCES personas(id),
                               FOREIGN KEY (grado_id) REFERENCES grados(id)
@@ -90,10 +89,17 @@ INSERT INTO asistencias ( registro, fecha_clase, estudiante_id, clase_id) VALUES
     ('2026-05-05 20:30:00','2026-05-05', 1, 1);
 
 
+-- Insertar datos de prueba para instructores
+-- Primero insertamos las personas (instructores)
 INSERT INTO personas (nombres, apellido1, apellido2, fecha_nac, rut) VALUES
-    ('Carlos', 'Muñoz', 'Valdés', '1985-12-05', '15555555-5'),
-    ('Andrea','Gonzalez', 'Rojas', '1990-09-22','16666666-6'),
-    ('Roberto', 'Mendez', 'Silva', '1982-11-13', '17777777-7'),
+                                                                         ('Carlos', 'Muñoz', 'Valdés', '1985-03-15', '15555555-5'),
+                                                                         ('Andrea', 'González', 'Rojas', '1990-07-22', '16666666-6'),
+                                                                         ('Roberto', 'Silva', 'Méndez', '1982-11-10', '17777777-7');
 
-INSERT INTO instructores (persona_id, grado_id, especialidad, activo, anos_experiencia) VALUES
-        (3,7, 'Instructor General', '2015-01-10', true, 11),
+-- Luego insertamos los instructores asociados a las personas
+-- Asumiendo que los IDs de personas son 3, 4, 5 (después de Juan y María)
+-- Y usamos grados 6 (Marrón) y 7 (Negro)
+INSERT INTO instructores (persona_id, grado_id, especialidad, fecha_inicio, activo, anos_experiencia) VALUES
+                                                                                                          (3, 7, 'Instructor General', '2015-01-10', true, 11),
+                                                                                                          (4, 7, 'Kata', '2018-06-15', true, 8),
+                                                                                                          (5, 6, 'Kumite', '2020-03-20', true, 6);
