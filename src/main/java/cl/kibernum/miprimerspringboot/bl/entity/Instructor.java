@@ -15,53 +15,52 @@ import java.time.LocalDate;
 @Getter @Setter
 @Entity
 @Table(name = "instructores")
+@PrimaryKeyJoinColumn(name = "persona_id") // ← FK hacia la tabla personas
 public class Instructor extends Persona {
 
-/**
- * ID del Grado del instrutor
- */
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "grado_id", referencedColumnName = "id")
-private Grado grado;
+    /**
+     * Grado del instructor
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grado_id", referencedColumnName = "id")
+    private Grado grado;
 
-/**
- * Especialidad del instructor
- * Ejemplo: Kata, Kumite, Defensa Personal
- */
-@Column(nullable = false)
+    /**
+     * Especialidad del instructor
+     * Ejemplo: Kata, Kumite, Defensa Personal
+     */
+    @Column(nullable = false)
     private String especialidad;
 
-/**
- * Fecha de inicio como instructor
- */
-@Column(nullable = false)
-private LocalDate fecha_inicio;
+    /**
+     * Fecha de inicio como instructor
+     */
+    @Column(name = "fecha_inicio", nullable = false)
+    private LocalDate fechaInicio;
 
-/**
- * Estado del instructor (activo/inactivo)
- */
-@Column(nullable = false)
-private boolean activo;
+    /**
+     * Estado del instructor (activo/inactivo)
+     */
+    @Column(nullable = false)
+    private boolean activo;
 
-/**
- * Años de experiencia
- */
+    /**
+     * Años de experiencia
+     */
+    @Column(nullable = true)
+    private Integer anosExperiencia;
 
-@Column(nullable = true)
-private Integer anosExperiencia;
-
-/**
- * Constructor completo
- */
-public Instructor(Integer id, String nombres, String apellido1, String apellido2,
-                  LocalDate fechaNac, String rut, Grado grado, String especialidad,
-                  LocalDate fechaInicio, boolean activo, Integer anosExperiencia) {
+    /**
+     * Constructor completo
+     */
+    public Instructor(Integer id, String nombres, String apellido1, String apellido2,
+                      LocalDate fechaNac, String rut, Grado grado, String especialidad,
+                      LocalDate fechaInicio, boolean activo, Integer anosExperiencia) {
         super(id, nombres, apellido1, apellido2, fechaNac, rut);
         this.grado = grado;
         this.especialidad = especialidad;
-        this.fecha_inicio = fechaInicio;
+        this.fechaInicio = fechaInicio;
         this.activo = activo;
         this.anosExperiencia = anosExperiencia;
     }
 }
-

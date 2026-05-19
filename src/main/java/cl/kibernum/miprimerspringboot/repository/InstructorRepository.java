@@ -1,7 +1,8 @@
 package cl.kibernum.miprimerspringboot.repository;
 
+import cl.kibernum.miprimerspringboot.bl.entity.Instructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio de Instructor
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * -save()
  * -deleteById()
  */
-@RestController
-
-public interface InstructorRepository extends JpaRepository<Instrctor, Integer> {
+@Repository
+public interface InstructorRepository extends JpaRepository<Instructor, Integer> {
 }
+
