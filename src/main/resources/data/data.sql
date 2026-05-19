@@ -55,9 +55,9 @@ INSERT INTO grados (nombre, descripcion, kyu_dan) VALUES
                                                       ('Marrón', 'Preparación para cinturón negro', '1° Kyu'),
                                                       ('Negro', 'Primer grado avanzado', '1° Dan');
 
-INSERT INTO personas (nombre, edad, rut) VALUES
-                                             ('Juan Pérez', 15, '11111111-1'),
-                                             ('María Soto', 17, '22222222-2');
+INSERT INTO personas (nombres, apellido1, apellido2, fecha_nac, rut) VALUES
+                                                                         ('Juan', 'Pérez', 'González', '2011-03-15', '11111111-1'),
+                                                                         ('María', 'Soto', 'Morales', '2009-08-22', '22222222-2');
 
 INSERT INTO estudiantes (persona_id, grado_id, fecha_ascenso, activo) VALUES
                                                                           (1, 1, '2024-03-10', true),
