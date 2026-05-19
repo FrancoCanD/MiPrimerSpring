@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<!-- Título dinámico según si es un registro nuevo o una edición -->
+
 <h1 th:text="${asistencia.id == null} ? 'Registrar Nueva Asistencia' : 'Modificar Asistencia'"></h1>
 
 <form th:action="@{/asistencias/guardar}" th:object="${asistencia}" method="post">
@@ -21,7 +21,7 @@
             <option value="">-- Seleccione un Alumno --</option>
             <option th:each="est : ${listaPersonas}"
                     th:value="${est.id}"
-                    th:text="${est.nombre}"></option>
+                    th:text="${est.nombres}"></option>
         </select>
     </p>
 

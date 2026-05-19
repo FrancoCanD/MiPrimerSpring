@@ -1,8 +1,7 @@
 package cl.kibernum.miprimerspringboot.bl.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,7 @@ public class Asistencia{
      *
      */
     @Column(nullable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) // Soporta el formato del input datetime-local
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) // Soporta el formato del input datetime-local
     private LocalDate fechaClase;
     /**
      *

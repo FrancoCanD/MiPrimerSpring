@@ -45,10 +45,10 @@
         <!-- Formatea la fecha y hora de registro -->
         <td th:text="${#temporals.format(asistencia.registro, 'dd/MM/yyyy HH:mm')}"></td>
         <td>
-            <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">✏️ Editar</a>
+            <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">Editar</a>
             |
             <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
-               onclick="return confirm('¿Estás seguro de eliminar este registro?');">❌ Eliminar</a>
+               onclick="return confirm('¿Estás seguro de eliminar este registro?');">Eliminar</a>
         </td>
     </tr>
     </tbody>

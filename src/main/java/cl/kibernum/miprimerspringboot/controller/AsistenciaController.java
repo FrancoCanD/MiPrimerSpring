@@ -35,7 +35,7 @@ public class AsistenciaController {
     public String mostrarFormularioCrear(Model model) {
         model.addAttribute("asistencia", new Asistencia());
         model.addAttribute("listaPersonas", estudianteRepository.findAll());
-        model.addAttribute("listaClases", claseService.listarTodas());
+        model.addAttribute("listaClases", claseService.listarClases());
         return "asistencias/formulario";
     }
 
@@ -52,7 +52,7 @@ public class AsistenciaController {
         Asistencia asistencia = asistenciaService.obtenerPorId(id);
         model.addAttribute("asistencia", asistencia);
         model.addAttribute("listaPersonas", estudianteRepository.findAll());
-        model.addAttribute("listaClases", claseService.listarTodas());
+        model.addAttribute("listaClases", claseService.listarClases());
         return "asistencias/formulario";
     }
 
