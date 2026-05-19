@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Instructores</title>
+</head>
+<body>
+
+<h1>Listado de Instructores</h1>
+
+<p>
+    <a th:href="@{/instructores/nuevo}">Crear nuevo instructor</a>
+</p>
+
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Fecha Nacimiento</th>
+        <th>Rut</th>
+        <th>Grado</th>
+        <th>Especialidad</th>
+        <th>Fecha Inicio</th>
+        <th>Años Experiencia</th>
+        <th>Activo</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="instructor : ${instructores}">
+        <td th:text="${instructor.id}"></td>
+        <td th:text="${instructor.nombres}"></td>
+        <td th:text="|${instructor.apellido1} ${instructor.apellido2}|"></td>
+        <td th:text="${instructor.fechaNac}"></td>
+        <td th:text="${instructor.rut}"></td>
+        <td th:text="${instructor.grado.nombre}"></td>
+        <td th:text="${instructor.especialidad}"></td>
+        <td th:text="${instructor.fechaInicio}"></td>
+        <td th:text="${instructor.anosExperiencia}"></td>
+        <td th:text="${instructor.activo ? 'Sí' : 'No'}"></td>
+        <td>
+            <a th:href="@{/instructores/editar/{id}(id=${instructor.id})}">Editar</a>
+            |
+            <a th:href="@{/instructores/eliminar/{id}(id=${instructor.id})}"
+               onclick="return confirm('¿Desea eliminar este instructor?')">
+                Eliminar
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(instructores)}">
+    No existen instructores registrados.
+</p>
+
+</body>
+</html>

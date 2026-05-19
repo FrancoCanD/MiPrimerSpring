@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Instructor</title>
+</head>
+<body>
+
+<h1 th:text="${instructor.id == null ? 'Nuevo instructor' : 'Editar instructor'}"></h1>
+
+<form th:action="@{/instructores/guardar}" th:object="${instructor}" method="post">
+
+    <!-- Campo oculto para mantener el ID cuando se edita -->
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label>Nombres:</label>
+        <input type="text" th:field="*{nombres}" required>
+        <span style="color:red;" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Apellido 1:</label>
+        <input type="text" th:field="*{apellido1}" required>
+        <span style="color:red;" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Apellido 2:</label>
+        <input type="text" th:field="*{apellido2}">
+        <span style="color:red;" th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Fecha de Nacimiento:</label>
+        <input type="date" th:field="*{fechaNac}" required>
+        <span style="color:red;" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Rut:</label>
+        <input type="text" th:field="*{rut}" placeholder="12345678-9" required>
+        <span style="color:red;" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Grado:</label>
+        <select th:field="*{grado.id}" required>
+            <option value="">Seleccione un grado</option>
+            <option th:each="grado : ${grados}"
+                    th:value="${grado.id}"
+                    th:text="${grado.nombre + ' - ' + grado.kyuDan}">
+            </option>
+        </select>
+        <span style="color:red;" th:if="${#fields.hasErrors('grado')}" th:errors="*{grado}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Especialidad:</label>
+        <select th:field="*{especialidad}" required>
+            <option value="">Seleccione especialidad</option>
+            <option value="Kata">Kata</option>
+            <option value="Kumite">Kumite</option>
+            <option value="Defensa Personal">Defensa Personal</option>
+            <option value="Armas Tradicionales">Armas Tradicionales</option>
+            <option value="Técnicas Básicas">Técnicas Básicas</option>
+            <option value="Instructor General">Instructor General</option>
+        </select>
+        <span style="color:red;" th:if="${#fields.hasErrors('especialidad')}" th:errors="*{especialidad}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Fecha de Inicio:</label>
+        <input type="date" th:field="*{fechaInicio}" required>
+        <span style="color:red;" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Años de Experiencia:</label>
+        <input type="number" th:field="*{anosExperiencia}" min="0" max="100">
+        <span style="color:red;" th:if="${#fields.hasErrors('anosExperiencia')}" th:errors="*{anosExperiencia}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Activo:</label>
+        <input type="checkbox" th:field="*{activo}">
+        <span style="color:red;" th:if="${#fields.hasErrors('activo')}" th:errors="*{activo}"></span>
+    </div>
+
+    <br>
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/instructores}">Volver</a>
+
+</form>
+
+</body>
+</html>
