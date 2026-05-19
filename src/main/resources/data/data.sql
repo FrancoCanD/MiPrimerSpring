@@ -52,11 +52,10 @@ CREATE TABLE instructores (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               persona_id INT NOT NULL,
                               grado_id INT NOT NULL,
-                              especialidad VARCHAR(100) NOT NULL
+                              especialidad VARCHAR(100) NOT NULL,
                               fecha_inicio DATE NOT NULL,
                               activo BOOLEAN DEFAULT TRUE,
                               anos_experiencia INT NULL,
-                              fecha_inicio int not null,
 
                               FOREIGN KEY (persona_id) REFERENCES personas(id),
                               FOREIGN KEY (grado_id) REFERENCES grados(id)
@@ -71,9 +70,9 @@ INSERT INTO grados (nombre, descripcion, kyu_dan) VALUES
                                                       ('Marrón', 'Preparación para cinturón negro', '1° Kyu'),
                                                       ('Negro', 'Primer grado avanzado', '1° Dan');
 
-INSERT INTO personas (nombre, edad, rut) VALUES
-                                             ('Juan Pérez', 15, '11111111-1'),
-                                             ('María Soto', 17, '22222222-2');
+INSERT INTO personas (nombres, apellido1, fecha_nac, rut) VALUES
+                                                              ('Juan', 'Pérez', '2009-01-01', '11111111-1'),
+                                                              ('María', 'Soto', '2007-01-01', '22222222-2');
 
 
 INSERT INTO estudiantes (persona_id, grado_id, fecha_ascenso, activo) VALUES
