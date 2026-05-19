@@ -12,7 +12,6 @@
 
     <!-- Campo oculto para mantener el ID cuando se edita -->
     <input type="hidden" th:field="*{id}">
-    <!--<input type="hidden" th:field="*{persona.id}">-->
 
     <div>
         <label>Nombres:</label>
@@ -27,7 +26,7 @@
     </div>
 
     <div>
-        <label>Apellido 2 </label>
+        <label>Apellido 2:</label>
         <input type="text" th:field="*{apellido2}">
         <span style="color:red;" th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}"></span>
     </div>
@@ -44,13 +43,18 @@
         <span style="color:red;" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
     </div>
 
+    <!-- ✅ SELECT en lugar de input text: envía el objeto Grado completo por su ID -->
     <div>
         <label>Grado:</label>
-        <input type="text" th:field="*{grado.nombre}">
-        <span style="color:red;" th:if="${#fields.hasErrors('grado.nombre')}" th:errors="*{grado.nombre}"></span>
+        <select th:field="*{grado}">
+            <option value="">-- Seleccione un grado --</option>
+            <option th:each="g : ${grados}"
+                    th:value="${g.id}"
+                    th:text="${g.nombre}">
+            </option>
+        </select>
+        <span style="color:red;" th:if="${#fields.hasErrors('grado')}" th:errors="*{grado}"></span>
     </div>
-
-    <br>
 
     <div>
         <label>Fecha Ascenso:</label>
@@ -58,22 +62,15 @@
         <span style="color:red;" th:if="${#fields.hasErrors('fechaAscenso')}" th:errors="*{fechaAscenso}"></span>
     </div>
 
-    <br>
-
     <div>
         <label>Activo:</label>
         <input type="checkbox" th:field="*{activo}">
-        <span style="color:red;" th:if="${#fields.hasErrors('activo')}" th:errors="*{activo}"></span>
     </div>
 
     <br>
-
     <button type="submit">Guardar</button>
     <a th:href="@{/estudiantes}">Volver</a>
 
 </form>
 
 </body>
-</html>
-
-<!--Comentario de prueba -->

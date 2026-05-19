@@ -17,8 +17,8 @@
     <tr>
         <th>ID</th>
         <th>Nombres</th>
-        <th>Apellidos </th>
-        <th>Fecha Nacimiento </th>
+        <th>Apellidos</th>
+        <th>Fecha Nacimiento</th>
         <th>Rut</th>
         <th>Grado</th>
         <th>Fecha Ascenso</th>
@@ -34,11 +34,12 @@
         <td th:text="|${estudiante.apellido1} ${estudiante.apellido2}|"></td>
         <td th:text="${estudiante.fechaNac}"></td>
         <td th:text="${estudiante.rut}"></td>
-        <td th:text="${estudiante.grado.nombre}"></td>
+        <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin grado'}"></td>
         <td th:text="${estudiante.fechaAscenso}"></td>
         <td th:text="${estudiante.activo}"></td>
         <td>
-            <a th:href="@{/estudiante/editar/{id}(id=${estudiante.id})}">Editar</a>
+            <!-- ✅ URL corregida: /estudiantes/editar (faltaba la 's') -->
+            <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}">Editar</a>
             |
             <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
                onclick="return confirm('¿Desea eliminar este estudiante?')">
