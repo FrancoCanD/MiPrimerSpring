@@ -46,6 +46,23 @@ CREATE TABLE asistencias (
                              FOREIGN KEY (clase_id)      REFERENCES clases(id)
 );
 
+-----------------------------------------------------------------------------------------------
+// Crear Tabla Instructor
+_______________________________________________________________________________________________
+
+CREATE TABLE instructores (
+                              id INT AUTO_INCREMENT PRIMARY KEY,
+                              persona_id INT NOT NULL,
+                              grado_id INT NOT NULL,
+                              especialidad VARCHAR(100) NOT NULL
+                              fecha_inicio DATE NOT NULL,
+                              activo BOOLEAN DEFAULT TRUE,
+                              anos_experiencia INT NULL ,
+
+                              FOREIGN KEY (persona_id) REFERENCES personas(id),
+                              FOREIGN KEY (grado_id) REFERENCES grados(id)
+);
+
 INSERT INTO grados (nombre, descripcion, kyu_dan) VALUES
                                                       ('Blanco', 'Grado inicial del estudiante', '10° Kyu'),
                                                       ('Amarillo', 'Primer avance técnico básico', '9° Kyu'),
@@ -59,6 +76,7 @@ INSERT INTO personas (nombre, edad, rut) VALUES
                                              ('Juan Pérez', 15, '11111111-1'),
                                              ('María Soto', 17, '22222222-2');
 
+
 INSERT INTO estudiantes (persona_id, grado_id, fecha_ascenso, activo) VALUES
                                                                           (1, 1, '2024-03-10', true),
                                                                           (2, 2, '2025-05-15', true);
@@ -70,3 +88,12 @@ INSERT INTO clases (tipo_clase, descripcion, estado) VALUES
 
 INSERT INTO asistencias ( registro, fecha_clase, estudiante_id, clase_id) VALUES
     ('2026-05-05 20:30:00','2026-05-05', 1, 1);
+
+
+INSERT INTO personas (nombres, apellido1, apellido2, fecha_nac, rut) VALUES
+    ('Carlos', 'Muñoz', 'Valdés', '1985-12-05', '15555555-5'),
+    ('Andrea','Gonzalez', 'Rojas', '1990-09-22','16666666-6'),
+    ('Roberto', 'Mendez', 'Silva', '1982-11-13', '17777777-7'),
+
+INSERT INTO instructores (persona_id, grado_id, especialidad, activo, anos_experiencia) VALUES
+        (3,7, 'Instructor General', '2015-01-10', true, 11),
