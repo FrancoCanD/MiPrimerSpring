@@ -1,79 +1,47 @@
-package cl.kibernum.miprimerspringboot.controller;
+package cl.kibernum.miprimerspringboot.bl.entity;
 
-import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
-import cl.kibernum.miprimerspringboot.service.EstudianteService;
-import cl.kibernum.miprimerspringboot.service.GradoService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.LocalDate;
 
 /**
- * Controlador MVC para manejar solicitudes web de estudiante
+ * Entidad Estudiante, representa a los alumnos inscritos
  */
-@Controller
-@RequestMapping("/estudiantes")
-public class EstudianteController {
 
-    @Autowired
-    private EstudianteService estudianteService;
-
-    @Autowired
-    private GradoService gradoService; // ← inyectamos GradoService
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter @Setter
+@Entity
+@Table(name = "estudiantes")
+public class Estudiante extends Persona{
     /**
-     * Muestra el listado de Estudiantes
+     * ID del Grado actual del alumno
      */
-    @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("estudiantes", estudianteService.listarEstudiantes());
-        return "estudiantes/listar";
-    }
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grado_id", referencedColumnName = "id")
+    private Grado grado;
     /**
-     * Muestra el formulario para crear un nuevo estudiante
+     * Fecha de ascenso del alumno al grado actual
      */
-    @GetMapping("/nuevo")
-    public String nuevo(Model model) {
-        model.addAttribute("estudiante", new Estudiante());
-        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
-        return "estudiantes/form";
-    }
-
+    @Column(nullable = false)
+    private LocalDate fechaAscenso;
     /**
-     * Guarda un estudiante nuevo o actualizado
+     * Situación actual del alumno en la academia
      */
-    @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
-                          BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("grados", gradoService.listarGrados()); // ← también al recargar por error
-            return "estudiantes/form";
-        }
-        estudianteService.crearEstudiante(estudiante);
-        return "redirect:/estudiantes";
-    }
+    @Column(nullable = false)
+    private boolean activo;
 
-    /**
-     * Muestra el formulario con los datos cargados para la edición
-     */
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Integer id, Model model) {
-        Estudiante estudiante = estudianteService.estudiantePorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado: " + id));
-        model.addAttribute("estudiante", estudiante);
-        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
-        return "estudiantes/form";
-    }
 
-    /**
-     * Elimina un Estudiante por el ID
-     */
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Integer id) {
-        estudianteService.borrarEstudiante(id);
-        return "redirect:/estudiantes";
+    public Estudiante(Integer id, String nombres, String apellido1, String apellido2, LocalDate fechaNac, String rut, Grado grado, LocalDate fechaAscenso, boolean activo) {
+        super(id, nombres, apellido1, apellido2, fechaNac, rut);
+        this.grado = grado;
+        this.fechaAscenso = fechaAscenso;
+        this.activo = activo;
     }
+    //Comentario de seguridad...de la rama develop_persona
 }

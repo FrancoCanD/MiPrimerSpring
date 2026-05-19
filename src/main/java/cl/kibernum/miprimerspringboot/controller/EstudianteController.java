@@ -2,6 +2,7 @@ package cl.kibernum.miprimerspringboot.controller;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
 import cl.kibernum.miprimerspringboot.service.EstudianteService;
+import cl.kibernum.miprimerspringboot.service.GradoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/estudiantes")
 public class EstudianteController {
+
     @Autowired
-    private  EstudianteService estudianteService;
+    private EstudianteService estudianteService;
+
+    @Autowired
+    private GradoService gradoService; // ← inyectamos GradoService
+
     /**
      * Muestra el listado de Estudiantes
      */
@@ -32,6 +38,7 @@ public class EstudianteController {
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("estudiante", new Estudiante());
+        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
         return "estudiantes/form";
     }
 
@@ -39,8 +46,10 @@ public class EstudianteController {
      * Guarda un estudiante nuevo o actualizado
      */
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante, BindingResult result) {
+    public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
+                          BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("grados", gradoService.listarGrados()); // ← también al recargar por error
             return "estudiantes/form";
         }
         estudianteService.crearEstudiante(estudiante);
@@ -52,8 +61,10 @@ public class EstudianteController {
      */
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
-        Estudiante estudiante = estudianteService.estudiantePorId(id).orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado" + id));
+        Estudiante estudiante = estudianteService.estudiantePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado: " + id));
         model.addAttribute("estudiante", estudiante);
+        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
         return "estudiantes/form";
     }
 
@@ -65,5 +76,4 @@ public class EstudianteController {
         estudianteService.borrarEstudiante(id);
         return "redirect:/estudiantes";
     }
-
 }
