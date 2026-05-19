@@ -43,5 +43,5 @@ public class Estudiante extends Persona{
         this.fechaAscenso = fechaAscenso;
         this.activo = activo;
     }
-    //Comentario de seguridad...de la rama develop_persona
+    //Comentario de seguridad .. final
 }
