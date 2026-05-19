@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Clase</title>
+</head>
+<body>
+
+<h1 th:text="${clase.id == null ? 'Nueva Clase' : 'Editar clase'}"></h1>
+
+<form th:action="@{/clases/guardar}" th:object="${clase}" method="post">
+
+    <!-- Campo oculto para mantener el ID cuando se edita -->
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label>Tipo de Clase:</label>
+        <input type="text" th:field="*{tipoClase}">
+        <span style="color:red;" th:if="${#fields.hasErrors('tipoClase')}" th:errors="*{tipoClase}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Descripción:</label>
+        <input type="text" th:field="*{descripcion}">
+        <span style="color:red;" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Estado</label>
+        <input type="checkbox" th:field="*{estado}">
+        <span style="color:red;" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
+    </div>
+
+    <br>
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/clases}">Volver</a>
+
+</form>
+
+</body>
+</html>
