@@ -40,12 +40,12 @@ public abstract class Persona {
     @Column(nullable = true)
     private String apellido2;
     /**
-     * Fecha de ascenso del alumno al grado actual
+     *
      */
     @Column(nullable = false)
     private LocalDate fechaNac;
     /**
-     * Situación actual del alumno en la academia
+     *
      */
     @Column(nullable = false)
     private String rut;

@@ -38,7 +38,7 @@
         <td th:text="${estudiante.fechaAscenso}"></td>
         <td th:text="${estudiante.activo}"></td>
         <td>
-            <a th:href="@{/estudiante/editar/{id}(id=${estudiante.id})}">Editar</a>
+            <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}">Editar</a>
             |
             <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
                onclick="return confirm('¿Desea eliminar este estudiante?')">

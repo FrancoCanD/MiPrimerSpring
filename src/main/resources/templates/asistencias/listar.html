@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Asistencias</title>
+</head>
+<body>
+
+<h1>Registro de Asistencias</h1>
+
+<!-- Botón para ir al formulario de creación -->
+<div>
+    <a th:href="@{/asistencias/nuevo}">Registrar Nueva Asistencia</a>
+    <a th:href="@{/}">Volver al Inicio</a>
+</div>
+
+<br>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Estudiante</th>
+        <th>Clase ID</th>
+        <th>Fecha de Clase</th>
+        <th>Fecha/Hora Registro</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Si la lista está vacía -->
+    <tr th:if="${#lists.isEmpty(listaAsistencias)}">
+        <td colspan="6" align="center">No hay registros de asistencia disponibles.</td>
+    </tr>
+
+    <!-- Recorrido de la lista enviada por el controlador -->
+    <tr th:each="asistencia : ${listaAsistencias}">
+        <td th:text="${asistencia.id}"></td>
+        <!-- Accede al objeto Persona y muestra su nombre -->
+        <td th:text="${asistencia.persona != null ? asistencia.persona.nombre : 'Sin Estudiante'}"></td>
+        <!-- Accede al objeto Clase y muestra su ID -->
+        <td th:text="${asistencia.clase != null ? asistencia.clase.id : 'Sin Clase'}"></td>
+        <!-- Formatea la fecha local -->
+        <td th:text="${#temporals.format(asistencia.fechaClase, 'dd/MM/yyyy')}"></td>
+        <!-- Formatea la fecha y hora de registro -->
+        <td th:text="${#temporals.format(asistencia.registro, 'dd/MM/yyyy HH:mm')}"></td>
+        <td>
+            <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">✏️ Editar</a>
+            |
+            <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
+               onclick="return confirm('¿Estás seguro de eliminar este registro?');">❌ Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

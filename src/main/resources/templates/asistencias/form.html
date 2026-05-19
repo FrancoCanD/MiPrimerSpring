@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Asistencia</title>
+</head>
+<body>
+
+<!-- Título dinámico según si es un registro nuevo o una edición -->
+<h1 th:text="${asistencia.id == null} ? 'Registrar Nueva Asistencia' : 'Modificar Asistencia'"></h1>
+
+<form th:action="@{/asistencias/guardar}" th:object="${asistencia}" method="post">
+
+    <!-- Input oculto obligatorio para no perder el ID al editar -->
+    <input type="hidden" th:field="*{id}" />
+
+    <!-- Selector de Estudiantes (Provenientes de tu EstudianteRepository) -->
+    <p>
+        <label for="persona">Estudiante:</label><br>
+        <select th:field="*{persona}" id="persona" required>
+            <option value="">-- Seleccione un Alumno --</option>
+            <option th:each="est : ${listaPersonas}"
+                    th:value="${est.id}"
+                    th:text="${est.nombre}"></option>
+        </select>
+    </p>
+
+    <!-- Selector de Clases -->
+    <p>
+        <label for="clase">Clase Asignada:</label><br>
+        <select th:field="*{clase}" id="clase" required>
+            <option value="">-- Seleccione una Clase --</option>
+            <option th:each="cl : ${listaClases}"
+                    th:value="${cl.id}"
+                    th:text="'Clase N° ' + ${cl.id}"></option>
+        </select>
+    </p>
+
+    <!-- Selección de Fecha de la Clase -->
+    <p>
+        <label for="fechaClase">Fecha de la Clase:</label><br>
+        <input type="date" th:field="*{fechaClase}" id="fechaClase" required />
+    </p>
+
+    <!-- Selección de Fecha y Hora del Marcaje -->
+    <p>
+        <label for="registro">Fecha/Hora de Registro:</label><br>
+        <input type="datetime-local" th:field="*{registro}" id="registro" required />
+    </p>
+
+    <br>
+    <button type="submit">Guardar Cambios</button>
+    <a th:href="@{/asistencias/listar}">Cancelar</a>
+</form>
+
+</body>
+</html>
