@@ -51,7 +51,7 @@ public class ClaseController {
     /**
      * Muestra el formulario de clases con los datos cargados para la edición
      */
-    @GetMapping("/editar/{idClase}")
+    @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Clase clase = claseService.clasePorId(id).orElseThrow(() -> new IllegalArgumentException("Clase no encontrada" + id));
         model.addAttribute("clase", clase);
