@@ -42,7 +42,7 @@ public class Grado {
      * Ejemplo: 9° Kyu o 5° Dan
      */
     @Column
-    @NotNull
+    @NotBlank(message = "El campo Kyu/Dan es obligatorio")
     private String kyuDan;
 
 

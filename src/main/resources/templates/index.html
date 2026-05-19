@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenidos a Escuela Kenpo</title>
+</head>
+<body>
+<h1>Bienvenidos a Escuela Kenpo</h1>
+
+<nav>
+    <ul>
+
+        <li><a th:href="@{/estudiantes}">Estudiante</a></li>
+
+        <li><a th:href="@{/grados}">Grados</a></li>
+
+        <li><a th:href="@{/asistencias/listar}">Asistencia</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>
