@@ -21,7 +21,7 @@ public class Clase {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idClase;
+    private Integer id;
     /**
      * Tipo clase: clasificacaión de la clase
      * Ejemplo: Sparring, ténica, Acondicionamiento físico, etc.
@@ -33,7 +33,7 @@ public class Clase {
      * Ejemplo: golpe de puño
      */
     @Column(nullable = false)
-    private String descripcionClase;
+    private String descripcion;
     /**Indica el estado de la clase
      * Ejemplo: Activa
      */

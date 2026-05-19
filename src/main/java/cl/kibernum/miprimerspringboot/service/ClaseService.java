@@ -19,10 +19,10 @@ public interface ClaseService {
 
     /**
      * Buscar clase por ID
-     * @param idClase
+     * @param id
      * @return Clase según id
      */
-    Optional<Clase> clasePorId(Integer idClase);
+    Optional<Clase> clasePorId(Integer id);
 
     /**
      * Crear una nueva clase
@@ -33,7 +33,7 @@ public interface ClaseService {
 
     /**
      * Borra una clase según id
-     * @param idClase de la clase a borrar
+     * @param id de la clase a borrar
      */
-    void borrarClase(Integer idClase);
+    void borrarClase(Integer id);
 }

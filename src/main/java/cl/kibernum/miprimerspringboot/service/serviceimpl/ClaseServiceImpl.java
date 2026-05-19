@@ -31,12 +31,12 @@ public class ClaseServiceImpl implements ClaseService {
 
     /**
      * Implementación búsqueda de clases por id
-     * @param idClase
+     * @param id
      * @return Clase
      */
     @Override
-    public Optional<Clase> clasePorId(Integer idClase) {
-        return claseRepository.findById(idClase);
+    public Optional<Clase> clasePorId(Integer id) {
+        return claseRepository.findById(id);
     }
 
     /**
@@ -51,10 +51,10 @@ public class ClaseServiceImpl implements ClaseService {
 
     /**
      * Implementación Eliminar clase por ID.
-     * @param idClase de la clase a borrar
+     * @param id de la clase a borrar
      */
     @Override
-    public void borrarClase(Integer idClase) {
-        claseRepository.deleteById(idClase);
+    public void borrarClase(Integer id) {
+        claseRepository.deleteById(id);
     }
 }

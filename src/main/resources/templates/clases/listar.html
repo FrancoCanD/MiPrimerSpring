@@ -25,14 +25,14 @@
 
     <tbody>
     <tr th:each="clase : ${clases}">
-        <td th:text="${clase.idClase}"></td>
+        <td th:text="${clase.id}"></td>
         <td th:text="${clase.tipoClase}"></td>
-        <td th:text="${clase.descripcionClase}"></td>
+        <td th:text="${clase.descripcion}"></td>
         <td th:text="${clase.estado}"></td>
         <td>
-            <a th:href="@{/clases/editar/{idClase}(idClase=${clase.idClase})}">Editar</a>
+            <a th:href="@{/clases/editar/{id}(id=${clase.id})}">Editar</a>
             |
-            <a th:href="@{/clases/eliminar/{idClase}(idClase=${clase.idClase})}"
+            <a th:href="@{/clases/eliminar/{id}(id=${clase.id})}"
                onclick="return confirm('¿Desea eliminar esta clase?')">
                 Eliminar
             </a>

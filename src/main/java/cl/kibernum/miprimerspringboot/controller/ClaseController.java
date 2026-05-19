@@ -52,8 +52,8 @@ public class ClaseController {
      * Muestra el formulario de clases con los datos cargados para la edición
      */
     @GetMapping("/editar/{idClase}")
-    public String editar(@PathVariable Integer idClase, Model model) {
-        Clase clase = claseService.clasePorId(idClase).orElseThrow(() -> new IllegalArgumentException("Clase no encontrada" + idClase));
+    public String editar(@PathVariable Integer id, Model model) {
+        Clase clase = claseService.clasePorId(id).orElseThrow(() -> new IllegalArgumentException("Clase no encontrada" + id));
         model.addAttribute("clase", clase);
         return "clases/form";
     }
@@ -61,9 +61,9 @@ public class ClaseController {
     /**
      * Elimina una clase por ID
      */
-    @GetMapping("/eliminar/{idClase}")
-    public String eliminar(@PathVariable Integer idClase) {
-        claseService.borrarClase(idClase);
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        claseService.borrarClase(id);
         return "redirect:/clases";
     }
 }

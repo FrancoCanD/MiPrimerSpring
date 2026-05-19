@@ -6,12 +6,12 @@
 </head>
 <body>
 
-<h1 th:text="${clase.idClase == null ? 'Nueva Clase' : 'Editar clase'}"></h1>
+<h1 th:text="${clase.id == null ? 'Nueva Clase' : 'Editar clase'}"></h1>
 
 <form th:action="@{/clases/guardar}" th:object="${clase}" method="post">
 
     <!-- Campo oculto para mantener el ID cuando se edita -->
-    <input type="hidden" th:field="*{idClase}">
+    <input type="hidden" th:field="*{id}">
 
     <div>
         <label>Tipo de Clase:</label>
@@ -23,8 +23,8 @@
 
     <div>
         <label>Descripción:</label>
-        <input type="text" th:field="*{descripcionClase}">
-        <span style="color:red;" th:if="${#fields.hasErrors('descripcionClase')}" th:errors="*{descripcionClase}"></span>
+        <input type="text" th:field="*{descripcion}">
+        <span style="color:red;" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
     </div>
 
     <br>
