@@ -10,6 +10,7 @@
 
 <p>
     <a th:href="@{/estudiantes/nuevo}">Crear nuevo estudiante</a>
+    <a th:href="@{/}">Volver al Inicio</a>
 </p>
 
 <table border="1" cellpadding="8">
@@ -38,7 +39,7 @@
         <td th:text="${estudiante.fechaAscenso}"></td>
         <td th:text="${estudiante.activo}"></td>
         <td>
-            <a th:href="@{/estudiante/editar/{id}(id=${estudiante.id})}">Editar</a>
+            <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}">Editar</a>
             |
             <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
                onclick="return confirm('¿Desea eliminar este estudiante?')">

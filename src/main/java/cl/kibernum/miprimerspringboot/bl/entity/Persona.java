@@ -10,6 +10,7 @@ import java.time.LocalDate;
 /**
  * Entidad Persona, representa a las personas de la escuela kenpo
  */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
@@ -17,42 +18,37 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "personas")
 public abstract class Persona {
-
     /**
      * Identificador de la persona
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     /**
      * Nombre de la persona
      */
     @Column(nullable = false)
     private String nombres;
-
     /**
      * Primer Apellido de la persona
      */
     @Column(nullable = false)
     private String apellido1;
-
     /**
      * Segundo Apellido de la persona
      */
     @Column(nullable = true)
     private String apellido2;
-
     /**
-     * Fecha de nacimiento de la persona
+     *
      */
     @Column(nullable = false)
     private LocalDate fechaNac;
-
     /**
-     * RUT de la persona
+     *
      */
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String rut;
 
 }
+
