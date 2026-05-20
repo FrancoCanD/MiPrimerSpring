@@ -17,7 +17,7 @@
     <!-- Selector de Estudiantes (Provenientes de tu EstudianteRepository) -->
     <p>
         <label for="persona">Estudiante:</label><br>
-        <select th:field="*{persona}" id="persona" required>
+        <select th:field="*{persona.id}" id="persona" required>
             <option value="">-- Seleccione un Alumno --</option>
             <option th:each="est : ${listaPersonas}"
                     th:value="${est.id}"
@@ -28,7 +28,7 @@
     <!-- Selector de Clases -->
     <p>
         <label for="clase">Clase Asignada:</label><br>
-        <select th:field="*{clase}" id="clase" required>
+        <select th:field="*{clase.id}" id="clase" required>
             <option value="">-- Seleccione una Clase --</option>
             <option th:each="cl : ${listaClases}"
                     th:value="${cl.id}"

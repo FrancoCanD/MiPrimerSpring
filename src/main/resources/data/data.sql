@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS asistencias;
+DROP TABLE IF EXISTS estudiantes;
+DROP TABLE IF EXISTS personas;
+
 DROP DATABASE IF EXISTS escuela_kenpo;
 CREATE DATABASE escuela_kenpo;
 USE escuela_kenpo;
@@ -75,7 +79,7 @@ INSERT INTO personas (nombres, apellido1, fecha_nac, rut) VALUES
                                                               ('María', 'Soto', '2007-01-01', '22222222-2');
 
 
-INSERT INTO estudiantes (persona_id, grado_id, fecha_ascenso, activo) VALUES
+INSERT INTO estudiantes (id, grado_id, fecha_ascenso, activo) VALUES
                                                                           (1, 1, '2024-03-10', true),
                                                                           (2, 2, '2025-05-15', true);
 

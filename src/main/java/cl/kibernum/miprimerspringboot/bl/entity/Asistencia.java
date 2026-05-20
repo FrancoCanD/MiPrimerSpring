@@ -42,7 +42,7 @@ public class Asistencia {
      * Relación con el alumno que asiste a la lección de Kenpo
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "personas_id", referencedColumnName = "id")
     private Persona persona;
 
     /**
