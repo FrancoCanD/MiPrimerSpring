@@ -1,0 +1,192 @@
+/* ── style-form-asistencia.css ───────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --blue-dark:    #0f2d57;
+    --blue-mid:     #1a4a8a;
+    --blue-primary: #0369a1;
+    --blue-hover:   #0284c7;
+    --blue-light:   #e0f2fe;
+    --blue-pale:    #f0f9ff;
+    --border:       #e0e7ef;
+    --text-dark:    #1a1a2e;
+    --text-mid:     #374151;
+    --text-muted:   #6b7280;
+    --radius:       12px;
+    --shadow:       0 4px 24px rgba(3,105,161,0.12);
+}
+
+body {
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 50%, #0e6ba8 100%);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.main-container {
+    width: 95%;
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+/* ── Breadcrumb ── */
+.breadcrumb {
+    margin-bottom: 1rem;
+}
+
+.breadcrumb__link {
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.breadcrumb__link:hover {
+    color: #fff;
+}
+
+/* ── Títulos ── */
+h2 {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+}
+
+h3 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+}
+
+/* ── Tarjeta del formulario ── */
+.form-card {
+    background: #fff;
+    border: 2px solid var(--blue-primary);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    box-shadow: var(--shadow);
+}
+
+/* ── Info de registro ── */
+.info-registro {
+    background: var(--blue-pale);
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-size: 0.84rem;
+    color: var(--blue-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+}
+
+.info-registro small { color: var(--text-muted); }
+
+/* ── Grupos de campo ── */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1.1rem;
+}
+
+label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ── Asterisco requerido ── */
+.required {
+    color: #dc2626;
+    margin-left: 2px;
+}
+
+/* ── Inputs y selects ── */
+input[type="date"],
+input[type="datetime-local"],
+select {
+    width: 100%;
+    padding: 0.58rem 0.9rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    color: var(--text-dark);
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 0 3px rgba(3,105,161,0.15);
+}
+
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%236b7280' d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    padding-right: 2rem;
+}
+
+/* ── Acciones del form ── */
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1.1rem;
+    border-top: 1px solid #f0f1f5;
+    margin-top: 0.5rem;
+}
+
+.btn-guardar {
+    padding: 0.6rem 1.4rem;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    background: var(--blue-primary);
+    color: #fff;
+    font-family: inherit;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+}
+.btn-guardar:hover {
+    background: var(--blue-hover);
+    transform: translateY(-1px);
+}
+
+.btn-cancelar {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: #e5e7eb;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.btn-cancelar:hover { background: #d1d5db; }
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+    .form-actions { flex-direction: column-reverse; }
+    .btn-guardar, .btn-cancelar { width: 100%; text-align: center; }
+    h3 { font-size: 1.2rem; }
+}

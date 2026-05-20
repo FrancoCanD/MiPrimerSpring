@@ -1,57 +1,181 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Asistencia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${asistencia.id == null} ? 'Nueva Asistencia' : 'Editar Asistencia'">Formulario de Asistencia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style-form-asistencia.css}">
+    <style>
+        /* Estilos para mensajes de error y éxito */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .alert-error {
+            background-color: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+        .alert-success {
+            background-color: #efe;
+            color: #3a3;
+            border: 1px solid #cfc;
+        }
+    </style>
 </head>
 <body>
 
+<div class="main-container">
 
-<h1 th:text="${asistencia.id == null} ? 'Registrar Nueva Asistencia' : 'Modificar Asistencia'"></h1>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a th:href="@{/asistencias/listar}" class="breadcrumb__link">← Volver al listado</a>
+    </div>
 
-<form th:action="@{/asistencias/guardar}" th:object="${asistencia}" method="post">
+    <!-- Títulos -->
+    <h2>Módulo de Asistencias</h2>
+    <h3 th:text="${asistencia.id == null} ? 'Registrar Nueva Asistencia' : 'Modificar Asistencia #' + ${asistencia.id}">
+        Formulario
+    </h3>
 
-    <!-- Input oculto obligatorio para no perder el ID al editar -->
-    <input type="hidden" th:field="*{id}" />
+    <!-- Mensajes de Error/Éxito -->
+    <div th:if="${error}" class="alert alert-error">
+        ❌ <span th:text="${error}">Error</span>
+    </div>
 
-    <!-- Selector de Estudiantes (Provenientes de tu EstudianteRepository) -->
-    <p>
-        <label for="persona">Estudiante:</label><br>
-        <select th:field="*{persona}" id="persona" required>
-            <option value="">-- Seleccione un Alumno --</option>
-            <option th:each="est : ${listaPersonas}"
-                    th:value="${est.id}"
-                    th:text="${est.nombres}"></option>
-        </select>
-    </p>
+    <div th:if="${exito}" class="alert alert-success">
+        ✅ <span th:text="${exito}">Éxito</span>
+    </div>
 
-    <!-- Selector de Clases -->
-    <p>
-        <label for="clase">Clase Asignada:</label><br>
-        <select th:field="*{clase}" id="clase" required>
-            <option value="">-- Seleccione una Clase --</option>
-            <option th:each="cl : ${listaClases}"
-                    th:value="${cl.id}"
-                    th:text="'Clase N° ' + ${cl.id}"></option>
-        </select>
-    </p>
+    <!-- Tarjeta del formulario -->
+    <div class="form-card">
 
-    <!-- Selección de Fecha de la Clase -->
-    <p>
-        <label for="fechaClase">Fecha de la Clase:</label><br>
-        <input type="date" th:field="*{fechaClase}" id="fechaClase" required />
-    </p>
+        <!-- Info automática del registro -->
+        <div class="info-registro" th:if="${asistencia.id == null}">
+            <strong>ℹ️ Registro automático</strong><br>
+            El campo <em>Fecha/Hora de Registro</em> se completará con la hora actual al guardar si lo dejas vacío.
+            <br><small>Puedes ajustarlo manualmente si necesitas corregir la hora.</small>
+        </div>
 
-    <!-- Selección de Fecha y Hora del Marcaje -->
-    <p>
-        <label for="registro">Fecha/Hora de Registro:</label><br>
-        <input type="datetime-local" th:field="*{registro}" id="registro" required />
-    </p>
+        <form th:action="@{/asistencias/guardar}" method="post" id="formAsistencia">
 
-    <br>
-    <button type="submit">Guardar Cambios</button>
-    <a th:href="@{/asistencias/listar}">Cancelar</a>
-</form>
+            <!-- ID oculto (necesario para edición) -->
+            <input type="hidden" name="id" th:value="${asistencia.id}" />
+
+            <!-- Selector de Estudiante -->
+            <div class="form-group">
+                <label for="personaId">Estudiante <span class="required">*</span></label>
+                <select name="personaId" id="personaId" required>
+                    <option value="">— Seleccione un alumno —</option>
+                    <option th:each="est : ${listaPersonas}"
+                            th:value="${est.id}"
+                            th:text="${est.nombres}"
+                            th:selected="${asistencia.persona != null and asistencia.persona.id == est.id}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Selector de Clase -->
+            <div class="form-group">
+                <label for="claseId">Clase Asignada <span class="required">*</span></label>
+                <select name="claseId" id="claseId" required>
+                    <option value="">— Seleccione una clase —</option>
+                    <option th:each="cl : ${listaClases}"
+                            th:value="${cl.id}"
+                            th:text="'Clase N° ' + ${cl.id}"
+                            th:selected="${asistencia.clase != null and asistencia.clase.id == cl.id}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Fecha de la Clase -->
+            <div class="form-group">
+                <label for="fechaClase">Fecha de la Clase <span class="required">*</span></label>
+                <input type="date"
+                       name="fechaClase"
+                       id="fechaClase"
+                       th:value="${asistencia.fechaClase}"
+                       required />
+            </div>
+
+            <!-- Fecha y Hora del Registro -->
+            <div class="form-group">
+                <label for="registro">Fecha / Hora de Registro <span class="required">*</span></label>
+                <input type="datetime-local"
+                       name="registro"
+                       id="registro"
+                       th:value="${asistencia.registro}"
+                       required />
+            </div>
+
+            <!-- Acciones -->
+            <div class="form-actions">
+                <a th:href="@{/asistencias/listar}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">
+                    <span th:text="${asistencia.id == null} ? 'Registrar Asistencia' : 'Guardar Cambios'">Guardar</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- Script para autocompletar la fecha/hora actual si está vacía -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const registroInput = document.getElementById('registro');
+        if (registroInput && !registroInput.value) {
+            const now = new Date();
+            // Formato yyyy-MM-ddTHH:mm requerido por datetime-local
+            const pad = n => String(n).padStart(2, '0');
+            const local = now.getFullYear() + '-'
+                + pad(now.getMonth() + 1) + '-'
+                + pad(now.getDate()) + 'T'
+                + pad(now.getHours()) + ':'
+                + pad(now.getMinutes());
+            registroInput.value = local;
+        }
+
+        // Validación adicional del formulario
+        const form = document.getElementById('formAsistencia');
+        form.addEventListener('submit', function(e) {
+            const personaId = document.getElementById('personaId').value;
+            const claseId = document.getElementById('claseId').value;
+            const fechaClase = document.getElementById('fechaClase').value;
+            const registro = document.getElementById('registro').value;
+
+            if (!personaId || personaId === '') {
+                alert('Por favor seleccione un estudiante');
+                e.preventDefault();
+                return false;
+            }
+
+            if (!claseId || claseId === '') {
+                alert('Por favor seleccione una clase');
+                e.preventDefault();
+                return false;
+            }
+
+            if (!fechaClase) {
+                alert('Por favor ingrese la fecha de la clase');
+                e.preventDefault();
+                return false;
+            }
+
+            if (!registro) {
+                alert('Por favor ingrese la fecha/hora de registro');
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

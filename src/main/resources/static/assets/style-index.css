@@ -1,0 +1,75 @@
+/* ── style-index.css ─────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f2d57 0%, #1a4a8a 50%, #0e6ba8 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.index-container {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.index-logo {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.index-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+}
+
+.index-subtitle {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 2.5rem;
+}
+
+.index-cards {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    flex-wrap: nowrap;
+    }
+
+.index-card {
+    background: gba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.index-card:hover {
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
+}
+
+.card-icon  { font-size: 2.4rem; }
+.card-label { font-weight: 600; font-size: 1rem; color: #1a1a2e; }
+.card-desc  { font-size: 0.8rem; color: #9ca3af; text-align: center; }
+
+@media (max-width: 480px) {
+    .index-cards { flex-direction: column; align-items: center; }
+    .index-card  { width: 100%; max-width: 280px; }
+}
