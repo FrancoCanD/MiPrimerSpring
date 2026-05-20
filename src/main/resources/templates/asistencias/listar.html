@@ -27,7 +27,7 @@
         <td th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|"></td>
         <!-- Muestra los datos heredados del Instructor a través de Persona -->
         <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|"></td>
-        <td th:text="${asistencia.clase.tipo_clase}"></td>
+        <td th:text="${asistencia.clase.tipoClase}"></td>
         <td th:text="${asistencia.registro}"></td>
         <td>
             <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">Editar</a> |
