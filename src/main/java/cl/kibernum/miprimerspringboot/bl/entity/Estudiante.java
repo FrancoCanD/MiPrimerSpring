@@ -1,34 +1,37 @@
 package cl.kibernum.miprimerspringboot.bl.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
  * Entidad Estudiante, representa a los alumnos inscritos
  */
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "estudiantes")
-@PrimaryKeyJoinColumn(name = "persona_id") // ← FK hacia la tabla personas
+@PrimaryKeyJoinColumn(name = "persona_id")
 public class Estudiante extends Persona {
 
     /**
      * Grado actual del alumno
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // Corregido: EAGER evita LazyInitializationException en la vista listar
     @JoinColumn(name = "grado_id", referencedColumnName = "id")
+    @NotNull(message = "Debe seleccionar un grado")
     private Grado grado;
 
     /**
      * Fecha de ascenso del alumno al grado actual
      */
-    @Column(nullable = false)
+    @Column(nullable = false, name = "fecha_ascenso")
+    @NotNull(message = "La fecha de ascenso es obligatoria")
     private LocalDate fechaAscenso;
 
     /**
@@ -38,7 +41,7 @@ public class Estudiante extends Persona {
     private boolean activo;
 
     /**
-     * Constructor completo
+     * Constructor completo manual para evitar conflictos con Lombok y herencia
      */
     public Estudiante(Integer id, String nombres, String apellido1, String apellido2,
                       LocalDate fechaNac, String rut, Grado grado,

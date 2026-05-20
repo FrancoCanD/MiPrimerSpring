@@ -10,7 +10,7 @@
 
 <p>
     <a th:href="@{/grados/nuevo}">Crear nuevo grado</a>
-    <a th:href="@{/}">Volver al Inicio</a>
+
 </p>
 
 <table border="1" cellpadding="8">
@@ -45,6 +45,9 @@
 <p th:if="${#lists.isEmpty(grados)}">
     No existen grados registrados.
 </p>
+<br>
+<br>
+<a th:href="@{/}">Volver al Inicio</a>
 
 </body>
 </html>

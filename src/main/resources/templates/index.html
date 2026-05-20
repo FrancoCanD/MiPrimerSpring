@@ -1,22 +1,83 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Bienvenidos a Escuela Kenpo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control — Kenpo Talcahuano</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #1e293b; text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #64748b; font-size: 1.1rem; margin-bottom: 40px; }
+
+        /* Grid de estadísticas */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 200px; gap: 20px; margin-bottom: 40px; }
+        .card-stat { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid #3b82f6; }
+        .card-stat h3 { margin: 0 0 10px 0; color: #64748b; font-size: 0.9rem; text-transform: uppercase; }
+        .card-stat p { margin: 0; font-size: 2rem; font-weight: bold; color: #1e293b; }
+
+        /* Grid de accesos */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .menu-item { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #e2e8f0; }
+        .menu-item:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #3b82f6; }
+        .menu-item h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .menu-item p { margin: 0; color: #64748b; font-size: 0.95rem; line-height: 1.4; }
+    </style>
 </head>
 <body>
-<h1>Bienvenidos a Escuela Kenpo</h1>
 
-<nav>
-    <ul>
+<div class="container">
+    <h1>Escuela de Kenpo Internacional</h1>
+    <p class="subtitle">Sistema de Gestión de Alumnos, Clases y Asistencias</p>
 
-        <li><a th:href="@{/estudiantes}">Estudiante</a></li>
+    <!-- Panel de Resumen Estadístico -->
+    <div class="dashboard-grid">
+        <div class="card-stat">
+            <h3>Estudiantes</h3>
+            <p th:text="${totalEstudiantes}">0</p>
+        </div>
+        <div class="card-stat" style="border-top-color: #10b981;">
+            <h3>Instructores</h3>
+            <p th:text="${totalInstructores}">0</p>
+        </div>
+        <div class="card-stat" style="border-top-color: #f59e0b;">
+            <h3>Clases Activas</h3>
+            <p th:text="${totalClases}">0</p>
+        </div>
+        <div class="card-stat" style="border-top-color: #8b5cf6;">
+            <h3>Asistencias</h3>
+            <p th:text="${totalAsistencias}">0</p>
+        </div>
+    </div>
 
-        <li><a th:href="@{/grados}">Grados</a></li>
+    <!-- Menú de Navegación del Sistema -->
+    <div class="menu-grid">
+        <a th:href="@{/estudiantes}" class="menu-item">
+            <h2>🎓 Estudiantes</h2>
+            <p>Inscripciones, actualizaciones de alumnos activos e historiales de membresía.</p>
+        </a>
 
-        <li><a th:href="@{/asistencias/listar}">Asistencia</a></li>
-    </ul>
-</nav>
+        <a th:href="@{/instructores}" class="menu-item">
+            <h2>🥋 Instructores</h2>
+            <p>Gestión de profesores, asignación de especialidades técnicas y años de experiencia.</p>
+        </a>
+
+        <a th:href="@{/asistencias}" class="menu-item">
+            <h2>📝 Registro de Asistencias</h2>
+            <p>Control diario de asistencia vinculando estudiantes, clases e instructores a cargo.</p>
+        </a>
+
+        <a th:href="@{/clases}" class="menu-item">
+            <h2>⏱️ Clases Impartidas</h2>
+            <p>Administración de bloques horarios y tipologías de entrenamiento (Kata, Sparring, Técnica).</p>
+        </a>
+
+        <a th:href="@{/grados}" class="menu-item" style="grid-column: 1 / -1; text-align: center;">
+            <h2>🏆 Configuración de Grados y Cinturones</h2>
+            <p>Administrar la escala jerárquica de la escuela (desde 10° Kyu Blanco hasta los Danes Avanzados).</p>
+        </a>
+    </div>
+</div>
 
 </body>
 </html>

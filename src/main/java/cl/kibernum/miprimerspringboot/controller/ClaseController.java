@@ -40,9 +40,9 @@ public class ClaseController {
      * Guarda una clase nueva o actualizada
      */
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("clase") Clase clase, BindingResult result) {
+    public String guardar(@Valid @ModelAttribute("clase") Clase clase, BindingResult result, Model model) { // Corregido: Agregado Model model
         if (result.hasErrors()) {
-            return "clases/form";
+            return "clases/form"; // Ahora recargará la vista sin errores de renderizado
         }
         claseService.crearClase(clase);
         return "redirect:/clases";

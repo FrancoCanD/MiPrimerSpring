@@ -2,15 +2,15 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listad de Clases</title>
+    <title>Listado de Clases</title>
 </head>
 <body>
 
-<h1>Listado de Clases</h1>
+<h1>Listado de Clases Kenpo</h1>
 
 <p>
-    <a th:href="@{/clases/nuevo}">Crear nueva clase</a>
-    <a th:href="@{/}">Volver al Inicio</a>
+    <a th:href="@{/clases/nuevo}">Crear nueva clase</a> |
+
 </p>
 
 <table border="1" cellpadding="8">
@@ -23,28 +23,24 @@
         <th>Acciones</th>
     </tr>
     </thead>
-
     <tbody>
-    <tr th:each="clase : ${clases}">
-        <td th:text="${clase.id}"></td>
-        <td th:text="${clase.tipoClase}"></td>
-        <td th:text="${clase.descripcion}"></td>
-        <td th:text="${clase.estado}"></td>
+    <tr th:each="c : ${clases}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.tipoClase}"></td>
+        <td th:text="${c.descripcion}"></td>
+        <td th:text="${c.estado ? 'Activa' : 'Inactiva'}"></td>
         <td>
-            <a th:href="@{/clases/editar/{id}(id=${clase.id})}">Editar</a>
-            |
-            <a th:href="@{/clases/eliminar/{id}(id=${clase.id})}"
-               onclick="return confirm('¿Desea eliminar esta clase?')">
-                Eliminar
-            </a>
+            <a th:href="@{/clases/editar/{id}(id=${c.id})}">Editar</a> |
+            <a th:href="@{/clases/eliminar/{id}(id=${c.id})}"
+               onclick="return confirm('¿Desea eliminar esta clase?')">Eliminar</a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<p th:if="${#lists.isEmpty(clases)}">
-    No existen clases registradas.
-</p>
-
+<p th:if="${#lists.isEmpty(clases)}">No existen clases registradas en el sistema.</p>
+<br>
+<br>
+<a th:href="@{/}">Volver al Inicio</a>
 </body>
 </html>

@@ -2,7 +2,6 @@ package cl.kibernum.miprimerspringboot.bl.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,37 +12,24 @@ import lombok.Setter;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "grados")
 public class Grado {
-    /**
-     * Identificador único del grado
-     * Se genera automáticamente en la BD
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    /**
-     * Nombre del cinturón o grado
-     * Ejemplo: Blanco, Amarillo, Naranjo, etc.
-     */
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 50)
     @NotBlank(message = "El nombre del cinturon es obligatorio")
     private String nombre;
-    /**
-     * Descripción del Grado
-     * Ejemplo: Grado inicial del estudiante
-     */
-    @Column(nullable = false)
+
+    @Column(length = 255) // Corregido: Se elimina nullable = false para coincidir con el script SQL
     private String descripcion;
-    /**
-     * Kyu o Dan correspondiente al grado
-     * Ejemplo: 9° Kyu o 5° Dan
-     */
-    @Column
+
+    @Column(nullable = false, name = "kyu_dan", length = 50) // Corregido: Mapeo explícito snake_case para MySQL
     @NotBlank(message = "El campo Kyu/Dan es obligatorio")
     private String kyuDan;
-
-
 }

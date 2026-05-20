@@ -47,10 +47,10 @@ public class InstructorController {
      */
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("instructor") Instructor instructor,
-                          BindingResult result, Model model) {
+                          BindingResult result, Model model) { // Asegurado el parámetro Model
         if (result.hasErrors()) {
             model.addAttribute("grados", gradoService.listarGrados());
-            return "instructores/form";
+            return "instructores/form"; // Recarga de forma segura con la lista de cinturones
         }
         instructorService.crearInstructor(instructor);
         return "redirect:/instructores";

@@ -15,27 +15,17 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     private AsistenciaRepository asistenciaRepository;
 
     @Override
-    public List<Asistencia> listarTodas() {
-        return asistenciaRepository.findAll();
-    }
+    public List<Asistencia> listarTodas() { return asistenciaRepository.findAll(); }
 
     @Override
-    public Optional<Asistencia> buscarPorId(Integer id) {
-        return asistenciaRepository.findById(id);
-    }
+    public Optional<Asistencia> buscarPorId(Integer id) { return asistenciaRepository.findById(id); }
 
     @Override
-    public Asistencia obtenerPorId(Integer id) {
-        return asistenciaRepository.findById(id).orElse(null);
-    }
+    public Asistencia obtenerPorId(Integer id) { return asistenciaRepository.findById(id).orElse(null); }
 
     @Override
-    public void guardar(Asistencia asistencia) {
-        asistenciaRepository.save(asistencia);
-    }
+    public void guardar(Asistencia asistencia) { asistenciaRepository.save(asistencia); }
 
     @Override
-    public void eliminar(Integer id) {
-        asistenciaRepository.deleteById(id);
-    }
+    public void eliminar(Integer id) { asistenciaRepository.deleteById(id); }
 }

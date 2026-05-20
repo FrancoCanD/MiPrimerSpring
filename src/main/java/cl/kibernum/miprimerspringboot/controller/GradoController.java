@@ -39,13 +39,14 @@ public class GradoController {
      * Guarda un grado nuevo o actualizado
      */
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("grado") Grado grado, BindingResult result) {
+    public String guardar(@Valid @ModelAttribute("grado") Grado grado, BindingResult result, Model model) { // Corregido: Se añade Model model
         if (result.hasErrors()) {
-            return "grados/form";
+            return "grados/form"; // Ahora funcionará correctamente al recargar los errores en la vista
         }
         gradoService.crearGrado(grado);
         return "redirect:/grados";
     }
+
 
     /**
      * Muestra el formulario con los datos cargados para la edición

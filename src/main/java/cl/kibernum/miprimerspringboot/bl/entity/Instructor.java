@@ -1,7 +1,8 @@
 package cl.kibernum.miprimerspringboot.bl.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,49 +11,33 @@ import java.time.LocalDate;
 /**
  * Entidad Instructor, representa a los instructores de la escuela
  */
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "instructores")
-@PrimaryKeyJoinColumn(name = "persona_id") // ← FK hacia la tabla personas
+@PrimaryKeyJoinColumn(name = "persona_id")
 public class Instructor extends Persona {
 
-    /**
-     * Grado del instructor
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // Corregido: EAGER previene LazyInitializationException en vistas
     @JoinColumn(name = "grado_id", referencedColumnName = "id")
+    @NotNull(message = "El grado es obligatorio")
     private Grado grado;
 
-    /**
-     * Especialidad del instructor
-     * Ejemplo: Kata, Kumite, Defensa Personal
-     */
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
+    @NotBlank(message = "La especialidad es obligatoria")
     private String especialidad;
 
-    /**
-     * Fecha de inicio como instructor
-     */
     @Column(name = "fecha_inicio", nullable = false)
+    @NotNull(message = "La fecha de inicio es obligatoria")
     private LocalDate fechaInicio;
 
-    /**
-     * Estado del instructor (activo/inactivo)
-     */
     @Column(nullable = false)
     private boolean activo;
 
-    /**
-     * Años de experiencia
-     */
-    @Column(nullable = true)
+    @Column(name = "anos_experiencia", nullable = true) // Corregido: Mapeo explícito a la columna de MySQL
     private Integer anosExperiencia;
 
-    /**
-     * Constructor completo
-     */
     public Instructor(Integer id, String nombres, String apellido1, String apellido2,
                       LocalDate fechaNac, String rut, Grado grado, String especialidad,
                       LocalDate fechaInicio, boolean activo, Integer anosExperiencia) {
