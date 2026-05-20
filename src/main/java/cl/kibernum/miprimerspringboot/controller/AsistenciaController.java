@@ -3,9 +3,8 @@ package cl.kibernum.miprimerspringboot.controller;
 import cl.kibernum.miprimerspringboot.bl.entity.Asistencia;
 import cl.kibernum.miprimerspringboot.service.AsistenciaService;
 import cl.kibernum.miprimerspringboot.service.ClaseService;
-import cl.kibernum.miprimerspringboot.repository.EstudianteRepository; // Reemplaza por tu servicio si tienes uno
+import cl.kibernum.miprimerspringboot.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class AsistenciaController {
     @GetMapping({"", "/listar"})
     public String listarAsistencias(Model model) {
         model.addAttribute("listaAsistencias", asistenciaService.listarTodas());
-        return "asistencias/listar";
+        return "asistencias/listar"; // Busca templates/asistencias/listar.html
     }
 
     // 2. MOSTRAR FORMULARIO NUEVO
@@ -36,14 +35,14 @@ public class AsistenciaController {
         model.addAttribute("asistencia", new Asistencia());
         model.addAttribute("listaPersonas", estudianteRepository.findAll());
         model.addAttribute("listaClases", claseService.listarClases());
-        return "asistencias/formulario";
+        return "asistencias/formulario"; // 💡 Corregido: Debe ir al archivo del formulario
     }
 
-    // 3. PROCESAR GUARDADO / EDICIÓN (Evita errores de conversión de fecha)
+    // 3. PROCESAR GUARDADO / EDICIÓN
     @PostMapping("/guardar")
     public String guardarAsistencia(@ModelAttribute("asistencia") Asistencia asistencia) {
         asistenciaService.guardar(asistencia);
-        return "redirect:/asistencias/listar";
+        return "redirect:/asistencias/listar"; // 💡 Corregido: Redirección limpia para evitar duplicados
     }
 
     // 4. MOSTRAR FORMULARIO PARA EDITAR
@@ -53,13 +52,13 @@ public class AsistenciaController {
         model.addAttribute("asistencia", asistencia);
         model.addAttribute("listaPersonas", estudianteRepository.findAll());
         model.addAttribute("listaClases", claseService.listarClases());
-        return "asistencias/formulario";
+        return "asistencias/formulario"; // 💡 Corregido: Debe ir al archivo del formulario
     }
 
     // 5. ELIMINAR REGISTRO
     @GetMapping("/eliminar/{id}")
     public String eliminarAsistencia(@PathVariable("id") Integer id) {
         asistenciaService.eliminar(id);
-        return "redirect:/asistencias/listar";
+        return "redirect:/asistencias/listar"; // 💡 Corregido: Redirección limpia
     }
 }

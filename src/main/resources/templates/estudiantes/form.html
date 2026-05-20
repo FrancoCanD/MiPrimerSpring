@@ -6,74 +6,65 @@
 </head>
 <body>
 
-<h1 th:text="${estudiante.id == null ? 'Nuevo estudiante' : 'Editar estudiante'}"></h1>
+<h1 th:text="${estudiante.id == null ? 'Nuevo Estudiante' : 'Editar Estudiante'}"></h1>
 
 <form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post">
 
-    <!-- Campo oculto para mantener el ID cuando se edita -->
     <input type="hidden" th:field="*{id}">
-    <!--<input type="hidden" th:field="*{persona.id}">-->
 
+    <!-- Campos heredados de Persona -->
+    <div>
+        <label>Rut (Sin puntos y con guión):</label>
+        <input type="text" th:field="*{rut}" required>
+    </div>
+    <br>
     <div>
         <label>Nombres:</label>
-        <input type="text" th:field="*{nombres}">
-        <span style="color:red;" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+        <input type="text" th:field="*{nombres}" required>
     </div>
-
+    <br>
     <div>
-        <label>Apellido 1:</label>
-        <input type="text" th:field="*{apellido1}">
-        <span style="color:red;" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+        <label>Primer Apellido:</label>
+        <input type="text" th:field="*{apellido1}" required>
     </div>
-
+    <br>
     <div>
-        <label>Apellido 2 </label>
+        <label>Segundo Apellido:</label>
         <input type="text" th:field="*{apellido2}">
-        <span style="color:red;" th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}"></span>
     </div>
-
+    <br>
     <div>
         <label>Fecha de Nacimiento:</label>
-        <input type="date" th:field="*{fechaNac}">
-        <span style="color:red;" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
+        <input type="date" th:field="*{fechaNac}" required>
     </div>
-
-    <div>
-        <label>Rut:</label>
-        <input type="text" th:field="*{rut}">
-        <span style="color:red;" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
-    </div>
-
-    <div>
-        <label>Grado:</label>
-        <input type="text" th:field="*{grado.nombre}">
-        <span style="color:red;" th:if="${#fields.hasErrors('grado.nombre')}" th:errors="*{grado.nombre}"></span>
-    </div>
-
     <br>
 
+    <!-- Campos específicos de Estudiante -->
     <div>
-        <label>Fecha Ascenso:</label>
-        <input type="date" th:field="*{fechaAscenso}">
-        <span style="color:red;" th:if="${#fields.hasErrors('fechaAscenso')}" th:errors="*{fechaAscenso}"></span>
+        <label>Fecha de Ascenso:</label>
+        <input type="date" th:field="*{fechaAscenso}" required>
     </div>
-
     <br>
-
     <div>
-        <label>Activo:</label>
+        <label>Estado Activo:</label>
         <input type="checkbox" th:field="*{activo}">
-        <span style="color:red;" th:if="${#fields.hasErrors('activo')}" th:errors="*{activo}"></span>
     </div>
-
     <br>
 
-    <button type="submit">Guardar</button>
-    <a th:href="@{/estudiantes}">Volver</a>
+    <!-- Selector de Grado (Vinculado al ID del grado) -->
+    <div>
+        <label>Grado / Cinturón:</label>
+        <select th:field="*{grado.id}" required>
+            <option value="">-- Seleccione Grado --</option>
+            <!-- Debes inyectar 'grados' desde el EstudianteController -->
+            <option th:each="g : ${grados}" th:value="${g.id}" th:text="${g.nombre}"></option>
+        </select>
+    </div>
+    <br>
 
+    <button type="submit">Guardar Estudiante</button>
+    <a th:href="@{/estudiantes}">Cancelar</a>
 </form>
 
 </body>
 </html>
-
-<!--Comentario de prueba -->
