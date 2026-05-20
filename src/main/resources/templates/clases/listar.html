@@ -10,7 +10,7 @@
 
 <p>
     <a th:href="@{/clases/nuevo}">Crear nueva clase</a>
-    <a th:href="@{/}">Volver al Inicio</a>
+
 </p>
 
 <table border="1" cellpadding="8">
@@ -42,9 +42,13 @@
     </tbody>
 </table>
 
+
 <p th:if="${#lists.isEmpty(clases)}">
     No existen clases registradas.
 </p>
+<br>
+<br>
+<a th:href="@{/}">Volver al Inicio</a>
 
 </body>
 </html>

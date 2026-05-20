@@ -10,8 +10,8 @@
 
 <!-- Botón para ir al formulario de creación -->
 <div>
-    <a th:href="@{/asistencias/nuevo}">Registrar Nueva Asistencia</a>
-    <a th:href="@{/}">Volver al Inicio</a>
+    <a th:href="@{asistencias/nuevo}">Registrar Nueva Asistencia</a>
+
 </div>
 
 <br>
@@ -37,7 +37,7 @@
     <tr th:each="asistencia : ${listaAsistencias}">
         <td th:text="${asistencia.id}"></td>
         <!-- Accede al objeto Persona y muestra su nombre -->
-        <td th:text="${asistencia.persona != null ? asistencia.persona.nombre : 'Sin Estudiante'}"></td>
+        <td th:text="${asistencia.persona != null ? asistencia.persona.nombres : 'Sin Estudiante'}"></td>
         <!-- Accede al objeto Clase y muestra su ID -->
         <td th:text="${asistencia.clase != null ? asistencia.clase.id : 'Sin Clase'}"></td>
         <!-- Formatea la fecha local -->
@@ -53,6 +53,9 @@
     </tr>
     </tbody>
 </table>
+<br>
+<br>
+<a th:href="@{/}">Volver al Inicio</a>
 
 </body>
 </html>

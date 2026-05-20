@@ -2,7 +2,7 @@ package cl.kibernum.miprimerspringboot.controller;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
 import cl.kibernum.miprimerspringboot.service.EstudianteService;
-import cl.kibernum.miprimerspringboot.service.GradoService;
+import cl.kibernum.miprimerspringboot.service.GradoService; // 💡 Asegúrate de importar el servicio de grados
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +20,9 @@ public class EstudianteController {
     @Autowired
     private EstudianteService estudianteService;
 
+    // 💡 1. AQUÍ INYECTAS EL SERVICIO DE GRADOS (Abajo de estudianteService)
     @Autowired
-    private GradoService gradoService; // ← inyectamos GradoService
+    private GradoService gradoService;
 
     /**
      * Muestra el listado de Estudiantes
@@ -34,22 +35,26 @@ public class EstudianteController {
 
     /**
      * Muestra el formulario para crear un nuevo estudiante
+     * 💡 2. AQUÍ COLOCAS EL NUEVO MÉTODO 'nuevo' REEMPLAZANDO EL ANTERIOR
      */
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
-        model.addAttribute("estudiante", new Estudiante());
-        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
-        return "estudiantes/form";
+        Estudiante estudiante = new Estudiante();
+        // Inicializa el grado para evitar errores de objeto nulo en la vista
+        estudiante.setGrado(new cl.kibernum.miprimerspringboot.bl.entity.Grado());
+        model.addAttribute("estudiante", estudiante);
+        model.addAttribute("grados", gradoService.listarGrados()); // Envía los cinturones al SELECT del HTML
+        return "estudiantes/form"; // Revisa si tu archivo se llama form.html o formulario.html
     }
 
     /**
      * Guarda un estudiante nuevo o actualizado
      */
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
-                          BindingResult result, Model model) {
+    public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("grados", gradoService.listarGrados()); // ← también al recargar por error
+            // Si hay errores de validación, reinyectamos los grados para que no falle el SELECT
+            model.addAttribute("grados", gradoService.listarGrados());
             return "estudiantes/form";
         }
         estudianteService.crearEstudiante(estudiante);
@@ -59,12 +64,13 @@ public class EstudianteController {
     /**
      * Muestra el formulario con los datos cargados para la edición
      */
+
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Estudiante estudiante = estudianteService.estudiantePorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado: " + id));
         model.addAttribute("estudiante", estudiante);
-        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
+        model.addAttribute("grados", gradoService.listarGrados()); // Envía los cinturones al SELECT en la edición
         return "estudiantes/form";
     }
 
