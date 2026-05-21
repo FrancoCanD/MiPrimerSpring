@@ -2,44 +2,75 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Asistencias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencias — Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/style-asistencias.css}">
 </head>
 <body>
-<h1>Registro de Asistencias Kenpo</h1>
-<p><a th:href="@{/asistencias/nuevo}">Registrar nueva asistencia</a></p>
+<div class="main-container">
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Fecha Clase</th>
-        <th>Estudiante</th>
-        <th>Instructor a Cargo</th> <!-- Nueva Columna -->
-        <th>Tipo de Clase</th>
-        <th>Fecha/Hora Registro</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="asistencia : ${listaAsistencias}">
-        <td th:text="${asistencia.id}"></td>
-        <td th:text="${asistencia.fechaClase}"></td>
-        <td th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|"></td>
-        <!-- Muestra los datos heredados del Instructor a través de Persona -->
-        <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|"></td>
-        <td th:text="${asistencia.clase.tipoClase}"></td>
-        <td th:text="${asistencia.registro}"></td>
-        <td>
-            <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">Editar</a> |
-            <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}" onclick="return confirm('¿Eliminar registro?')">Eliminar</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<p th:if="${#lists.isEmpty(listaAsistencias)}">No hay registros de asistencia en la base de datos.</p>
-<br>
-<br>
-<a th:href="@{/}">Volver al Inicio</a>
+    <div class="page-header">
+        <div>
+            <span class="page-header__eyebrow">Sistema de Gestión</span>
+            <h1 class="page-header__title">Registro de Asistencias</h1>
+        </div>
+        <div class="page-header__actions">
+            <a th:href="@{/asistencias/nuevo}" class="btn-principal">+ Nueva Asistencia</a>
+            <a th:href="@{/}" class="btn-link">← Inicio</a>
+        </div>
+    </div>
 
+    <div th:if="${exito}" class="filtro-activo">&#10003; <span th:text="${exito}"></span></div>
+
+    <div th:if="${#lists.isEmpty(listaAsistencias)}" class="empty-state">
+        <p style="font-size:1.05rem;font-weight:600;color:#374151;margin-bottom:.5rem">No hay registros de asistencia</p>
+        <p style="font-size:.9rem;color:#9ca3af;margin-bottom:1.25rem">Comienza registrando la primera asistencia.</p>
+        <a th:href="@{/asistencias/nuevo}" class="btn-principal">Registrar Asistencia</a>
+    </div>
+
+    <div class="tabla-bordeada" th:if="${not #lists.isEmpty(listaAsistencias)}">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha Clase</th>
+                <th>Estudiante</th>
+                <th>Instructor a Cargo</th>
+                <th>Tipo de Clase</th>
+                <th>Fecha/Hora Registro</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="asistencia : ${listaAsistencias}">
+                <td><span class="mono" th:text="${asistencia.id}"></span></td>
+                <td><span class="mono" th:text="${#temporals.format(asistencia.fechaClase,'dd/MM/yyyy')}"></span></td>
+                <td>
+                    <div class="estudiante-cell">
+                        <span class="avatar" th:text="${#strings.substring(asistencia.estudiante.nombres,0,1)}"></span>
+                        <span th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|"></span>
+                    </div>
+                </td>
+                <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|"></td>
+                <td><span class="badge badge-grado" th:text="${asistencia.clase.tipoClase}"></span></td>
+                <td><span class="mono" th:text="${#temporals.format(asistencia.registro,'dd/MM/yyyy HH:mm')}"></span></td>
+                <td>
+                    <div class="acciones">
+                        <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="btn-editar">Editar</a>
+                        <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
+                           class="btn-eliminar"
+                           onclick="return confirm('¿Eliminar este registro?')">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="controles" th:if="${not #lists.isEmpty(listaAsistencias)}">
+        <span class="total-registros">Total: <strong th:text="${#lists.size(listaAsistencias)}"></strong></span>
+        <a th:href="@{/asistencias/nuevo}" class="btn-principal">+ Nueva Asistencia</a>
+    </div>
+</div>
 </body>
 </html>
