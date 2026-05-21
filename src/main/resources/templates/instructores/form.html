@@ -1,116 +1,127 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario Instructor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${instructor.id == null ? 'Nuevo Instructor — Kenpo' : 'Editar Instructor — Kenpo'}"></title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .main-container { max-width: 650px; margin: 0 auto; }
+        .breadcrumb { margin-bottom: 20px; }
+        .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+        .breadcrumb a:hover { color: #10b981; }
+        h2 { color: #1e293b; margin: 0 0 5px 0; }
+        h3 { color: #10b981; font-size: 1.1rem; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #10b981; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+
+        input[type="text"], input[type="date"], input[type="number"], select { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; transition: border-color 0.2s, box-shadow 0.2s; background-color: white; }
+        input[type="text"]:focus, input[type="date"]:focus, select:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+
+        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; margin: 25px 0; }
+        input[type="checkbox"] { width: 18px; height: 18px; accent-color: #10b981; cursor: pointer; }
+        .checkbox-label { font-weight: 500; color: #475569; cursor: pointer; }
+
+        .error-span { color: #b91c1c; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+        .btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-cancelar:hover { background-color: #cbd5e1; }
+        .btn-guardar { padding: 10px 20px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-guardar:hover { background-color: #059669; }
+    </style>
 </head>
 <body>
 
-<h1 th:text="${instructor.id == null ? 'Nuevo instructor' : 'Editar instructor'}"></h1>
-
-<form th:action="@{/instructores/guardar}" th:object="${instructor}" method="post">
-
-    <!-- Campo oculto para mantener el ID cuando se edita -->
-    <input type="hidden" th:field="*{id}">
-
-    <div>
-        <label>Nombres:</label>
-        <input type="text" th:field="*{nombres}" required>
-        <span style="color:red;" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+<div class="main-container">
+    <div class="breadcrumb">
+        <a th:href="@{/instructores}">← Volver al listado</a>
     </div>
 
-    <br>
+    <h2>Cuerpo de Profesores</h2>
+    <h3 th:text="${instructor.id == null ? 'Ficha de Nuevo Instructor' : 'Modificar Parámetros de Docente'}"></h3>
 
-    <div>
-        <label>Apellido 1:</label>
-        <input type="text" th:field="*{apellido1}" required>
-        <span style="color:red;" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+    <div class="form-card">
+        <form th:action="@{/instructores/guardar}" th:object="${instructor}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group full-width">
+                <label for="nombres">Nombres</label>
+                <input type="text" id="nombres" th:field="*{nombres}" required>
+                <span class="error-span" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="apellido1">Primer Apellido</label>
+                    <input type="text" id="apellido1" th:field="*{apellido1}" required>
+                    <span class="error-span" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="apellido2">Segundo Apellido</label>
+                    <input type="text" id="apellido2" th:field="*{apellido2}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fechaNac">Fecha de Nacimiento</label>
+                    <input type="date" id="fechaNac" th:field="*{fechaNac}" required>
+                </div>
+                <div class="form-group">
+                    <label for="rut">RUT</label>
+                    <input type="text" id="rut" th:field="*{rut}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="grado">Grado / Rango</label>
+                    <select id="grado" th:field="*{grado.id}" required>
+                        <option value="">Seleccione rango</option>
+                        <option th:each="g : ${grados}" th:value="${g.id}" th:text="|${g.nombre} — ${g.kyuDan}|"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="especialidad">Especialidad Técnica</label>
+                    <select id="especialidad" th:field="*{especialidad}" required>
+                        <option value="">Seleccione área</option>
+                        <option value="Kata">Kata</option>
+                        <option value="Kumite">Kumite</option>
+                        <option value="Defensa Personal">Defensa Personal</option>
+                        <option value="Armas Tradicionales">Armas Tradicionales</option>
+                        <option value="Instructor General">Instructor General</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha de Inicio de Labores</label>
+                    <input type="date" id="fechaInicio" th:field="*{fechaInicio}" required>
+                </div>
+                <div class="form-group">
+                    <label for="anosExperiencia">Años de Trayectoria</label>
+                    <input type="number" id="anosExperiencia" th:field="*{anosExperiencia}" min="0" max="80">
+                </div>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="activo" th:field="*{activo}">
+                <label for="activo" class="checkbox-label">Instructor docente activo en cátedra</label>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/instructores}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">Registrar Profesor</button>
+            </div>
+        </form>
     </div>
-
-    <br>
-
-    <div>
-        <label>Apellido 2:</label>
-        <input type="text" th:field="*{apellido2}">
-        <span style="color:red;" th:if="${#fields.hasErrors('apellido2')}" th:errors="*{apellido2}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Fecha de Nacimiento:</label>
-        <input type="date" th:field="*{fechaNac}" required>
-        <span style="color:red;" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Rut:</label>
-        <input type="text" th:field="*{rut}" placeholder="12345678-9" required>
-        <span style="color:red;" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Grado:</label>
-        <select th:field="*{grado.id}" required>
-            <option value="">Seleccione un grado</option>
-            <option th:each="grado : ${grados}"
-                    th:value="${grado.id}"
-                    th:text="${grado.nombre + ' - ' + grado.kyuDan}">
-            </option>
-        </select>
-        <span style="color:red;" th:if="${#fields.hasErrors('grado')}" th:errors="*{grado}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Especialidad:</label>
-        <select th:field="*{especialidad}" required>
-            <option value="">Seleccione especialidad</option>
-            <option value="Kata">Kata</option>
-            <option value="Kumite">Kumite</option>
-            <option value="Defensa Personal">Defensa Personal</option>
-            <option value="Armas Tradicionales">Armas Tradicionales</option>
-            <option value="Técnicas Básicas">Técnicas Básicas</option>
-            <option value="Instructor General">Instructor General</option>
-        </select>
-        <span style="color:red;" th:if="${#fields.hasErrors('especialidad')}" th:errors="*{especialidad}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Fecha de Inicio:</label>
-        <input type="date" th:field="*{fechaInicio}" required>
-        <span style="color:red;" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Años de Experiencia:</label>
-        <input type="number" th:field="*{anosExperiencia}" min="0" max="100">
-        <span style="color:red;" th:if="${#fields.hasErrors('anosExperiencia')}" th:errors="*{anosExperiencia}"></span>
-    </div>
-
-    <br>
-
-    <div>
-        <label>Activo:</label>
-        <input type="checkbox" th:field="*{activo}">
-        <span style="color:red;" th:if="${#fields.hasErrors('activo')}" th:errors="*{activo}"></span>
-    </div>
-
-    <br>
-
-    <button type="submit">Guardar</button>
-    <a th:href="@{/instructores}">Volver</a>
-
-</form>
+</div>
 
 </body>
 </html>

@@ -1,39 +1,69 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Estudiante — Kenpo Talcahuano</title>
-    <link rel="stylesheet" th:href="@{/css/style-form-estudiante.css}">
+    <title th:text="${estudiante.id == null ? 'Nuevo Estudiante — Kenpo' : 'Editar Estudiante — Kenpo'}"></title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .main-container { max-width: 650px; margin: 0 auto; }
+        .breadcrumb { margin-bottom: 20px; }
+        .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+        .breadcrumb a:hover { color: #3b82f6; }
+        h2 { color: #1e293b; margin: 0 0 5px 0; }
+        h3 { color: #3b82f6; font-size: 1.1rem; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #3b82f6; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+
+        input[type="text"], input[type="date"], select { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; transition: border-color 0.2s, box-shadow 0.2s; background-color: white; }
+        input[type="text"]:focus, input[type="date"]:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+
+        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; margin: 25px 0; }
+        input[type="checkbox"] { width: 18px; height: 18px; accent-color: #3b82f6; cursor: pointer; }
+        .checkbox-label { font-weight: 500; color: #475569; cursor: pointer; }
+
+        .error-span { color: #b91c1c; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+        .btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-cancelar:hover { background-color: #cbd5e1; }
+        .btn-guardar { padding: 10px 20px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-guardar:hover { background-color: #1d4ed8; }
+    </style>
 </head>
 <body>
-<div class="main-container">
 
-    <h2>Kenpo International Talcahuano</h2>
-    <h3 th:text="${estudiante.id == null ? 'Nuevo Estudiante' : 'Editar Estudiante'}"></h3>
+<div class="main-container">
+    <div class="breadcrumb">
+        <a th:href="@{/estudiantes}">← Volver al listado</a>
+    </div>
+
+    <h2>Kenpo International</h2>
+    <h3 th:text="${estudiante.id == null ? 'Nuevo Registro de Estudiante' : 'Modificar Datos de Estudiante'}"></h3>
 
     <div class="form-card">
         <form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post">
-
             <input type="hidden" th:field="*{id}">
 
-            <div class="form-group">
+            <div class="form-group full-width">
                 <label for="nombres">Nombres</label>
-                <input type="text" id="nombres" th:field="*{nombres}" required placeholder="Ej: Juan">
-                <span style="color:#b91c1c;font-size:0.82rem"
-                      th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+                <input type="text" id="nombres" th:field="*{nombres}" required placeholder="Ej: Juan Andrés">
+                <span class="error-span" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="apellido1">Primer Apellido</label>
                     <input type="text" id="apellido1" th:field="*{apellido1}" required placeholder="Ej: Pérez">
-                    <span style="color:#b91c1c;font-size:0.82rem"
-                          th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+                    <span class="error-span" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
                 </div>
                 <div class="form-group">
                     <label for="apellido2">Segundo Apellido</label>
-                    <input type="text" id="apellido2" th:field="*{apellido2}" placeholder="Ej: González">
+                    <input type="text" id="apellido2" th:field="*{apellido2}" placeholder="Ej: Soto">
                 </div>
             </div>
 
@@ -41,54 +71,41 @@
                 <div class="form-group">
                     <label for="fechaNac">Fecha de Nacimiento</label>
                     <input type="date" id="fechaNac" th:field="*{fechaNac}" required>
-                    <span style="color:#b91c1c;font-size:0.82rem"
-                          th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
+                    <span class="error-span" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
                 </div>
                 <div class="form-group">
                     <label for="rut">RUT</label>
                     <input type="text" id="rut" th:field="*{rut}" required placeholder="Ej: 12345678-9">
-                    <span style="color:#b91c1c;font-size:0.82rem"
-                          th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
+                    <span class="error-span" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="grado">Grado</label>
-                <!-- Corregido: Mapeo explícito a grado.id para evitar errores de conversión -->
-                <select id="grado" th:field="*{grado.id}" required>
-                    <option value="">— Seleccionar —</option>
-                    <option th:each="g : ${grados}"
-                            th:value="${g.id}"
-                            th:text="|${g.nombre} (${g.kyuDan})|">
-                    </option>
-                </select>
-                <span style="color:#b91c1c;font-size:0.82rem"
-                      th:if="${#fields.hasErrors('grado')}" th:errors="*{grado}"></span>
-            </div>
 
-            <div class="form-group">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="grado">Grado Actual</label>
+                    <select id="grado" th:field="*{grado.id}" required>
+                        <option value="">— Seleccionar —</option>
+                        <option th:each="g : ${grados}" th:value="${g.id}" th:text="|${g.nombre} (${g.kyuDan})|"></option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="fechaAscenso">Fecha de Ascenso</label>
                     <input type="date" id="fechaAscenso" th:field="*{fechaAscenso}" required>
                 </div>
+            </div>
 
-
-            <div class="toggle-wrapper">
-                <label class="toggle-label">
-                    <input type="checkbox" th:field="*{activo}">
-                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                    Estudiante activo
-                </label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="activo" th:field="*{activo}">
+                <label for="activo" class="checkbox-label">Estudiante con matrícula activa en la academia</label>
             </div>
 
             <div class="form-actions">
                 <a th:href="@{/estudiantes}" class="btn-cancelar">Cancelar</a>
-                <button type="submit" class="btn-guardar"
-                        th:text="${estudiante.id == null ? 'Registrar Estudiante' : 'Guardar Cambios'}">
-                </button>
+                <button type="submit" class="btn-guardar">Guardar Estudiante</button>
             </div>
         </form>
     </div>
-
-
 </div>
+
 </body>
 </html>

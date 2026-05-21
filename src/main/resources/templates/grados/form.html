@@ -1,46 +1,73 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario Grado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${grado.id == null ? 'Nuevo Grado — Kenpo' : 'Editar Grado — Kenpo'}"></title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .main-container { max-width: 600px; margin: 0 auto; }
+        .breadcrumb { margin-bottom: 20px; }
+        .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+        .breadcrumb a:hover { color: #475569; }
+        h2 { color: #1e293b; margin: 0 0 5px 0; }
+        h3 { color: #64748b; font-size: 1.1rem; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #64748b; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+
+        input[type="text"] { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; transition: border-color 0.2s, box-shadow 0.2s; }
+        input[type="text"]:focus { outline: none; border-color: #64748b; box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.15); }
+
+        .error-span { color: #b91c1c; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+        .btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-cancelar:hover { background-color: #cbd5e1; }
+        .btn-guardar { padding: 10px 20px; background-color: #64748b; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-guardar:hover { background-color: #475569; }
+    </style>
 </head>
 <body>
 
-<h1 th:text="${grado.id == null ? 'Nuevo grado' : 'Editar grado'}"></h1>
-
-<form th:action="@{/grados/guardar}" th:object="${grado}" method="post">
-
-    <!-- Campo oculto para mantener el ID cuando se edita -->
-    <input type="hidden" th:field="*{id}">
-
-    <div>
-        <label>Nombre cinturón:</label>
-        <input type="text" th:field="*{nombre}">
-        <span style="color:red;" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+<div class="main-container">
+    <div class="breadcrumb">
+        <a th:href="@{/grados}">← Volver al listado</a>
     </div>
 
-    <br>
+    <h2>Escuela de Kenpo Internacional</h2>
+    <h3 th:text="${grado.id == null ? 'Registrar Nuevo Cinturón' : 'Modificar Parámetros de Grado'}"></h3>
 
-    <div>
-        <label>Descripción:</label>
-        <input type="text" th:field="*{descripcion}">
-        <span style="color:red;" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    <div class="form-card">
+        <form th:action="@{/grados/guardar}" th:object="${grado}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group">
+                <label for="nombre">Nombre del Cinturón</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej: Blanco, Amarillo, Naranja, Negro" required>
+                <span class="error-span" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción y Requisitos Técnicos</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" placeholder="Ej: Grado inicial o Requisito Kata Pinan Shodan">
+                <span class="error-span" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="kyuDan">Nivel Jerárquico (Kyu / Dan)</label>
+                <input type="text" id="kyuDan" th:field="*{kyuDan}" placeholder="Ej: 10° Kyu, 1° Dan" required>
+                <span class="error-span" th:if="${#fields.hasErrors('kyuDan')}" th:errors="*{kyuDan}"></span>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/grados}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">Guardar Grado</button>
+            </div>
+        </form>
     </div>
-
-    <br>
-
-    <div>
-        <label>Kyu / Dan:</label>
-        <input type="text" th:field="*{kyuDan}">
-        <span style="color:red;" th:if="${#fields.hasErrors('kyuDan')}" th:errors="*{kyuDan}"></span>
-    </div>
-
-    <br>
-
-    <button type="submit">Guardar</button>
-    <a th:href="@{/grados}">Volver</a>
-
-</form>
+</div>
 
 </body>
 </html>

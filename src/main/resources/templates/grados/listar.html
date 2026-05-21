@@ -1,53 +1,93 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Grados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Grados y Cinturones</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+
+        .btn-crear { padding: 10px 18px; background-color: #64748b; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+        .btn-crear:hover { background-color: #475569; }
+        .btn-inicio { padding: 10px 18px; background-color: white; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; border: 1px solid #cbd5e1; transition: all 0.2s; font-size: 0.95rem; }
+        .btn-inicio:hover { background-color: #f8fafc; border-color: #94a3b8; }
+
+        /* Mensajes de Alerta URL (Atrapa errores de integridad) */
+        .alert-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; padding: 12px 16px; border-radius: 8px; margin-bottom: 25px; font-weight: 500; font-size: 0.95rem; }
+
+        /* Tabla Estilizada */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        th { background-color: #1e293b; color: white; text-align: left; padding: 14px 18px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
+
+        .rank-badge { background-color: #e2e8f0; color: #334155; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; display: inline-block; border-left: 3px solid #64748b; }
+
+        /* Acciones */
+        .actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+        .link-editar { color: #3b82f6; margin-right: 12px; }
+        .link-editar:hover { color: #1d4ed8; text-decoration: underline; }
+        .link-eliminar { color: #ef4444; }
+        .link-eliminar:hover { color: #b91c1c; text-decoration: underline; }
+
+        .empty-msg { text-align: center; padding: 30px; background: white; border-radius: 10px; color: #64748b; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
 </head>
 <body>
 
-<h1>Listado de Grados / Cinturones</h1>
+<div class="container">
+    <div class="header-section">
+        <div>
+            <h1>Escala de Grados y Cinturones</h1>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+            <a th:href="@{/grados/nuevo}" class="btn-crear">🏆 Crear Grado</a>
+        </div>
+    </div>
 
-<p>
-    <a th:href="@{/grados/nuevo}">Crear nuevo grado</a>
+    <!-- Alerta dinámica si se intenta borrar un cinturón en uso -->
+    <div th:if="${param.error}" class="alert-danger">
+        ⚠️ <span th:text="${param.error}">Error de restricción</span>
+    </div>
 
-</p>
+    <table th:if="${not #lists.isEmpty(grados)}">
+        <thead>
+        <tr>
+            <th style="width: 80px;">ID</th>
+            <th style="width: 200px;">Nombre Cinturón</th>
+            <th>Descripción y Requisitos Técnicos</th>
+            <th style="width: 150px;">Clasificación</th>
+            <th style="width: 150px; text-align: center;">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="grado : ${grados}">
+            <td th:text="${grado.id}" style="font-weight: 600; color: #64748b;"></td>
+            <td th:text="${grado.nombre}" style="font-weight: 600; color: #1e293b;"></td>
+            <td th:text="${grado.descripcion != null and !#strings.isEmpty(grado.descripcion) ? grado.descripcion : 'Sin descripción cargada.'}"></td>
+            <td>
+                <span th:text="${grado.kyuDan}" class="rank-badge"></span>
+            </td>
+            <td class="actions-cell" style="text-align: center;">
+                <a th:href="@{/grados/editar/{id}(id=${grado.id})}" class="link-editar">Editar</a>
+                <a th:href="@{/grados/eliminar/{id}(id=${grado.id})}"
+                   class="link-eliminar"
+                   onclick="return confirm('¿Está seguro de eliminar este cinturón? Esta acción fallará si el grado está asignado a un miembro.')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Kyu / Dan</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="grado : ${grados}">
-        <td th:text="${grado.id}"></td>
-        <td th:text="${grado.nombre}"></td>
-        <td th:text="${grado.descripcion}"></td>
-        <td th:text="${grado.kyuDan}"></td>
-        <td>
-            <a th:href="@{/grados/editar/{id}(id=${grado.id})}">Editar</a>
-            |
-            <a th:href="@{/grados/eliminar/{id}(id=${grado.id})}"
-               onclick="return confirm('¿Desea eliminar este grado?')">
-                Eliminar
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p th:if="${#lists.isEmpty(grados)}">
-    No existen grados registrados.
-</p>
-<br>
-<br>
-<a th:href="@{/}">Volver al Inicio</a>
+    <div class="empty-msg" th:if="${#lists.isEmpty(grados)}">
+        ℹ️ No existen grados configurados en la escuela.
+    </div>
+</div>
 
 </body>
 </html>

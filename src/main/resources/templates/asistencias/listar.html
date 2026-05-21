@@ -1,45 +1,114 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Asistencias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Asistencias — Kenpo</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .main-container { max-width: 1100px; margin: 0 auto; }
+
+        .breadcrumb { margin-bottom: 20px; }
+        .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .breadcrumb a:hover { color: #8b5cf6; }
+
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+
+        .btn-crear { padding: 10px 20px; background-color: #8b5cf6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; border: none; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-crear:hover { background-color: #7c3aed; }
+
+        /* Tarjeta contenedora de la Tabla (Basada en la form-card) */
+        .table-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #8b5cf6; }
+
+        /* Diseño de la Tabla Moderna */
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; background-color: white; }
+        th { background-color: #f8fafc; color: #475569; text-align: left; padding: 14px 16px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
+
+        /* Detalles Estéticos de Celdas */
+        .id-text { font-weight: 600; color: #64748b; }
+        .student-text { font-weight: 600; color: #1e293b; }
+        .date-badge { background-color: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 0.9rem; color: #475569; border: 1px solid #e2e8f0; display: inline-block; }
+        .class-tag { background-color: #edf2f7; color: #2d3748; padding: 4px 8px; border-radius: 4px; font-weight: 500; font-size: 0.85rem; border-left: 3px solid #8b5cf6; }
+
+        /* Acciones */
+        .actions-cell { display: flex; gap: 10px; align-items: center; }
+        .actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; color: #3b82f6; }
+        .actions-cell a:hover { color: #1d4ed8; text-decoration: underline; }
+        .actions-cell .btn-delete { color: #ef4444; }
+        .actions-cell .btn-delete:hover { color: #b91c1c; }
+        .divider { color: #cbd5e1; }
+
+        /* Estado Vacío */
+        .empty-msg { text-align: center; padding: 40px; color: #64748b; font-size: 1rem; font-weight: 500; background-color: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; margin: 10px 0; }
+    </style>
 </head>
 <body>
-<h1>Registro de Asistencias Kenpo</h1>
-<p><a th:href="@{/asistencias/nuevo}">Registrar nueva asistencia</a></p>
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Fecha Clase</th>
-        <th>Estudiante</th>
-        <th>Instructor a Cargo</th> <!-- Nueva Columna -->
-        <th>Tipo de Clase</th>
-        <th>Fecha/Hora Registro</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="asistencia : ${listaAsistencias}">
-        <td th:text="${asistencia.id}"></td>
-        <td th:text="${asistencia.fechaClase}"></td>
-        <td th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|"></td>
-        <!-- Muestra los datos heredados del Instructor a través de Persona -->
-        <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|"></td>
-        <td th:text="${asistencia.clase.tipoClase}"></td>
-        <td th:text="${asistencia.registro}"></td>
-        <td>
-            <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">Editar</a> |
-            <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}" onclick="return confirm('¿Eliminar registro?')">Eliminar</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<p th:if="${#lists.isEmpty(listaAsistencias)}">No hay registros de asistencia en la base de datos.</p>
-<br>
-<br>
-<a th:href="@{/}">Volver al Inicio</a>
+<div class="main-container">
+
+    <!-- Enlace superior de navegación -->
+    <div class="breadcrumb">
+        <a th:href="@{/}">← Volver al Inicio</a>
+    </div>
+
+    <!-- Sección de título y acción principal -->
+    <div class="header-section">
+        <h1>Registro de Asistencias Kenpo</h1>
+        <a th:href="@{/asistencias/nuevo}" class="btn-crear">📝 Registrar nueva asistencia</a>
+    </div>
+
+    <!-- Contenedor tipo Tarjeta -->
+    <div class="table-card">
+
+        <!-- Tabla Operativa con tus propiedades exactas de Java -->
+        <table th:if="${not #lists.isEmpty(listaAsistencias)}">
+            <thead>
+            <tr>
+                <th style="width: 70px;">ID</th>
+                <th style="width: 130px;">Fecha Clase</th>
+                <th>Estudiante</th>
+                <th>Instructor a Cargo</th>
+                <th style="width: 160px;">Tipo de Clase</th>
+                <th style="width: 180px;">Fecha/Hora Registro</th>
+                <th style="width: 140px;">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="asistencia : ${listaAsistencias}">
+                <td th:text="${asistencia.id}" class="id-text"></td>
+                <td>
+                    <span th:text="${asistencia.fechaClase}" class="date-badge"></span>
+                </td>
+                <td th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|" class="student-text"></td>
+                <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|" style="color: #475569;"></td>
+                <td>
+                    <span th:text="${asistencia.clase.tipoClase}" class="class-tag"></span>
+                </td>
+                <td th:text="${asistencia.registro}" style="color: #64748b; font-size: 0.9rem;"></td>
+                <td>
+                    <div class="actions-cell">
+                        <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}">Editar</a>
+                        <span class="divider">|</span>
+                        <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
+                           class="btn-delete"
+                           onclick="return confirm('¿Eliminar registro?')">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Mensaje de aviso si no hay asistencias cargadas en tu BD -->
+        <div class="empty-msg" th:if="${#lists.isEmpty(listaAsistencias)}">
+            ℹ️ No hay registros de asistencia en la base de datos de la academia.
+        </div>
+
+    </div>
+</div>
 
 </body>
 </html>

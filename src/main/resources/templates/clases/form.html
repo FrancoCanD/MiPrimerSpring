@@ -1,46 +1,76 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario Clase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${clase.id == null ? 'Nueva Clase — Kenpo' : 'Editar Clase — Kenpo'}"></title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .main-container { max-width: 600px; margin: 0 auto; }
+        .breadcrumb { margin-bottom: 20px; }
+        .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+        .breadcrumb a:hover { color: #f59e0b; }
+        h2 { color: #1e293b; margin: 0 0 5px 0; }
+        h3 { color: #f59e0b; font-size: 1.1rem; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #f59e0b; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+
+        input[type="text"] { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; transition: border-color 0.2s, box-shadow 0.2s; }
+        input[type="text"]:focus { outline: none; border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+
+        .checkbox-wrapper { display: flex; align-items: center; gap: 10px; margin: 25px 0; }
+        input[type="checkbox"] { width: 18px; height: 18px; accent-color: #f59e0b; cursor: pointer; }
+        .checkbox-label { font-weight: 500; color: #475569; cursor: pointer; }
+
+        .error-span { color: #b91c1c; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+        .btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-cancelar:hover { background-color: #cbd5e1; }
+        .btn-guardar { padding: 10px 20px; background-color: #f59e0b; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+        .btn-guardar:hover { background-color: #d97706; }
+    </style>
 </head>
 <body>
 
-<h1 th:text="${clase.id == null ? 'Nueva Clase' : 'Editar clase'}"></h1>
-
-<form th:action="@{/clases/guardar}" th:object="${clase}" method="post">
-
-    <!-- Campo oculto para mantener el ID cuando se edita -->
-    <input type="hidden" th:field="*{id}">
-
-    <div>
-        <label>Tipo de Clase:</label>
-        <input type="text" th:field="*{tipoClase}">
-        <span style="color:red;" th:if="${#fields.hasErrors('tipoClase')}" th:errors="*{tipoClase}"></span>
+<div class="main-container">
+    <div class="breadcrumb">
+        <a th:href="@{/clases}">← Volver al listado</a>
     </div>
 
-    <br>
+    <h2>Escuela de Kenpo Internacional</h2>
+    <h3 th:text="${clase.id == null ? 'Nueva Clase Técnica' : 'Modificar Parámetros de Clase'}"></h3>
 
-    <div>
-        <label>Descripción:</label>
-        <input type="text" th:field="*{descripcion}">
-        <span style="color:red;" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    <div class="form-card">
+        <form th:action="@{/clases/guardar}" th:object="${clase}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group">
+                <label for="tipoClase">Tipo de Clase</label>
+                <input type="text" id="tipoClase" th:field="*{tipoClase}" placeholder="Ej: Sparring, Kata, Defensa Personal" required>
+                <span class="error-span" th:if="${#fields.hasErrors('tipoClase')}" th:errors="*{tipoClase}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción del Bloque Técnico</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" placeholder="Ej: Combate controlado o técnicas de puño" required>
+                <span class="error-span" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="estado" th:field="*{estado}">
+                <label for="estado" class="checkbox-label">Habilitar clase para registro de asistencia</label>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/clases}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">Guardar Clase</button>
+            </div>
+        </form>
     </div>
-
-    <br>
-
-    <div>
-        <label>Estado</label>
-        <input type="checkbox" th:field="*{estado}">
-        <span style="color:red;" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
-    </div>
-
-    <br>
-
-    <button type="submit">Guardar</button>
-    <a th:href="@{/clases}">Volver</a>
-
-</form>
+</div>
 
 </body>
 </html>

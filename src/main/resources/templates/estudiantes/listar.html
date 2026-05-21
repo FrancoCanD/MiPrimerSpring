@@ -1,61 +1,89 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Estudiantes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Estudiantes — Kenpo</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+
+        .btn-crear { padding: 10px 18px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+        .btn-crear:hover { background-color: #1d4ed8; }
+        .btn-inicio { padding: 10px 18px; background-color: white; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; border: 1px solid #cbd5e1; transition: all 0.2s; font-size: 0.95rem; }
+        .btn-inicio:hover { background-color: #f8fafc; border-color: #94a3b8; }
+
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        th { background-color: #1e293b; color: white; text-align: left; padding: 14px 18px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
+
+        .badge { padding: 4px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+        .badge-activa { background-color: #d1fae5; color: #065f46; }
+        .badge-inactiva { background-color: #fee2e2; color: #991b1b; }
+
+        .actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+        .link-editar { color: #3b82f6; margin-right: 12px; }
+        .link-editar:hover { color: #1d4ed8; text-decoration: underline; }
+        .link-eliminar { color: #ef4444; }
+        .link-eliminar:hover { color: #b91c1c; text-decoration: underline; }
+
+        .empty-msg { text-align: center; padding: 30px; background: white; border-radius: 10px; color: #64748b; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
 </head>
 <body>
 
-<h1>Listado de Estudiantes</h1>
+<div class="container">
+    <div class="header-section">
+        <h1>Alumnos Registrados</h1>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+            <a th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
+        </div>
+    </div>
 
-<p>
-    <a th:href="@{/estudiantes/nuevo}">Crear nuevo estudiante</a>
-</p>
+    <table th:if="${not #lists.isEmpty(estudiantes)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>RUT</th>
+            <th>Grado Kenpo</th>
+            <th>Último Ascenso</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estudiante : ${estudiantes}">
+            <td th:text="${estudiante.id}" style="font-weight:600; color:#64748b;"></td>
+            <td th:text="${estudiante.nombres}" style="font-weight:600; color:#1e293b;"></td>
+            <td th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
+            <td th:text="${estudiante.rut}"></td>
+            <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin Grado'}"></td>
+            <td th:text="${estudiante.fechaAscenso}"></td>
+            <td>
+                <span th:class="${estudiante.activo} ? 'badge badge-activa' : 'badge badge-inactiva'"
+                      th:text="${estudiante.activo} ? 'Activo' : 'Inactivo'">
+                </span>
+            </td>
+            <td class="actions-cell">
+                <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}" class="link-editar">Editar</a>
+                <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}" class="link-eliminar" onclick="return confirm('¿Eliminar matrícula de este estudiante?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Fecha Nacimiento</th>
-        <th>Rut</th>
-        <th>Grado</th>
-        <th>Fecha Ascenso</th>
-        <th>Activo</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="estudiante : ${estudiantes}">
-        <td th:text="${estudiante.id}"></td>
-        <td th:text="${estudiante.nombres}"></td>
-        <td th:text="|${estudiante.apellido1} ${estudiante.apellido2}|"></td>
-        <td th:text="${estudiante.fechaNac}"></td>
-        <td th:text="${estudiante.rut}"></td>
-        <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin grado'}"></td>
-        <td th:text="${estudiante.fechaAscenso}"></td>
-        <td th:text="${estudiante.activo}"></td>
-        <td>
-            <!-- ✅ URL corregida: /estudiantes/editar (faltaba la 's') -->
-            <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}">Editar</a>
-            |
-            <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
-               onclick="return confirm('¿Desea eliminar este estudiante?')">
-                Eliminar
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p th:if="${#lists.isEmpty(estudiantes)}">
-    No existen estudiantes registrados.
-</p>
-<br>
-<br>
-<a th:href="@{/}">Volver al Inicio</a>
+    <div class="empty-msg" th:if="${#lists.isEmpty(estudiantes)}">
+        ℹ️ No existen alumnos registrados en el sistema de la academia.
+    </div>
+</div>
 
 </body>
 </html>
