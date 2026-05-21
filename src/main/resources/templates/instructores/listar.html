@@ -2,63 +2,86 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Instructores</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructores — Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/style-instructores.css}">
 </head>
 <body>
+<div class="main-container">
 
-<h1>Listado de Instructores</h1>
+    <div class="page-header">
+        <div>
+            <span class="page-header__eyebrow">Sistema de Gestión</span>
+            <h1 class="page-header__title">Instructores</h1>
+        </div>
+        <div class="page-header__actions">
+            <a th:href="@{/instructores/nuevo}" class="btn-principal">+ Nuevo Instructor</a>
+            <a th:href="@{/}" class="btn-link">← Inicio</a>
+        </div>
+    </div>
 
-<p>
-    <a th:href="@{/instructores/nuevo}">Crear nuevo instructor</a>
-</p>
+    <div th:if="${exito}" class="alert alert-success">&#10003; <span th:text="${exito}"></span></div>
+    <div th:if="${error}"  class="alert alert-error">&#9888; <span th:text="${error}"></span></div>
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Fecha Nacimiento</th>
-        <th>Rut</th>
-        <th>Grado</th>
-        <th>Especialidad</th>
-        <th>Fecha Inicio</th>
-        <th>Años Experiencia</th>
-        <th>Activo</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
+    <div th:if="${#lists.isEmpty(instructores)}" class="empty-state">
+        <p style="font-size:1.05rem;font-weight:600;color:#374151;margin-bottom:.5rem">No hay instructores registrados</p>
+        <p style="font-size:.9rem;color:#9ca3af;margin-bottom:1.25rem">Comienza agregando el primer instructor.</p>
+        <a th:href="@{/instructores/nuevo}" class="btn-principal">Agregar Instructor</a>
+    </div>
 
-    <tbody>
-    <tr th:each="instructor : ${instructores}">
-        <td th:text="${instructor.id}"></td>
-        <td th:text="${instructor.nombres}"></td>
-        <td th:text="|${instructor.apellido1} ${instructor.apellido2}|"></td>
-        <td th:text="${instructor.fechaNac}"></td>
-        <td th:text="${instructor.rut}"></td>
-        <td th:text="${instructor.grado.nombre}"></td>
-        <td th:text="${instructor.especialidad}"></td>
-        <td th:text="${instructor.fechaInicio}"></td>
-        <td th:text="${instructor.anosExperiencia}"></td>
-        <td th:text="${instructor.activo ? 'Sí' : 'No'}"></td>
-        <td>
-            <a th:href="@{/instructores/editar/{id}(id=${instructor.id})}">Editar</a>
-            |
-            <a th:href="@{/instructores/eliminar/{id}(id=${instructor.id})}"
-               onclick="return confirm('¿Desea eliminar este instructor?')">
-                Eliminar
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <div class="tabla-bordeada" th:if="${not #lists.isEmpty(instructores)}">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Instructor</th>
+                <th>RUT</th>
+                <th>Grado</th>
+                <th>Especialidad</th>
+                <th>Exp.</th>
+                <th>Inicio</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="inst : ${instructores}">
+                <td><span class="mono" th:text="${inst.id}"></span></td>
+                <td>
+                    <div class="instructor-cell">
+                        <span class="avatar" th:text="${#strings.substring(inst.nombres,0,1)}"></span>
+                        <div>
+                            <div class="instructor-name" th:text="|${inst.nombres} ${inst.apellido1}|"></div>
+                            <div class="instructor-rut" th:text="${inst.apellido2 ?: ''}"></div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="mono" th:text="${inst.rut}"></span></td>
+                <td><span class="badge badge-grado" th:text="${inst.grado.nombre}"></span></td>
+                <td><span class="badge badge-espec" th:text="${inst.especialidad}"></span></td>
+                <td th:text="${inst.anosExperiencia != null ? inst.anosExperiencia + ' años' : '—'}"></td>
+                <td><span class="mono" th:text="${#temporals.format(inst.fechaInicio,'dd/MM/yyyy')}"></span></td>
+                <td>
+                    <span class="badge badge-activo"   th:if="${inst.activo}">Activo</span>
+                    <span class="badge badge-inactivo" th:unless="${inst.activo}">Inactivo</span>
+                </td>
+                <td>
+                    <div class="acciones">
+                        <a th:href="@{/instructores/editar/{id}(id=${inst.id})}" class="btn-editar">Editar</a>
+                        <a th:href="@{/instructores/eliminar/{id}(id=${inst.id})}"
+                           class="btn-eliminar"
+                           onclick="return confirm('¿Eliminar este instructor?')">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-<p th:if="${#lists.isEmpty(instructores)}">
-    No existen instructores registrados.
-</p>
-<br>
-<br>
-<a th:href="@{/}">Volver al Inicio</a>
-
+    <div class="controles" th:if="${not #lists.isEmpty(instructores)}">
+        <span class="total-registros">Total: <strong th:text="${#lists.size(instructores)}"></strong></span>
+        <a th:href="@{/instructores/nuevo}" class="btn-principal">+ Nuevo Instructor</a>
+    </div>
+</div>
 </body>
 </html>
