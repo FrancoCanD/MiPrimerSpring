@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 1. DECLARACIÓN DEL FRAGMENTO DE ESTILOS GLOBALES -->
+    <th:block th:fragment="estilos-globales">
+        <link rel="stylesheet" th:href="@{/assets/style-index.css}">
+    </th:block>
+
+</head>
+<body>
+
+<!-- Definición del fragmento del pie de página (Mantenlo igual) -->
+<footer th:fragment="pie-pagina" class="main-footer">
+    <div class="container">
+        <p class="footer-text font-bold">Desarrollo de aplicaciones web Full Stack Java</p>
+        <p class="footer-text">Venturelli, Yáñez, Cancino, Ibáñez, Fernández, Riquelme, Peña, Torres.</p>
+        <p class="footer-copyright">&copy; <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}"></span> - Escuela de Kenpo. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+</body>
+</html>

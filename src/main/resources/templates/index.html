@@ -4,25 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control — Kenpo Talcahuano</title>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { color: #1e293b; text-align: center; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #64748b; font-size: 1.1rem; margin-bottom: 40px; }
+    <link rel="stylesheet" th:href="@{/assets/style-index.css}">
 
-        /* Grid de estadísticas */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 200px; gap: 20px; margin-bottom: 40px; }
-        .card-stat { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid #3b82f6; }
-        .card-stat h3 { margin: 0 0 10px 0; color: #64748b; font-size: 0.9rem; text-transform: uppercase; }
-        .card-stat p { margin: 0; font-size: 2rem; font-weight: bold; color: #1e293b; }
-
-        /* Grid de accesos */
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .menu-item { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #e2e8f0; }
-        .menu-item:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #3b82f6; }
-        .menu-item h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
-        .menu-item p { margin: 0; color: #64748b; font-size: 0.95rem; line-height: 1.4; }
-    </style>
 </head>
 <body>
 
@@ -68,7 +51,7 @@
         </a>
 
         <a th:href="@{/clases}" class="menu-item">
-            <h2>⏱️ Clases Impartidas</h2>
+            <h2>⏱️ Configuración de Clases Impartidas</h2>
             <p>Administración de bloques horarios y tipologías de entrenamiento (Kata, Sparring, Técnica).</p>
         </a>
 
@@ -78,6 +61,8 @@
         </a>
     </div>
 </div>
-
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>
