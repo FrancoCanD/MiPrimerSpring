@@ -2,46 +2,52 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario Grado</title>
-    <link rel="stylesheet" th:href="@{/css/style-form-grados.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${grado.id == null ? 'Nuevo Grado — Kenpo' : 'Editar Grado — Kenpo'}"></title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+
 </head>
 <body>
 
-<h1 th:text="${grado.id == null ? 'Nuevo grado' : 'Editar grado'}"></h1>
-
-<form th:action="@{/grados/guardar}" th:object="${grado}" method="post">
-
-    <!-- Campo oculto para mantener el ID cuando se edita -->
-    <input type="hidden" th:field="*{id}">
-
-    <div>
-        <label>Nombre cinturón:</label>
-        <input type="text" th:field="*{nombre}">
-        <span style="color:red;" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+<div class="main-container">
+    <div class="breadcrumb">
+        <a th:href="@{/grados}">← Volver al listado</a>
     </div>
 
-    <br>
+    <h2>Escuela de Kenpo Internacional</h2>
+    <h3 th:text="${grado.id == null ? 'Registrar Nuevo Cinturón' : 'Modificar Parámetros de Grado'}"></h3>
 
-    <div>
-        <label>Descripción:</label>
-        <input type="text" th:field="*{descripcion}">
-        <span style="color:red;" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    <div class="form-card">
+        <form th:action="@{/grados/guardar}" th:object="${grado}" method="post" class="form-box">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="form-group">
+                <label for="nombre">Nombre del Cinturón</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej: Blanco, Amarillo, Naranja, Negro" required>
+                <span class="error-span" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción y Requisitos Técnicos</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" placeholder="Ej: Grado inicial o Requisito Kata Pinan Shodan">
+                <span class="error-span" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="kyuDan">Nivel Jerárquico (Kyu / Dan)</label>
+                <input type="text" id="kyuDan" th:field="*{kyuDan}" placeholder="Ej: 10° Kyu, 1° Dan" required>
+                <span class="error-span" th:if="${#fields.hasErrors('kyuDan')}" th:errors="*{kyuDan}"></span>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/grados}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">Guardar Grado</button>
+            </div>
+        </form>
     </div>
-
-    <br>
-
-    <div>
-        <label>Kyu / Dan:</label>
-        <input type="text" th:field="*{kyuDan}">
-        <span style="color:red;" th:if="${#fields.hasErrors('kyuDan')}" th:errors="*{kyuDan}"></span>
-    </div>
-
-    <br>
-
-    <button type="submit">Guardar</button>
-    <a th:href="@{/grados}">Volver</a>
-
-</form>
-
+</div>
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

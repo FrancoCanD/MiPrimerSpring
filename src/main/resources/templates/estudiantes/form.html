@@ -3,37 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Estudiante — Kenpo Talcahuano</title>
-    <link rel="stylesheet" th:href="@{/css/style-form-estudiante.css}">
+    <title th:text="${estudiante.id == null ? 'Nuevo Estudiante — Kenpo' : 'Editar Estudiante — Kenpo'}"></title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+
 </head>
 <body>
-<div class="main-container">
 
-    <h2>Kenpo International Talcahuano</h2>
-    <h3 th:text="${estudiante.id == null ? 'Nuevo Estudiante' : 'Editar Estudiante'}"></h3>
+<div class="main-container">
+    <div class="breadcrumb">
+        <a th:href="@{/estudiantes}">← Volver al listado</a>
+    </div>
+
+    <h2>Kenpo International</h2>
+    <h3 th:text="${estudiante.id == null ? 'Nuevo Registro de Estudiante' : 'Modificar Datos de Estudiante'}"></h3>
 
     <div class="form-card">
-        <form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post">
-
+        <form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post" class="form-box">
             <input type="hidden" th:field="*{id}">
 
-            <div class="form-group">
+            <div class="form-group full-width">
                 <label for="nombres">Nombres</label>
-                <input type="text" id="nombres" th:field="*{nombres}" required placeholder="Ej: Juan">
-                <span style="color:#b91c1c;font-size:0.82rem"
-                      th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
+                <input type="text" id="nombres" th:field="*{nombres}" required placeholder="Ej: Juan Andrés">
+                <span class="error-span" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="apellido1">Primer Apellido</label>
                     <input type="text" id="apellido1" th:field="*{apellido1}" required placeholder="Ej: Pérez">
-                    <span style="color:#b91c1c;font-size:0.82rem"
-                          th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+                    <span class="error-span" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
                 </div>
                 <div class="form-group">
                     <label for="apellido2">Segundo Apellido</label>
-                    <input type="text" id="apellido2" th:field="*{apellido2}" placeholder="Ej: González">
+                    <input type="text" id="apellido2" th:field="*{apellido2}" placeholder="Ej: Soto">
                 </div>
             </div>
 
@@ -41,54 +43,43 @@
                 <div class="form-group">
                     <label for="fechaNac">Fecha de Nacimiento</label>
                     <input type="date" id="fechaNac" th:field="*{fechaNac}" required>
-                    <span style="color:#b91c1c;font-size:0.82rem"
-                          th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
+                    <span class="error-span" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
                 </div>
                 <div class="form-group">
                     <label for="rut">RUT</label>
                     <input type="text" id="rut" th:field="*{rut}" required placeholder="Ej: 12345678-9">
-                    <span style="color:#b91c1c;font-size:0.82rem"
-                          th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
+                    <span class="error-span" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="grado">Grado</label>
-                <!-- Corregido: Mapeo explícito a grado.id para evitar errores de conversión -->
-                <select id="grado" th:field="*{grado.id}" required>
-                    <option value="">— Seleccionar —</option>
-                    <option th:each="g : ${grados}"
-                            th:value="${g.id}"
-                            th:text="|${g.nombre} (${g.kyuDan})|">
-                    </option>
-                </select>
-                <span style="color:#b91c1c;font-size:0.82rem"
-                      th:if="${#fields.hasErrors('grado')}" th:errors="*{grado}"></span>
-            </div>
 
-            <div class="form-group">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="grado">Grado Actual</label>
+                    <select id="grado" th:field="*{grado.id}" required>
+                        <option value="">— Seleccionar —</option>
+                        <option th:each="g : ${grados}" th:value="${g.id}" th:text="|${g.nombre} (${g.kyuDan})|"></option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="fechaAscenso">Fecha de Ascenso</label>
                     <input type="date" id="fechaAscenso" th:field="*{fechaAscenso}" required>
                 </div>
+            </div>
 
-
-            <div class="toggle-wrapper">
-                <label class="toggle-label">
-                    <input type="checkbox" th:field="*{activo}">
-                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                    Estudiante activo
-                </label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="activo" th:field="*{activo}">
+                <label for="activo" class="checkbox-label">Estudiante con matrícula activa en la academia</label>
             </div>
 
             <div class="form-actions">
                 <a th:href="@{/estudiantes}" class="btn-cancelar">Cancelar</a>
-                <button type="submit" class="btn-guardar"
-                        th:text="${estudiante.id == null ? 'Registrar Estudiante' : 'Guardar Cambios'}">
-                </button>
+                <button type="submit" class="btn-guardar">Guardar Estudiante</button>
             </div>
         </form>
     </div>
-
-
 </div>
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

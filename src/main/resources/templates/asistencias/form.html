@@ -24,7 +24,7 @@
             <br><small>Puedes ajustarlo si necesitas corregir la hora.</small>
         </div>
 
-        <form th:action="@{/asistencias/guardar}" method="post" id="formAsistencia">
+        <form th:action="@{/asistencias/guardar}" method="post" id="formAsistencia" class="form-box">
             <input type="hidden" name="id" th:value="${asistencia.id}" />
 
             <div class="form-group">

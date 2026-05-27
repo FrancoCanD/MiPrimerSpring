@@ -17,7 +17,7 @@
     <h3 th:text="${instructor.id == null} ? 'Nuevo Instructor' : 'Editar Instructor #' + ${instructor.id}">Formulario</h3>
 
     <div class="form-card">
-        <form th:action="@{/instructores/guardar}" th:object="${instructor}" method="post">
+        <form th:action="@{/instructores/guardar}" th:object="${instructor}" method="post" class="form-box">
             <input type="hidden" th:field="*{id}">
 
             <div class="form-row">
