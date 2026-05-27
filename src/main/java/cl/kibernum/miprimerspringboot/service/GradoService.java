@@ -1,6 +1,8 @@
 package cl.kibernum.miprimerspringboot.service;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Grado;
+import cl.kibernum.miprimerspringboot.dto.request.GradoRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +37,11 @@ public interface GradoService {
      * @param id del grado a borrar
      */
    void borrarGrado(Integer id);
+
+   List<GradoResponseDto> listarGradosApi();
+   GradoResponseDto crearGradoApi(GradoRequestDto gradoRequestDto);
+   GradoResponseDto gradoPorIdApi(Integer id);
+   GradoResponseDto actualizarGradoApi(GradoRequestDto gradoRequestDto, Integer id);
+   void borrarGradoApi(Integer id);
+
 }

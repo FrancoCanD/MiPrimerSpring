@@ -1,11 +1,15 @@
 package cl.kibernum.miprimerspringboot.service.serviceimpl;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Grado;
+import cl.kibernum.miprimerspringboot.dto.request.GradoRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
+import cl.kibernum.miprimerspringboot.mapper.GradoMapper;
 import cl.kibernum.miprimerspringboot.repository.GradoRepository;
 import cl.kibernum.miprimerspringboot.service.GradoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,8 @@ public class GradoServiceImpl implements GradoService {
      */
     @Autowired
     private GradoRepository gradoRepository;
+    @Autowired
+    private GradoMapper gradoMapper;
 
     /**
      * Implementación de Lista todos los grados
@@ -55,6 +61,42 @@ public class GradoServiceImpl implements GradoService {
      */
     @Override
     public void borrarGrado(Integer id) {
+        gradoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<GradoResponseDto> listarGradosApi() {
+        List<GradoResponseDto> listaGradoResponseDto = new ArrayList<>();
+        listaGradoResponseDto = gradoRepository.findAll()
+                                    .stream()
+                                    .map(gradoMapper::gradoToGradoResponseDto)
+                                    .toList();
+        return listaGradoResponseDto;
+    }
+
+    @Override
+    public GradoResponseDto crearGradoApi(GradoRequestDto gradoRequestDto) {
+        Grado grado = gradoMapper.gradoDtoToEntity(gradoRequestDto);
+        gradoRepository.save(grado);
+        return gradoMapper.gradoToGradoResponseDto(grado);
+    }
+
+    @Override
+    public GradoResponseDto gradoPorIdApi(Integer id) {
+        Grado grado = gradoRepository.findById(id).orElseThrow(()-> new RuntimeException("Grado no encontrado"));
+        return gradoMapper.gradoToGradoResponseDto(grado);
+    }
+
+    @Override
+    public GradoResponseDto actualizarGradoApi(GradoRequestDto gradoRequestDto, Integer id) {
+        Grado grado = gradoRepository.findById(id).orElseThrow(()-> new RuntimeException("Grado no encontrado"));
+        gradoMapper.updateGradoEntity(gradoRequestDto, grado);
+        grado = gradoRepository.save(grado);
+        return gradoMapper.gradoToGradoResponseDto(grado);
+    }
+
+    @Override
+    public void borrarGradoApi(Integer id) {
         gradoRepository.deleteById(id);
     }
 }
