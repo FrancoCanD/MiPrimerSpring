@@ -2,53 +2,63 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Grados</title>
-    <link rel="stylesheet" th:href="@{/css/style-grados.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Grados y Cinturones</title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+
 </head>
 <body>
 
-<h1>Listado de Grados / Cinturones</h1>
+<div class="container">
+    <div class="header-section">
+        <div>
+            <h1>Escala de Grados y Cinturones</h1>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+            <a th:href="@{/grados/nuevo}" class="btn-crear">🏆 Crear Grado</a>
+        </div>
+    </div>
 
-<p>
-    <a th:href="@{/grados/nuevo}">Crear nuevo grado</a>
+    <!-- Alerta dinámica si se intenta borrar un cinturón en uso -->
+    <div th:if="${param.error}" class="alert-danger">
+        ⚠️ <span th:text="${param.error}">Error de restricción</span>
+    </div>
 
-</p>
+    <table th:if="${not #lists.isEmpty(grados)}">
+        <thead>
+        <tr>
+            <th style="width: 80px;">ID</th>
+            <th style="width: 200px;">Nombre Cinturón</th>
+            <th>Descripción y Requisitos Técnicos</th>
+            <th style="width: 150px;">Clasificación</th>
+            <th style="width: 150px; text-align: center;">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="grado : ${grados}">
+            <td th:text="${grado.id}" style="font-weight: 600; color: #64748b;"></td>
+            <td th:text="${grado.nombre}" style="font-weight: 600; color: #1e293b;"></td>
+            <td th:text="${grado.descripcion != null and !#strings.isEmpty(grado.descripcion) ? grado.descripcion : 'Sin descripción cargada.'}"></td>
+            <td>
+                <span th:text="${grado.kyuDan}" class="rank-badge"></span>
+            </td>
+            <td class="actions-cell" style="text-align: center;">
+                <a th:href="@{/grados/editar/{id}(id=${grado.id})}" class="link-editar">Editar</a>
+                <a th:href="@{/grados/eliminar/{id}(id=${grado.id})}"
+                   class="link-eliminar"
+                   onclick="return confirm('¿Está seguro de eliminar este cinturón? Esta acción fallará si el grado está asignado a un miembro.')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Kyu / Dan</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="grado : ${grados}">
-        <td th:text="${grado.id}"></td>
-        <td th:text="${grado.nombre}"></td>
-        <td th:text="${grado.descripcion}"></td>
-        <td th:text="${grado.kyuDan}"></td>
-        <td>
-            <a th:href="@{/grados/editar/{id}(id=${grado.id})}">Editar</a>
-            |
-            <a th:href="@{/grados/eliminar/{id}(id=${grado.id})}"
-               onclick="return confirm('¿Desea eliminar este grado?')">
-                Eliminar
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p th:if="${#lists.isEmpty(grados)}">
-    No existen grados registrados.
-</p>
+    <div class="empty-msg" th:if="${#lists.isEmpty(grados)}">
+        ℹ️ No existen grados configurados en la escuela.
+    </div>
+</div>
 <br>
 <br>
-<a th:href="@{/}">Volver al Inicio</a>
-
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

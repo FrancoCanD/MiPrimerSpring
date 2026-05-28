@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${asistencia.id == null} ? 'Nueva Asistencia' : 'Editar Asistencia'">Asistencia</title>
-    <link rel="stylesheet" th:href="@{/css/style-form-asistencia.css}">
+    <title th:text="${asistencia.id == null} ? 'Nueva Asistencia — Kenpo' : 'Editar Asistencia — Kenpo'"></title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
 </head>
 <body>
-<div class="main-container">
 
+<div class="main-container">
     <div class="breadcrumb">
-        <a th:href="@{/asistencias}" class="breadcrumb__link">← Volver al listado</a>
+        <a th:href="@{/asistencias/listar}">← Volver al listado</a>
     </div>
 
     <h2>Módulo de Asistencias</h2>
-    <h3 th:text="${asistencia.id == null} ? 'Registrar Nueva Asistencia' : 'Modificar Asistencia #' + ${asistencia.id}">Formulario</h3>
+    <h3 th:text="${asistencia.id == null} ? 'Registrar Nueva Asistencia' : 'Modificar Asistencia #' + ${asistencia.id}"></h3>
+
+    <div th:if="${error}" class="alert alert-error">❌ <span th:text="${error}"></span></div>
 
     <div class="form-card">
-
         <div class="info-registro" th:if="${asistencia.id == null}">
-            <strong>&#8505;&#65039; Registro automático</strong><br>
-            El campo Fecha/Hora de Registro se autocompleta con la hora actual.
-            <br><small>Puedes ajustarlo si necesitas corregir la hora.</small>
+            <strong>ℹ️ Control de bitácora</strong><br>
+            Vincule el alumno al bloque técnico correspondiente y asigne el instructor responsable de la clase.
         </div>
 
         <form th:action="@{/asistencias/guardar}" method="post" id="formAsistencia" class="form-box">
@@ -57,7 +57,7 @@
                     <option value="">— Seleccione una clase —</option>
                     <option th:each="cl : ${listaClases}"
                             th:value="${cl.id}"
-                            th:text="|${cl.tipoClase} (ID: ${cl.id})|"
+                            th:text="|${cl.tipoClase} — Cód: ${cl.id}|"
                             th:selected="${asistencia.clase != null and asistencia.clase.id == cl.id}">
                     </option>
                 </select>
@@ -65,22 +65,17 @@
 
             <div class="form-group">
                 <label for="fechaClase">Fecha de la Clase <span class="required">*</span></label>
-                <input type="date" name="fechaClase" id="fechaClase"
-                       th:value="${asistencia.fechaClase}" required />
+                <input type="date" name="fechaClase" id="fechaClase" th:value="${asistencia.fechaClase}" required />
             </div>
 
             <div class="form-group">
                 <label for="registro">Fecha / Hora de Registro <span class="required">*</span></label>
-                <input type="datetime-local" name="registro" id="registro"
-                       th:value="${asistencia.registro}" required />
+                <input type="datetime-local" name="registro" id="registro" th:value="${asistencia.registro}" required />
             </div>
 
             <div class="form-actions">
-                <a th:href="@{/asistencias}" class="btn-cancelar">Cancelar</a>
-                <button type="submit" class="btn-guardar"
-                        th:text="${asistencia.id == null} ? 'Registrar Asistencia' : 'Guardar Cambios'">
-                    Guardar
-                </button>
+                <a th:href="@{/asistencias/listar}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">Guardar Registro</button>
             </div>
         </form>
     </div>
@@ -92,10 +87,12 @@
         if (regInput && !regInput.value) {
             const now = new Date();
             const pad = n => String(n).padStart(2, '0');
-            regInput.value = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate())
-                           + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+            regInput.value = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
         }
     });
 </script>
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

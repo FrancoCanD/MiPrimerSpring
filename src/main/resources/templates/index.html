@@ -4,258 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control — Kenpo Talcahuano</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style-index.css}">
-    <style>
-        /* ── Reset & base ── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'DM Sans', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f2d57 0%, #1a4a8a 50%, #0e6ba8 100%);
-            min-height: 100vh;
-            padding: 2.5rem 1rem;
-            color: #1a1a2e;
-        }
-
-        .container { max-width: 980px; margin: 0 auto; }
-
-        /* ── Header ── */
-        .page-hero {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-        .page-hero__logo {
-            width: 64px; height: 64px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1rem;
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .page-hero h1 {
-            font-size: 1.9rem; font-weight: 700; color: #fff;
-            letter-spacing: -0.01em; margin-bottom: 0.4rem;
-        }
-        .page-hero p {
-            font-size: 1rem; color: rgba(255,255,255,0.65);
-        }
-
-        /* ── Stats ── */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: rgba(255,255,255,0.10);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 12px;
-            padding: 1.1rem 1rem;
-            text-align: center;
-        }
-        .stat-card__label {
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.07em; color: rgba(255,255,255,0.55);
-            margin-bottom: 0.4rem;
-        }
-        .stat-card__value {
-            font-size: 2.1rem; font-weight: 700; color: #fff; line-height: 1;
-        }
-        .stat-card__dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            display: inline-block; margin-right: 5px; vertical-align: middle;
-        }
-
-        /* ── Menu grid: 3 filas ── */
-        .menu-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        /* Fila 1 y 3: 2 columnas */
-        .menu-row-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        /* Fila 2: 1 columna centrada */
-        .menu-row-1 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        /* Card base */
-        .menu-card {
-            background: #fff;
-            border-radius: 14px;
-            padding: 1.5rem 1.75rem;
-            text-decoration: none;
-            color: inherit;
-            border: 1.5px solid #e0e7ef;
-            display: flex;
-            align-items: flex-start;
-            gap: 1.1rem;
-            transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
-            box-shadow: 0 2px 12px rgba(3,105,161,0.07);
-        }
-        .menu-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 28px rgba(3,105,161,0.16);
-            border-color: #0369a1;
-        }
-
-        /* Card destacada (Asistencias — fila 2) */
-        .menu-card--featured {
-            background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
-            border-color: transparent;
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(3,105,161,0.35);
-        }
-        .menu-card--featured:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(3,105,161,0.45);
-            border-color: transparent;
-        }
-        .menu-card--featured .menu-card__title { color: #fff; }
-        .menu-card--featured .menu-card__desc  { color: rgba(255,255,255,0.80); }
-        .menu-card--featured .menu-card__icon  {
-            background: rgba(255,255,255,0.20);
-            color: #fff;
-        }
-
-        .menu-card__icon {
-            width: 46px; height: 46px; flex-shrink: 0;
-            border-radius: 11px;
-            background: #f0f9ff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem;
-        }
-        .menu-card__body { flex: 1; }
-        .menu-card__title {
-            font-size: 1.05rem; font-weight: 700; color: #1a1a2e;
-            margin-bottom: 0.3rem;
-        }
-        .menu-card__desc {
-            font-size: 0.875rem; color: #6b7280; line-height: 1.5;
-        }
-        .menu-card__arrow {
-            font-size: 1.1rem; color: #9ca3af;
-            align-self: center; flex-shrink: 0;
-            transition: transform 0.15s;
-        }
-        .menu-card:hover .menu-card__arrow { transform: translateX(3px); }
-        .menu-card--featured .menu-card__arrow { color: rgba(255,255,255,0.7); }
-
-        /* ── Responsive ── */
-        @media (max-width: 640px) {
-            .stats-grid   { grid-template-columns: repeat(2, 1fr); }
-            .menu-row-2   { grid-template-columns: 1fr; }
-        }
-    </style>
 </head>
 <body>
+
 <div class="container">
+    <h1>Escuela de Kenpo Internacional</h1>
+    <p class="subtitle">Sistema de Gestión de Alumnos, Clases y Asistencias</p>
 
-    <!-- Hero -->
-    <div class="page-hero">
-        <div class="page-hero__logo">🥋</div>
-        <h1>Escuela de Kenpo Internacional</h1>
-        <p>Sistema de Gestión de Alumnos, Clases y Asistencias</p>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-card__label">
-                <span class="stat-card__dot" style="background:#3b82f6;"></span>Estudiantes
-            </div>
-            <div class="stat-card__value" th:text="${totalEstudiantes}">0</div>
+    <!-- Panel de Resumen Estadístico -->
+    <div class="dashboard-grid">
+        <div class="card-stat">
+            <h3>Estudiantes</h3>
+            <p th:text="${totalEstudiantes}">0</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-card__label">
-                <span class="stat-card__dot" style="background:#10b981;"></span>Instructores
-            </div>
-            <div class="stat-card__value" th:text="${totalInstructores}">0</div>
+        <div class="card-stat" style="border-top-color: #10b981;">
+            <h3>Instructores</h3>
+            <p th:text="${totalInstructores}">0</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-card__label">
-                <span class="stat-card__dot" style="background:#f59e0b;"></span>Clases Activas
-            </div>
-            <div class="stat-card__value" th:text="${totalClases}">0</div>
+        <div class="card-stat" style="border-top-color: #f59e0b;">
+            <h3>Clases Activas</h3>
+            <p th:text="${totalClases}">0</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-card__label">
-                <span class="stat-card__dot" style="background:#8b5cf6;"></span>Asistencias
-            </div>
-            <div class="stat-card__value" th:text="${totalAsistencias}">0</div>
+        <div class="card-stat" style="border-top-color: #8b5cf6;">
+            <h3>Asistencias</h3>
+            <p th:text="${totalAsistencias}">0</p>
         </div>
     </div>
 
-    <!-- Menú de navegación: 3 filas -->
-    <div class="menu-wrapper">
+    <!-- Menú de Navegación del Sistema -->
+    <div class="menu-grid">
+        <a th:href="@{/estudiantes}" class="menu-item">
+            <h2>🎓 Estudiantes</h2>
+            <p>Inscripciones, actualizaciones de alumnos activos e historiales de membresía.</p>
+        </a>
 
-        <!-- Fila 1: Estudiantes | Instructores -->
-        <div class="menu-row-2">
-            <a th:href="@{/estudiantes}" class="menu-card">
-                <div class="menu-card__icon">🎓</div>
-                <div class="menu-card__body">
-                    <div class="menu-card__title">Estudiantes</div>
-                    <div class="menu-card__desc">Inscripciones, actualizaciones de alumnos activos e historiales.</div>
-                </div>
-                <span class="menu-card__arrow">→</span>
-            </a>
-            <a th:href="@{/instructores}" class="menu-card">
-                <div class="menu-card__icon">👨‍🏫</div>
-                <div class="menu-card__body">
-                    <div class="menu-card__title">Instructores</div>
-                    <div class="menu-card__desc">Gestión de profesores, especialidades técnicas y experiencia.</div>
-                </div>
-                <span class="menu-card__arrow">→</span>
-            </a>
-        </div>
+        <a th:href="@{/instructores}" class="menu-item">
+            <h2>🥋 Instructores</h2>
+            <p>Gestión de profesores, asignación de especialidades técnicas y años de experiencia.</p>
+        </a>
 
-        <!-- Fila 2: Registro de Asistencias (destacada) -->
-        <div class="menu-row-1">
-            <a th:href="@{/asistencias}" class="menu-card menu-card--featured">
-                <div class="menu-card__icon">📋</div>
-                <div class="menu-card__body">
-                    <div class="menu-card__title">Registro de Asistencias</div>
-                    <div class="menu-card__desc">Control diario de asistencia vinculando estudiantes, clases e instructores a cargo.</div>
-                </div>
-                <span class="menu-card__arrow">→</span>
-            </a>
-        </div>
+        <a th:href="@{/asistencias}" class="menu-item">
+            <h2>📝 Registro de Asistencias</h2>
+            <p>Control diario de asistencia vinculando estudiantes, clases e instructores a cargo.</p>
+        </a>
 
-        <!-- Fila 3: Clases Impartidas | Configuración Grados -->
-        <div class="menu-row-2">
-            <a th:href="@{/clases}" class="menu-card">
-                <div class="menu-card__icon">🥊</div>
-                <div class="menu-card__body">
-                    <div class="menu-card__title">Clases Impartidas</div>
-                    <div class="menu-card__desc">Administración de bloques horarios y tipologías de entrenamiento.</div>
-                </div>
-                <span class="menu-card__arrow">→</span>
-            </a>
-            <a th:href="@{/grados}" class="menu-card">
-                <div class="menu-card__icon">🥋</div>
-                <div class="menu-card__body">
-                    <div class="menu-card__title">Grados y Cinturones</div>
-                    <div class="menu-card__desc">Escala jerárquica desde 10° Kyu Blanco hasta los Danes Avanzados.</div>
-                </div>
-                <span class="menu-card__arrow">→</span>
-            </a>
-        </div>
+        <a th:href="@{/clases}" class="menu-item">
+            <h2>⏱️ Configuración de Clases Impartidas</h2>
+            <p>Administración de bloques horarios y tipologías de entrenamiento (Kata, Sparring, Técnica).</p>
+        </a>
 
+        <a th:href="@{/grados}" class="menu-item" style="grid-column: 1 / -1; text-align: center;">
+            <h2>🏆 Configuración de Grados y Cinturones</h2>
+            <p>Administrar la escala jerárquica de la escuela (desde 10° Kyu Blanco hasta los Danes Avanzados).</p>
+        </a>
     </div>
 </div>
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

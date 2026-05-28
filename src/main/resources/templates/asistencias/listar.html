@@ -3,74 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistencias — Kenpo</title>
-    <link rel="stylesheet" th:href="@{/css/style-asistencias.css}">
+    <title>Registro de Asistencias — Kenpo</title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+
 </head>
 <body>
-<div class="main-container">
 
-    <div class="page-header">
+<div class="container">
+    <div class="header-section">
         <div>
-            <span class="page-header__eyebrow">Sistema de Gestión</span>
-            <h1 class="page-header__title">Registro de Asistencias</h1>
+            <h1>Registro Histórico de Asistencias</h1>
         </div>
-        <div class="page-header__actions">
-            <a th:href="@{/asistencias/nuevo}" class="btn-principal">+ Nueva Asistencia</a>
-            <a th:href="@{/}" class="btn-link">← Inicio</a>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+            <a th:href="@{/asistencias/nuevo}" class="btn-crear">📝 Nueva Asistencia</a>
         </div>
     </div>
 
-    <div th:if="${exito}" class="filtro-activo">&#10003; <span th:text="${exito}"></span></div>
+    <div th:if="${exito}" class="alert alert-success">✅ <span th:text="${exito}"></span></div>
+    <div th:if="${error}" class="alert alert-error">❌ <span th:text="${error}"></span></div>
 
-    <div th:if="${#lists.isEmpty(listaAsistencias)}" class="empty-state">
-        <p style="font-size:1.05rem;font-weight:600;color:#374151;margin-bottom:.5rem">No hay registros de asistencia</p>
-        <p style="font-size:.9rem;color:#9ca3af;margin-bottom:1.25rem">Comienza registrando la primera asistencia.</p>
-        <a th:href="@{/asistencias/nuevo}" class="btn-principal">Registrar Asistencia</a>
-    </div>
+    <table th:if="${not #lists.isEmpty(listaAsistencias)}">
+        <thead>
+        <tr>
+            <th style="width: 70px;">ID</th>
+            <th style="width: 140px;">Fecha Clase</th>
+            <th>Estudiante</th>
+            <th>Instructor a Cargo</th>
+            <th style="width: 160px;">Módulo Técnico</th>
+            <th style="width: 180px;">Registro en Sistema</th>
+            <th style="width: 140px; text-align: center;">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="asistencia : ${listaAsistencias}">
+            <td th:text="${asistencia.id}" class="id-cell"></td>
+            <td>
+                <span th:text="${asistencia.fechaClase}" class="date-badge"></span>
+            </td>
+            <td th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|" class="student-cell"></td>
+            <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|" class="instructor-cell"></td>
+            <td>
+                <span th:text="${asistencia.clase.tipoClase}" class="class-tag"></span>
+            </td>
+            <td th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}" style="color: #64748b; font-size: 0.9rem;"></td>
+            <td class="actions-cell" style="text-align: center;">
+                <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="link-editar">Editar</a>
+                <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
+                   class="link-eliminar"
+                   onclick="return confirm('¿Seguro que deseas eliminar permanentemente este registro de asistencia?')">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-    <div class="tabla-bordeada" th:if="${not #lists.isEmpty(listaAsistencias)}">
-        <table>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Fecha Clase</th>
-                <th>Estudiante</th>
-                <th>Instructor a Cargo</th>
-                <th>Tipo de Clase</th>
-                <th>Fecha/Hora Registro</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="asistencia : ${listaAsistencias}">
-                <td><span class="mono" th:text="${asistencia.id}"></span></td>
-                <td><span class="mono" th:text="${#temporals.format(asistencia.fechaClase,'dd/MM/yyyy')}"></span></td>
-                <td>
-                    <div class="estudiante-cell">
-                        <span class="avatar" th:text="${#strings.substring(asistencia.estudiante.nombres,0,1)}"></span>
-                        <span th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|"></span>
-                    </div>
-                </td>
-                <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|"></td>
-                <td><span class="badge badge-grado" th:text="${asistencia.clase.tipoClase}"></span></td>
-                <td><span class="mono" th:text="${#temporals.format(asistencia.registro,'dd/MM/yyyy HH:mm')}"></span></td>
-                <td>
-                    <div class="acciones">
-                        <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="btn-editar">Editar</a>
-                        <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
-                           class="btn-eliminar"
-                           onclick="return confirm('¿Eliminar este registro?')">Eliminar</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="controles" th:if="${not #lists.isEmpty(listaAsistencias)}">
-        <span class="total-registros">Total: <strong th:text="${#lists.size(listaAsistencias)}"></strong></span>
-        <a th:href="@{/asistencias/nuevo}" class="btn-principal">+ Nueva Asistencia</a>
+    <div class="empty-msg" th:if="${#lists.isEmpty(listaAsistencias)}">
+        ℹ️ No se registran asistencias archivadas en la base de datos actualmente.
     </div>
 </div>
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

@@ -2,46 +2,60 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Clases</title>
-    <link rel="stylesheet" th:href="@{/css/style-clases.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Clases — Kenpo</title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+
 </head>
 <body>
 
-<h1>Listado de Clases Kenpo</h1>
+<div class="container">
+    <div class="header-section">
+        <div>
+            <h1>Listado de Clases Impartidas</h1>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+            <a th:href="@{/clases/nuevo}" class="btn-crear">➕ Nueva Clase</a>
+        </div>
+    </div>
 
-<p>
-    <a th:href="@{/clases/nuevo}">Crear nueva clase</a> |
+    <table th:if="${not #lists.isEmpty(clases)}">
+        <thead>
+        <tr>
+            <th style="width: 80px;">ID</th>
+            <th style="width: 200px;">Tipo de Clase</th>
+            <th>Descripción del Módulo</th>
+            <th style="width: 120px;">Estado</th>
+            <th style="width: 150px;">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="clase : ${clases}">
+            <td th:text="${clase.id}" style="font-weight: 600; color: #64748b;"></td>
+            <td th:text="${clase.tipoClase}" style="font-weight: 600; color: #1e293b;"></td>
+            <td th:text="${clase.descripcion}"></td>
+            <td>
+                <span th:class="${clase.estado} ? 'badge badge-activa' : 'badge badge-inactiva'"
+                      th:text="${clase.estado} ? 'Activa' : 'Inactiva'">
+                </span>
+            </td>
+            <td class="actions-cell">
+                <a th:href="@{/clases/editar/{id}(id=${clase.id})}" class="link-editar">Editar</a>
+                <a th:href="@{/clases/eliminar/{id}(id=${clase.id})}"
+                   class="link-eliminar"
+                   onclick="return confirm('¿Seguro que deseas eliminar este bloque de clase?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-</p>
-
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Tipo de Clase</th>
-        <th>Descripción</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="c : ${clases}">
-        <td th:text="${c.id}"></td>
-        <td th:text="${c.tipoClase}"></td>
-        <td th:text="${c.descripcion}"></td>
-        <td th:text="${c.estado ? 'Activa' : 'Inactiva'}"></td>
-        <td>
-            <a th:href="@{/clases/editar/{id}(id=${c.id})}">Editar</a> |
-            <a th:href="@{/clases/eliminar/{id}(id=${c.id})}"
-               onclick="return confirm('¿Desea eliminar esta clase?')">Eliminar</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p th:if="${#lists.isEmpty(clases)}">No existen clases registradas en el sistema.</p>
+    <div class="empty-msg" th:if="${#lists.isEmpty(clases)}">
+        ℹ️ No existen módulos de clases registrados en la academia actualmente.
+    </div>
+</div>
 <br>
 <br>
-<a th:href="@{/}">Volver al Inicio</a>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

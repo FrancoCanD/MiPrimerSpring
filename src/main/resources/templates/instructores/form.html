@@ -3,108 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${instructor.id == null} ? 'Nuevo Instructor' : 'Editar Instructor'">Instructor</title>
-    <link rel="stylesheet" th:href="@{/css/style-form-instructores.css}">
+    <title th:text="${instructor.id == null ? 'Nuevo Instructor — Kenpo' : 'Editar Instructor — Kenpo'}"></title>
+    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+
 </head>
 <body>
-<div class="main-container">
 
+<div class="main-container">
     <div class="breadcrumb">
-        <a th:href="@{/instructores}" class="breadcrumb__link">← Volver al listado</a>
+        <a th:href="@{/instructores}">← Volver al listado</a>
     </div>
 
-    <h2>Módulo de Instructores</h2>
-    <h3 th:text="${instructor.id == null} ? 'Nuevo Instructor' : 'Editar Instructor #' + ${instructor.id}">Formulario</h3>
+    <h2>Cuerpo de Instructores</h2>
+    <h3 th:text="${instructor.id == null ? 'Ficha de Nuevo Instructor' : 'Modificar Parámetros de Docente'}"></h3>
 
     <div class="form-card">
         <form th:action="@{/instructores/guardar}" th:object="${instructor}" method="post" class="form-box">
             <input type="hidden" th:field="*{id}">
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="nombres">Nombres <span class="required">*</span></label>
-                    <input type="text" id="nombres" th:field="*{nombres}" required placeholder="Ej: Carlos">
-                    <span class="field-error" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
-                </div>
-                <div class="form-group">
-                    <label for="apellido1">Primer Apellido <span class="required">*</span></label>
-                    <input type="text" id="apellido1" th:field="*{apellido1}" required placeholder="Ej: López">
-                    <span class="field-error" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
-                </div>
+            <div class="form-group full-width">
+                <label for="nombres">Nombres</label>
+                <input type="text" id="nombres" th:field="*{nombres}" required>
+                <span class="error-span" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></span>
             </div>
 
             <div class="form-row">
+                <div class="form-group">
+                    <label for="apellido1">Primer Apellido</label>
+                    <input type="text" id="apellido1" th:field="*{apellido1}" required>
+                    <span class="error-span" th:if="${#fields.hasErrors('apellido1')}" th:errors="*{apellido1}"></span>
+                </div>
                 <div class="form-group">
                     <label for="apellido2">Segundo Apellido</label>
-                    <input type="text" id="apellido2" th:field="*{apellido2}" placeholder="Ej: Martínez">
-                </div>
-                <div class="form-group">
-                    <label for="rut">RUT <span class="required">*</span></label>
-                    <input type="text" id="rut" th:field="*{rut}" required placeholder="12345678-9">
-                    <span class="field-error" th:if="${#fields.hasErrors('rut')}" th:errors="*{rut}"></span>
+                    <input type="text" id="apellido2" th:field="*{apellido2}">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="fechaNac">Fecha de Nacimiento <span class="required">*</span></label>
+                    <label for="fechaNac">Fecha de Nacimiento</label>
                     <input type="date" id="fechaNac" th:field="*{fechaNac}" required>
-                    <span class="field-error" th:if="${#fields.hasErrors('fechaNac')}" th:errors="*{fechaNac}"></span>
                 </div>
                 <div class="form-group">
-                    <label for="fechaInicio">Fecha de Inicio <span class="required">*</span></label>
-                    <input type="date" id="fechaInicio" th:field="*{fechaInicio}" required>
-                    <span class="field-error" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
+                    <label for="rut">RUT</label>
+                    <input type="text" id="rut" th:field="*{rut}" required>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="grado">Grado / Cinturón <span class="required">*</span></label>
-                <select id="grado" th:field="*{grado.id}" required>
-                    <option value="">— Seleccione un grado —</option>
-                    <option th:each="g : ${grados}"
-                            th:value="${g.id}"
-                            th:text="|${g.nombre} (${g.kyuDan})|"></option>
-                </select>
-                <span class="field-error" th:if="${#fields.hasErrors('grado')}" th:errors="*{grado}"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="grado">Grado / Rango</label>
+                    <select id="grado" th:field="*{grado.id}" required>
+                        <option value="">Seleccione rango</option>
+                        <option th:each="g : ${grados}" th:value="${g.id}" th:text="|${g.nombre} ${g.kyuDan}|"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="especialidad">Especialidad Técnica</label>
+                    <select id="especialidad" th:field="*{especialidad}" required>
+                        <option value="">Seleccione área</option>
+                        <option value="Kata">Kata</option>
+                        <option value="Kumite">Kumite</option>
+                        <option value="Defensa Personal">Defensa Personal</option>
+                        <option value="Armas Tradicionales">Armas Tradicionales</option>
+                        <option value="Instructor General">Instructor General</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="especialidad">Especialidad <span class="required">*</span></label>
-                <select id="especialidad" th:field="*{especialidad}" required>
-                    <option value="">— Seleccione especialidad —</option>
-                    <option value="Kata">Kata</option>
-                    <option value="Kumite">Kumite</option>
-                    <option value="Defensa Personal">Defensa Personal</option>
-                    <option value="Armas Tradicionales">Armas Tradicionales</option>
-                    <option value="Técnicas Básicas">Técnicas Básicas</option>
-                    <option value="Instructor General">Instructor General</option>
-                </select>
-                <span class="field-error" th:if="${#fields.hasErrors('especialidad')}" th:errors="*{especialidad}"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha de Inicio de Labores</label>
+                    <input type="date" id="fechaInicio" th:field="*{fechaInicio}" required>
+                </div>
+                <div class="form-group">
+                    <label for="anosExperiencia">Años de Trayectoria</label>
+                    <input type="number" id="anosExperiencia" th:field="*{anosExperiencia}" min="0" max="80">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="anosExperiencia">Años de Experiencia</label>
-                <input type="number" id="anosExperiencia" th:field="*{anosExperiencia}" min="0" max="100" placeholder="Ej: 5">
-            </div>
-
-            <div class="toggle-wrapper">
-                <label class="toggle-label">
-                    <input type="checkbox" th:field="*{activo}">
-                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                    Instructor activo
-                </label>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="activo" th:field="*{activo}">
+                <label for="activo" class="checkbox-label">Instructor docente activo en cátedra</label>
             </div>
 
             <div class="form-actions">
                 <a th:href="@{/instructores}" class="btn-cancelar">Cancelar</a>
-                <button type="submit" class="btn-guardar"
-                        th:text="${instructor.id == null} ? 'Registrar Instructor' : 'Guardar Cambios'">
-                    Guardar
-                </button>
+                <button type="submit" class="btn-guardar">Registrar Instructor</button>
             </div>
         </form>
     </div>
 </div>
+<br>
+<br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>
