@@ -6,10 +6,15 @@ import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
 import cl.kibernum.miprimerspringboot.dto.request.GradoRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
 import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
+import cl.kibernum.miprimerspringboot.service.serviceimpl.GradoServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EstudianteMapper {
+
+    @Autowired
+    private GradoMapper gradoMapper;
 
     public Estudiante estudianteDtoToEntity(EstudianteRequestDto estudianteDto) {
         Estudiante estudiante = new Estudiante();
@@ -18,7 +23,9 @@ public class EstudianteMapper {
         estudiante.setApellido2(estudianteDto.getApellido2());
         estudiante.setFechaNac(estudianteDto.getFechaNac());
         estudiante.setRut(estudianteDto.getRut());
-        estudiante.setGrado(estudianteDto.getGradoRequestDto());
+        Grado grado = gradoMapper.gradoDtoToEntity(estudianteDto.getGradoRequestDto());
+        estudiante.setGrado(grado);
+        estudiante.setFechaAscenso(estudianteDto.getFechaAscenso());
         estudiante.setActivo(estudianteDto.isActivo());
         return estudiante;
     }
@@ -31,7 +38,8 @@ public class EstudianteMapper {
         estudianteResponseDto.setApellido2(estudiante.getApellido2());
         estudianteResponseDto.setFechaNac(estudiante.getFechaNac());
         estudianteResponseDto.setRut(estudiante.getRut());
-        estudianteResponseDto.setGradoResponseDto(estudiante.getGrado());
+        GradoResponseDto gradoResponseDto = gradoMapper.gradoToGradoResponseDto(estudiante.getGrado());
+        estudianteResponseDto.setGradoResponseDto(gradoResponseDto);
         estudianteResponseDto.setFechaAscenso(estudiante.getFechaAscenso());
         estudianteResponseDto.setActivo(estudiante.isActivo());
         return estudianteResponseDto;
@@ -43,7 +51,8 @@ public class EstudianteMapper {
         estudiante.setApellido2(estudianteDto.getApellido2());
         estudiante.setFechaNac(estudianteDto.getFechaNac());
         estudiante.setRut(estudianteDto.getRut());
-        estudiante.setGrado(estudianteDto.getGradoRequestDto());
+        Grado grado = gradoMapper.gradoDtoToEntity(estudianteDto.getGradoRequestDto());
+        estudiante.setGrado(grado);
         estudiante.setFechaAscenso(estudianteDto.getFechaAscenso());
         estudiante.setActivo(estudianteDto.isActivo());
     }

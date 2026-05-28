@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter @Setter
 public class EstudianteRequestDto extends PersonaRequestDto{
 
-    /*@NotBlank(message = "El grado es necesario")*/
+    @NotBlank(message = "El grado es necesario")
     private GradoRequestDto gradoRequestDto;
 
     @NotBlank(message = "Debe ir una fecha de ascenso")
