@@ -1,6 +1,4 @@
 
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.main-container { max-width: 650px; margin: 0 auto; }
 .breadcrumb { margin-bottom: 20px; }
 .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
 .breadcrumb a:hover { color: #10b981; }
