@@ -1,6 +1,8 @@
 package cl.kibernum.miprimerspringboot.service.serviceimpl;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Clase;
+import cl.kibernum.miprimerspringboot.dto.request.ClaseRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.ClaseResponseDto;
 import cl.kibernum.miprimerspringboot.repository.ClaseRepository;
 import cl.kibernum.miprimerspringboot.service.ClaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +58,30 @@ public class ClaseServiceImpl implements ClaseService {
     @Override
     public void borrarClase(Integer id) {
         claseRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ClaseResponseDto> listarClasesApi() {
+        return List.of();
+    }
+
+    @Override
+    public ClaseResponseDto clasePorIdApi(Integer id) {
+        return null;
+    }
+
+    @Override
+    public ClaseResponseDto crearClaseApi(ClaseRequestDto claseRequestDto) {
+        return null;
+    }
+
+    @Override
+    public ClaseResponseDto actualizarClaseApi(ClaseRequestDto claseRequestDto, Integer id) {
+        return null;
+    }
+
+    @Override
+    public void borrarClaseApi(Integer id) {
+
     }
 }
