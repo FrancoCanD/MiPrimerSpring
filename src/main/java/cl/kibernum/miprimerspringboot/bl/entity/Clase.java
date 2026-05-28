@@ -33,6 +33,4 @@ public class Clase {
     @Column(nullable = false)
     private boolean estado;
 
-    public boolean getEstado() {
-    }
 }

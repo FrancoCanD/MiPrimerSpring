@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escala de Grados y Cinturones</title>
-    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/style-index.css}">
 
 </head>
 <body>
-
+<div th:insert="~{fragments/header :: menu-navegacion}"></div>
+<div class="container grados-listar">
 <div class="container">
     <div class="header-section">
         <div>
@@ -57,8 +58,9 @@
         ℹ️ No existen grados configurados en la escuela.
     </div>
 </div>
+</div>
 <br>
 <br>
-<div th:replace="~{fragments/footer :: pie-pagina}"></div>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>
