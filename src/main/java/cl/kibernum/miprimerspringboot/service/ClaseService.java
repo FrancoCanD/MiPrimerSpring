@@ -1,6 +1,8 @@
 package cl.kibernum.miprimerspringboot.service;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Clase;
+import cl.kibernum.miprimerspringboot.dto.request.ClaseRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.ClaseResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,4 +38,10 @@ public interface ClaseService {
      * @param id de la clase a borrar
      */
     void borrarClase(Integer id);
+
+    List<ClaseResponseDto> listarClasesApi();
+    ClaseResponseDto clasePorIdApi(Integer id);
+    ClaseResponseDto crearClaseApi(ClaseRequestDto claseRequestDto);
+    ClaseResponseDto actualizarClaseApi(ClaseRequestDto claseRequestDto, Integer id);
+    void borrarClaseApi(Integer id);
 }
