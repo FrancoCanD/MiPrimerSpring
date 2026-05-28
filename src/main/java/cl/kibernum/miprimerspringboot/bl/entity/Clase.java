@@ -34,5 +34,6 @@ public class Clase {
     private boolean estado;
 
     public boolean getEstado() {
+        return false;
     }
 }

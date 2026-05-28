@@ -1,6 +1,8 @@
 package cl.kibernum.miprimerspringboot.service;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Instructor;
+import cl.kibernum.miprimerspringboot.dto.request.InstructorRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.InstructorResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,4 +38,12 @@ public interface InstructorService {
      * @param id del instructor a eliminar
      */
     void borrarInstructor(Integer id);
+
+    // Métodos API REST con DTOs
+    List<InstructorResponseDto> listarInstructoresApi();
+    InstructorResponseDto crearInstructorApi(InstructorRequestDto instructorRequestDto);
+    InstructorResponseDto instructorPorIdApi(Integer id);
+    InstructorResponseDto actualizarInstructorApi(InstructorRequestDto instructorRequestDto, Integer id);
+    void borrarInstructorApi(Integer id);
 }
+
