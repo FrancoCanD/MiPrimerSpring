@@ -1,8 +1,11 @@
 package cl.kibernum.miprimerspringboot.mapper;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
+import cl.kibernum.miprimerspringboot.bl.entity.Grado;
 import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
+import cl.kibernum.miprimerspringboot.dto.request.GradoRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
+import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
