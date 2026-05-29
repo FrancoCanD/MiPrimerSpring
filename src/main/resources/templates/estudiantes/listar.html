@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Estudiantes — Kenpo</title>
-    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
 
 </head>
 <body>
-
+<br>
+<br>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br>
+<br>
+<div class="container-vista-estudiantes">
 <div class="container">
     <div class="header-section">
         <h1>Alumnos Registrados</h1>
@@ -55,6 +61,7 @@
     <div class="empty-msg" th:if="${#lists.isEmpty(estudiantes)}">
         ℹ️ No existen alumnos registrados en el sistema de la academia.
     </div>
+</div>
 </div>
 <br>
 <br>

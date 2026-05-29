@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Fragmento del HEAD -->
+<head th:fragment="estilos-globales">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Escuela Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+</head>
+
+<body>
+
+<header th:fragment="menu-navegacion">
+    <nav class="navbar">
+        <a th:href="@{/}" class="navbar-logo">Escuela Kenpo</a>
+
+        <ul class="navbar-links">
+            <li><a th:href="@{/estudiantes/listar}">Estudiantes</a></li>
+            <li><a th:href="@{/instructores/listar}">Instructores</a></li>
+            <li><a th:href="@{/clases/listar}">Clases</a></li>
+            <li><a th:href="@{/asistencias/listar}">Asistencias</a></li>
+            <li>
+                <button type="button" id="theme-toggle" class="btn-theme">🌓 Modo</button>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    document.documentElement.classList.toggle('dark-mode');
+                    if (document.documentElement.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            }
+        });
+    </script>
+</header>
+</body>
+</html>

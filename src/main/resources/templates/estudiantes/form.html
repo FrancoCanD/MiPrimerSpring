@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${estudiante.id == null ? 'Nuevo Estudiante — Kenpo' : 'Editar Estudiante — Kenpo'}"></title>
-    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
 
 </head>
 <body>
-
+<br>
+<br>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br>
+<br>
+<div class="container-estudiantes-form">
 <div class="main-container">
     <div class="breadcrumb">
         <a th:href="@{/estudiantes}">← Volver al listado</a>
@@ -78,8 +84,9 @@
         </form>
     </div>
 </div>
+</div>
 <br>
 <br>
-<div th:replace="~{fragments/footer :: pie-pagina}"></div>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

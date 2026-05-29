@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${instructor.id == null ? 'Nuevo Instructor — Kenpo' : 'Editar Instructor — Kenpo'}"></title>
-    <th:block th:replace="~{fragments/footer :: estilos-globales}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
 
 </head>
 <body>
-
+<header th:replace="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<div class="container-instructores-form">
 <div class="main-container">
     <div class="breadcrumb">
+        <br>
         <a th:href="@{/instructores}">← Volver al listado</a>
+        <br>
     </div>
 
     <h2>Cuerpo de Instructores</h2>
@@ -93,6 +97,7 @@
             </div>
         </form>
     </div>
+</div>
 </div>
 <br>
 <br>

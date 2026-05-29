@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-
-    <!-- 1. DECLARACIÓN DEL FRAGMENTO DE ESTILOS GLOBALES -->
-    <th:block th:fragment="estilos-globales">
-    <link rel="stylesheet" th:href="@{/css/style-index.css}">
-    </th:block>
-
-</head>
 <body>
 
-<!-- Definición del fragmento del pie de página (Mantenlo igual) -->
+<!-- Fragmento del Footer reutilizable -->
 <footer th:fragment="pie-pagina" class="main-footer">
-    <div class="container">
-        <p class="footer-text font-bold">Desarrollo de aplicaciones web Full Stack Java</p>
-        <p class="footer-text">Venturelli, Yáñez, Cancino, Ibáñez, Fernández, Riquelme, Peña, Torres.</p>
-        <p class="footer-copyright">&copy; <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}"></span> - Escuela de Kenpo. Todos los derechos reservados.</p>
+    <div class="footer-content">
+        <p class="footer-text font-bold">Sistema de Gestión Académica de Escuela Kenpo</p>
+        <p class="footer-text">Desarrollado en Spring Boot & Thymeleaf</p>
+        <p class="footer-text">Venturelli, Yáñez, Cancino, Riquelme, Ibáñez, Fernández, Torres, Peña.</p>
+        <!-- El año se calcula dinámicamente con Thymeleaf para no tener que actualizarlo nunca -->
+        <p class="footer-copyright">© <span th:text="${#dates.year(#dates.createNow())}">2026</span> Todos los derechos reservados.</p>
     </div>
 </footer>
 

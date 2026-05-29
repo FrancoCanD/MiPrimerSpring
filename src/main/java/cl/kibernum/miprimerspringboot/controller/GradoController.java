@@ -20,7 +20,7 @@ public class GradoController {
     /**
      * Muestra el listado de grados
      */
-    @GetMapping
+    @GetMapping("/listar")
     public String listar(Model model) {
         model.addAttribute("grados", gradoService.listarGrados());
         return "grados/listar";
