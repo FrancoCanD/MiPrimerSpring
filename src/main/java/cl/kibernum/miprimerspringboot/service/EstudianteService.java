@@ -1,6 +1,8 @@
 package cl.kibernum.miprimerspringboot.service;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
+import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +39,10 @@ public interface EstudianteService {
      */
 
     void borrarEstudiante(Integer id);
+
+    List<EstudianteResponseDto> listarEstudiantesApi();
+    EstudianteResponseDto crearEstudianteApi(EstudianteRequestDto estudianteRequestDto);
+    EstudianteResponseDto estudiantePorIdApi(Integer id);
+    EstudianteResponseDto actualizarEstudianteApi(EstudianteRequestDto estudianteRequestDto, Integer id);
+    void borrarEstudianteApi(Integer id);
 }

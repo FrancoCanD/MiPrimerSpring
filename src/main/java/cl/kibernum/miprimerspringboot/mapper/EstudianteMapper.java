@@ -1,4 +1,60 @@
 package cl.kibernum.miprimerspringboot.mapper;
 
+import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
+import cl.kibernum.miprimerspringboot.bl.entity.Grado;
+import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
+import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
+import cl.kibernum.miprimerspringboot.service.serviceimpl.GradoServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class EstudianteMapper {
+
+    @Autowired
+    private GradoMapper gradoMapper;
+    @Autowired
+    private GradoServiceImpl gradoServiceImpl;
+
+    public Estudiante estudianteDtoToEntity(EstudianteRequestDto estudianteDto) {
+        Estudiante estudiante = new Estudiante();
+        estudiante.setNombres(estudianteDto.getNombres());
+        estudiante.setApellido1(estudianteDto.getApellido1());
+        estudiante.setApellido2(estudianteDto.getApellido2());
+        estudiante.setFechaNac(estudianteDto.getFechaNac());
+        estudiante.setRut(estudianteDto.getRut());
+        Grado grado = gradoServiceImpl.gradoPorId(estudianteDto.getIdGrado()).orElseThrow(()-> new RuntimeException("Grado no encontrado"));
+        estudiante.setGrado(grado);
+        estudiante.setFechaAscenso(estudianteDto.getFechaAscenso());
+        estudiante.setActivo(estudianteDto.isActivo());
+        return estudiante;
+    }
+
+    public EstudianteResponseDto estudianteToEstudianteResponseDto(Estudiante estudiante) {
+        EstudianteResponseDto estudianteResponseDto = new EstudianteResponseDto();
+        estudianteResponseDto.setId(estudiante.getId());
+        estudianteResponseDto.setNombres(estudiante.getNombres());
+        estudianteResponseDto.setApellido1(estudiante.getApellido1());
+        estudianteResponseDto.setApellido2(estudiante.getApellido2());
+        estudianteResponseDto.setFechaNac(estudiante.getFechaNac());
+        estudianteResponseDto.setRut(estudiante.getRut());
+        GradoResponseDto gradoResponseDto = gradoMapper.gradoToGradoResponseDto(estudiante.getGrado());
+        estudianteResponseDto.setGradoResponseDto(gradoResponseDto);
+        estudianteResponseDto.setFechaAscenso(estudiante.getFechaAscenso());
+        estudianteResponseDto.setActivo(estudiante.isActivo());
+        return estudianteResponseDto;
+    }
+
+    public void updateEstudianteEntity(EstudianteRequestDto estudianteDto, Estudiante estudiante) {
+        estudiante.setNombres(estudianteDto.getNombres());
+        estudiante.setApellido1(estudianteDto.getApellido1());
+        estudiante.setApellido2(estudianteDto.getApellido2());
+        estudiante.setFechaNac(estudianteDto.getFechaNac());
+        estudiante.setRut(estudianteDto.getRut());
+        Grado grado = gradoServiceImpl.gradoPorId(estudianteDto.getIdGrado()).orElseThrow(()-> new RuntimeException("Grado no encontrado"));
+        estudiante.setGrado(grado);
+        estudiante.setFechaAscenso(estudianteDto.getFechaAscenso());
+        estudiante.setActivo(estudianteDto.isActivo());
+    }
 }
