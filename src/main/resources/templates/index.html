@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control — Kenpo Talcahuano</title>
-    <link rel="stylesheet" th:href="@{/css/style-index.css}">
+    <link rel="stylesheet" th:href="@{/css/global.css}">
 
 </head>
 <body>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br>
+<br>
 
 <div class="container">
     <h1>Escuela de Kenpo Internacional</h1>

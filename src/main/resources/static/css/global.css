@@ -3,7 +3,7 @@
    ========================================================================== */
 :root {
     /* Modo Claro (Suave, no blanco puro) */
-    --bg-body: #f1f5f9;          /* Fondo general gris/azul suave (Slate 100) */
+    --bg-body: #f8fafc;          /* Fondo general */
     --bg-card: #ffffff;          /* Fondo de tarjetas */
     --text-main: #1e293b;        /* Texto principal oscuro */
     --text-muted: #64748b;      /* Texto secundario/subtítulos */
@@ -18,18 +18,45 @@
     --purple: #8b5cf6;           /* Morado */
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        /* Modo Oscuro Automático */
-        --bg-body: #0f172a;      /* Fondo general oscuro profundo (Slate 900) */
-        --bg-card: #1e293b;      /* Fondo de tarjetas (Slate 800) */
-        --text-main: #f8fafc;    /* Texto principal blanco suave */
-        --text-muted: #94a3b8;  /* Texto secundario gris claro */
-        --border-color: #334155;/* Bordes oscuros */
-        --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-        --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+    /* Modo Oscuro: Se activa automáticamente por el sistema O manualmente por clase en el HTML */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+        }
     }
+
+    /*  Forzar Modo Oscuro manual mediante clase en la raíz */
+    html.dark-mode :root, html.dark-mode {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
 }
+
+    /* Estilo para el botón en el navbar */
+    .btn-theme {
+    background: var(--bg-card); /* <-- Cambiado a var(--bg-card) */
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    }
+    .btn-theme:hover {
+        border-color: var(--primary);
+    }
+
 
 /* ==========================================================================
    ESTILOS BASE (Aplicando las Variables)
@@ -41,6 +68,7 @@ body {
     padding: 40px;
     color: var(--text-main);
     transition: background-color 0.3s ease, color 0.3s ease;
+
 }
 
 .container { max-width: 1000px; margin: 0 auto; }
@@ -566,6 +594,194 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: #10b981; curso
 .btn-cancelar:hover { background-color: #cbd5e1; }
 .btn-guardar { padding: 10px 20px; background-color: #10b981; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
 .btn-guardar:hover { background-color: #059669; }
+
+/* ==========================================================================
+   ESTILOS DE LA VISTA ESTUDIANTE FORM
+   ========================================================================== */
+body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+.main-container { max-width: 650px; margin: 0 auto; }
+.breadcrumb { margin-bottom: 20px; }
+.breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+.breadcrumb a:hover { color: #3b82f6; }
+h2 { color: #1e293b; margin: 0 0 5px 0; }
+h3 { color: #3b82f6; font-size: 1.1rem; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #3b82f6; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+.form-group.full-width { grid-column: 1 / -1; }
+label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+
+input[type="text"], input[type="date"], select { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; transition: border-color 0.2s, box-shadow 0.2s; background-color: white; }
+input[type="text"]:focus, input[type="date"]:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+
+.checkbox-wrapper { display: flex; align-items: center; gap: 10px; margin: 25px 0; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: #3b82f6; cursor: pointer; }
+.checkbox-label { font-weight: 500; color: #475569; cursor: pointer; }
+
+.error-span { color: #b91c1c; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+.btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+.btn-cancelar:hover { background-color: #cbd5e1; }
+.btn-guardar { padding: 10px 20px; background-color: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+.btn-guardar:hover { background-color: #1d4ed8; }
+/* ==========================================================================
+   ESTILOS DE LA VISTA ESTUDIANTE
+   ========================================================================== */
+body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+.container { max-width: 1100px; margin: 0 auto; }
+
+.header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+
+.btn-crear { padding: 10px 18px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+.btn-crear:hover { background-color: #1d4ed8; }
+.btn-inicio { padding: 10px 18px; background-color: white; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; border: 1px solid #cbd5e1; transition: all 0.2s; font-size: 0.95rem; }
+.btn-inicio:hover { background-color: #f8fafc; border-color: #94a3b8; }
+
+table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
+th { background-color: #1e293b; color: white; text-align: left; padding: 14px 18px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background-color: #f8fafc; }
+
+.badge { padding: 4px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+.badge-activa { background-color: #d1fae5; color: #065f46; }
+.badge-inactiva { background-color: #fee2e2; color: #991b1b; }
+
+.actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+.link-editar { color: #3b82f6; margin-right: 12px; }
+.link-editar:hover { color: #1d4ed8; text-decoration: underline; }
+.link-eliminar { color: #ef4444; }
+.link-eliminar:hover { color: #b91c1c; text-decoration: underline; }
+
+.empty-msg { text-align: center; padding: 30px; background: white; border-radius: 10px; color: #64748b; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+/* ==========================================================================
+   ESTILOS DE LA VISTA CLASES
+   ========================================================================== */
+body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+.container { max-width: 1000px; margin: 0 auto; }
+.header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+.btn-crear { padding: 10px 18px; background-color: #f59e0b; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+.btn-crear:hover { background-color: #d97706; }
+.btn-inicio { padding: 10px 18px; background-color: white; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; border: 1px solid #cbd5e1; transition: all 0.2s; font-size: 0.95rem; }
+.btn-inicio:hover { background-color: #f8fafc; border-color: #94a3b8; }
+table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
+th { background-color: #1e293b; color: white; text-align: left; padding: 14px 18px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background-color: #f8fafc; }
+.badge { padding: 4px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+.badge-activa { background-color: #d1fae5; color: #065f46; }
+.badge-inactiva { background-color: #e2e8f0; color: #475569; }
+.actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+.link-editar { color: #3b82f6; margin-right: 12px; }
+.link-editar:hover { color: #1d4ed8; text-decoration: underline; }
+.link-eliminar { color: #ef4444; }
+.link-eliminar:hover { color: #b91c1c; text-decoration: underline; }
+.empty-msg { text-align: center; padding: 30px; background: white; border-radius: 10px; color: #64748b; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+/* ==========================================================================
+   ESTILOS DE LA VISTA CLASES FORM
+   ========================================================================== */
+
+body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+.main-container { max-width: 600px; margin: 0 auto; }
+.breadcrumb { margin-bottom: 20px; }
+.breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+.breadcrumb a:hover { color: #f59e0b; }
+h2 { color: #1e293b; margin: 0 0 5px 0; }
+h3 { color: #f59e0b; font-size: 1.1rem; margin: 0 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #f59e0b; }
+.form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+
+input[type="text"] { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; transition: border-color 0.2s, box-shadow 0.2s; }
+input[type="text"]:focus { outline: none; border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+
+.checkbox-wrapper { display: flex; align-items: center; gap: 10px; margin: 25px 0; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: #f59e0b; cursor: pointer; }
+.checkbox-label { font-weight: 500; color: #475569; cursor: pointer; }
+
+.error-span { color: #b91c1c; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+.btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+.btn-cancelar:hover { background-color: #cbd5e1; }
+.btn-guardar { padding: 10px 20px; background-color: #f59e0b; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+.btn-guardar:hover { background-color: #d97706; }
+
+/* ==========================================================================
+   ESTILOS DE LA VISTA ASISTENCIAS
+   ========================================================================== */
+body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+.container { max-width: 1100px; margin: 0 auto; }
+
+.header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+
+.btn-crear { padding: 10px 18px; background-color: #8b5cf6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; border: none; }
+.btn-crear:hover { background-color: #7c3aed; }
+.btn-inicio { padding: 10px 18px; background-color: white; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; border: 1px solid #cbd5e1; transition: all 0.2s; font-size: 0.95rem; }
+.btn-inicio:hover { background-color: #f8fafc; border-color: #94a3b8; }
+
+.alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 25px; font-weight: 500; font-size: 0.95rem; }
+.alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+.alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
+th { background-color: #1e293b; color: white; text-align: left; padding: 14px 18px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background-color: #f8fafc; }
+
+.id-cell { font-weight: 600; color: #64748b; }
+.student-cell { font-weight: 600; color: #1e293b; }
+.instructor-cell { color: #475569; font-weight: 500; }
+.date-badge { background-color: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 0.9rem; color: #475569; border: 1px solid #e2e8f0; }
+.class-tag { background-color: #edf2f7; color: #2d3748; padding: 3px 8px; border-radius: 4px; font-weight: 500; font-size: 0.85rem; border-left: 3px solid #8b5cf6; }
+
+.actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+.link-editar { color: #3b82f6; margin-right: 12px; }
+.link-editar:hover { color: #1d4ed8; text-decoration: underline; }
+.link-eliminar { color: #ef4444; }
+.link-eliminar:hover { color: #b91c1c; text-decoration: underline; }
+
+.empty-msg { text-align: center; padding: 40px; background: white; border-radius: 10px; color: #64748b; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+/* ==========================================================================
+   ESTILOS DE LA VISTA ASISTENCIAS FORM
+   ========================================================================== */
+body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
+.main-container { max-width: 650px; margin: 0 auto; }
+.breadcrumb { margin-bottom: 20px; }
+.breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
+.breadcrumb a:hover { color: #8b5cf6; }
+h2 { color: #1e293b; margin: 0; font-size: 1.6rem; }
+h3 { color: #8b5cf6; font-size: 1.1rem; margin: 5px 0 30px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-weight: 500; font-size: 0.95rem; }
+.alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+.form-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-top: 4px solid #8b5cf6; }
+.info-registro { background-color: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #475569; font-size: 0.9rem; line-height: 1.5; }
+
+.form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+label { font-weight: 600; color: #1e293b; margin-bottom: 8px; font-size: 0.95rem; }
+label .required { color: #ef4444; }
+
+select, input[type="date"], input[type="datetime-local"] { padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; color: #333; background-color: white; transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit; }
+select:focus, input[type="date"]:focus, input[type="datetime-local"]:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+.btn-cancelar { padding: 10px 20px; background-color: #e2e8f0; color: #475569; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; font-size: 0.95rem; }
+.btn-cancelar:hover { background-color: #cbd5e1; }
+.btn-guardar { padding: 10px 20px; background-color: #8b5cf6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; font-size: 0.95rem; }
+.btn-guardar:hover { background-color: #7c3aed; }
 
 
 /* ==========================================================================

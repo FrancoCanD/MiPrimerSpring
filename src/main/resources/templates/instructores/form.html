@@ -8,12 +8,14 @@
 
 </head>
 <body>
-
-<div th:insert="~{fragments/header :: menu-navegacion}"></div>
+<header th:replace="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
 <div class="container-instructores-form">
 <div class="main-container">
     <div class="breadcrumb">
+        <br>
         <a th:href="@{/instructores}">← Volver al listado</a>
+        <br>
     </div>
 
     <h2>Cuerpo de Instructores</h2>
