@@ -27,7 +27,7 @@ public class ClaseMapper {
         claseResponseDto.setId(clase.getId());
         claseResponseDto.setTipoClase(clase.getTipoClase());
         claseResponseDto.setDescripcion(clase.getDescripcion());
-        claseResponseDto.setEstado(clase.getEstado());
+        claseResponseDto.setEstado(clase.isEstado());
         return claseResponseDto;
     }
 

@@ -3,6 +3,7 @@ package cl.kibernum.miprimerspringboot.service.serviceimpl;
 import cl.kibernum.miprimerspringboot.bl.entity.Clase;
 import cl.kibernum.miprimerspringboot.dto.request.ClaseRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.ClaseResponseDto;
+import cl.kibernum.miprimerspringboot.mapper.ClaseMapper;
 import cl.kibernum.miprimerspringboot.repository.ClaseRepository;
 import cl.kibernum.miprimerspringboot.service.ClaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ClaseServiceImpl implements ClaseService {
      */
     @Autowired
     private ClaseRepository claseRepository;
+
+    @Autowired
+    private ClaseMapper claseMapper;
 
     /**
      * Implementación de Lista todas las clases
@@ -62,26 +66,37 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Override
     public List<ClaseResponseDto> listarClasesApi() {
-        return List.of();
+        return claseRepository.findAll()
+                .stream()
+                .map(claseMapper::claseToClaseResponseDto)
+                .toList();
     }
 
     @Override
     public ClaseResponseDto clasePorIdApi(Integer id) {
-        return null;
+        Clase clase = claseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Clase no encontrada con id: " + id));
+        return claseMapper.claseToClaseResponseDto(clase);
     }
 
     @Override
     public ClaseResponseDto crearClaseApi(ClaseRequestDto claseRequestDto) {
-        return null;
+        Clase clase = claseMapper.claseDtoToEntity(claseRequestDto);
+        claseRepository.save(clase);
+        return claseMapper.claseToClaseResponseDto(clase);
     }
 
     @Override
     public ClaseResponseDto actualizarClaseApi(ClaseRequestDto claseRequestDto, Integer id) {
-        return null;
+        Clase clase = claseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Clase no encontrada con id: " + id));
+        claseMapper.updateClaseEntity(claseRequestDto, clase);
+        clase = claseRepository.save(clase);
+        return claseMapper.claseToClaseResponseDto(clase);
     }
 
     @Override
     public void borrarClaseApi(Integer id) {
-
+        claseRepository.deleteById(id);
     }
 }
