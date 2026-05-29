@@ -2,17 +2,17 @@
    CONFIGURACIÓN DE COLORES (VARIABLES CSS)
    ========================================================================== */
 :root {
-    /* Modo Claro (Suave, no blanco puro) */
-    --bg-body: #f8fafc;          /* Fondo general */
+    /* Modo Claro */
+    --bg-body: #292828;          /* Fondo general */
     --bg-card: #ffffff;          /* Fondo de tarjetas */
-    --text-main: #1e293b;        /* Texto principal oscuro */
-    --text-muted: #64748b;      /* Texto secundario/subtítulos */
-    --border-color: #e2e8f0;    /* Bordes suaves */
+    --text-main: #ffffff;        /* Texto principal oscuro */
+    --text-muted: #94a3b8;      /* Texto secundario/subtítulos */
+    --border-color: #1771f3;    /* Bordes suaves */
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 
     /* Colores de acento */
-    --primary: #3b82f6;          /* Azul */
+    --primary: #fdfdfd;          /* Azul */
     --success: #10b981;          /* Verde */
     --warning: #f59e0b;          /* Amarillo/Naranja */
     --purple: #8b5cf6;           /* Morado */
@@ -21,9 +21,9 @@
     /* Modo Oscuro: Se activa automáticamente por el sistema O manualmente por clase en el HTML */
     @media (prefers-color-scheme: dark) {
         :root {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
+            --bg-body: #031620;
+            --bg-card: #031c47;
+            --text-main: #ffffff;
             --text-muted: #94a3b8;
             --border-color: #334155;
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
@@ -33,9 +33,9 @@
 
     /*  Forzar Modo Oscuro manual mediante clase en la raíz */
     html.dark-mode :root, html.dark-mode {
-    --bg-body: #0f172a;
-    --bg-card: #1e293b;
-    --text-main: #f8fafc;
+    --bg-body: rgba(6, 48, 158, 0.35);
+    --bg-card: rgba(17, 27, 44, 0.64);
+    --text-main: #ffffff;
     --text-muted: #94a3b8;
     --border-color: #334155;
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
@@ -44,7 +44,7 @@
 
     /* Estilo para el botón en el navbar */
     .btn-theme {
-    background: var(--bg-card); /* <-- Cambiado a var(--bg-card) */
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
     color: var(--text-main);
     padding: 8px 12px;
@@ -63,7 +63,7 @@
    ========================================================================== */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: var(--bg-body);
+    background-color: var(--bg-body) !important;
     margin: 0;
     padding: 40px;
     color: var(--text-main);
@@ -406,7 +406,7 @@ input:focus, select:focus {
     color: var(--text-main);
 }
 
-/* Solución para Checkbox en línea (Alineado al lado del texto) */
+
 .form-group-inline {
     display: flex;
     align-items: center; /* Centra verticalmente el cuadrito con el texto */
@@ -476,8 +476,7 @@ input:focus, select:focus {
 /* ==========================================================================
    ESTILOS VISTA GRADOS FORM
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.main-container { max-width: 600px; margin: 0 auto; }
+
 .breadcrumb { margin-bottom: 20px; }
 .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
 .breadcrumb a:hover { color: #475569; }
@@ -502,8 +501,6 @@ input[type="text"]:focus { outline: none; border-color: #64748b; box-shadow: 0 0
 /* ==========================================================================
    ESTILOS VISTA GRADOS LISTAR
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.container { max-width: 1000px; margin: 0 auto; }
 
 .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
@@ -598,8 +595,6 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: #10b981; curso
 /* ==========================================================================
    ESTILOS DE LA VISTA ESTUDIANTE FORM
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.main-container { max-width: 650px; margin: 0 auto; }
 .breadcrumb { margin-bottom: 20px; }
 .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
 .breadcrumb a:hover { color: #3b82f6; }
@@ -629,8 +624,6 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: #3b82f6; curso
 /* ==========================================================================
    ESTILOS DE LA VISTA ESTUDIANTE
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.container { max-width: 1100px; margin: 0 auto; }
 
 .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
@@ -661,8 +654,6 @@ tr:hover { background-color: #f8fafc; }
 /* ==========================================================================
    ESTILOS DE LA VISTA CLASES
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.container { max-width: 1000px; margin: 0 auto; }
 .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
 .btn-crear { padding: 10px 18px; background-color: #f59e0b; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; }
@@ -688,8 +679,6 @@ tr:hover { background-color: #f8fafc; }
    ESTILOS DE LA VISTA CLASES FORM
    ========================================================================== */
 
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.main-container { max-width: 600px; margin: 0 auto; }
 .breadcrumb { margin-bottom: 20px; }
 .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
 .breadcrumb a:hover { color: #f59e0b; }
@@ -718,9 +707,6 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: #f59e0b; curso
 /* ==========================================================================
    ESTILOS DE LA VISTA ASISTENCIAS
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.container { max-width: 1100px; margin: 0 auto; }
-
 .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
 
@@ -756,8 +742,6 @@ tr:hover { background-color: #f8fafc; }
 /* ==========================================================================
    ESTILOS DE LA VISTA ASISTENCIAS FORM
    ========================================================================== */
-body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 40px; color: #333; }
-.main-container { max-width: 650px; margin: 0 auto; }
 .breadcrumb { margin-bottom: 20px; }
 .breadcrumb a { color: #64748b; text-decoration: none; font-size: 0.9rem; }
 .breadcrumb a:hover { color: #8b5cf6; }
