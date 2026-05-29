@@ -3,7 +3,6 @@ package cl.kibernum.miprimerspringboot.mapper;
 import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
 import cl.kibernum.miprimerspringboot.bl.entity.Grado;
 import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
-import cl.kibernum.miprimerspringboot.dto.request.GradoRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
 import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
 import cl.kibernum.miprimerspringboot.service.serviceimpl.GradoServiceImpl;
@@ -15,6 +14,8 @@ public class EstudianteMapper {
 
     @Autowired
     private GradoMapper gradoMapper;
+    @Autowired
+    private GradoServiceImpl gradoServiceImpl;
 
     public Estudiante estudianteDtoToEntity(EstudianteRequestDto estudianteDto) {
         Estudiante estudiante = new Estudiante();
@@ -23,7 +24,7 @@ public class EstudianteMapper {
         estudiante.setApellido2(estudianteDto.getApellido2());
         estudiante.setFechaNac(estudianteDto.getFechaNac());
         estudiante.setRut(estudianteDto.getRut());
-        Grado grado = gradoMapper.gradoDtoToEntity(estudianteDto.getGradoRequestDto());
+        Grado grado = gradoServiceImpl.gradoPorId(estudianteDto.getIdGrado()).orElseThrow(()-> new RuntimeException("Grado no encontrado"));
         estudiante.setGrado(grado);
         estudiante.setFechaAscenso(estudianteDto.getFechaAscenso());
         estudiante.setActivo(estudianteDto.isActivo());
@@ -51,7 +52,7 @@ public class EstudianteMapper {
         estudiante.setApellido2(estudianteDto.getApellido2());
         estudiante.setFechaNac(estudianteDto.getFechaNac());
         estudiante.setRut(estudianteDto.getRut());
-        Grado grado = gradoMapper.gradoDtoToEntity(estudianteDto.getGradoRequestDto());
+        Grado grado = gradoServiceImpl.gradoPorId(estudianteDto.getIdGrado()).orElseThrow(()-> new RuntimeException("Grado no encontrado"));
         estudiante.setGrado(grado);
         estudiante.setFechaAscenso(estudianteDto.getFechaAscenso());
         estudiante.setActivo(estudianteDto.isActivo());

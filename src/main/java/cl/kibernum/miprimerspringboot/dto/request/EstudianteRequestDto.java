@@ -1,6 +1,7 @@
 package cl.kibernum.miprimerspringboot.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,12 +15,12 @@ import java.time.LocalDate;
 @Getter @Setter
 public class EstudianteRequestDto extends PersonaRequestDto{
 
-    @NotBlank(message = "El grado es necesario")
-    private GradoRequestDto gradoRequestDto;
+    @NotNull(message = "Debe seleccionar un grado")
+    private Integer idGrado;
 
-    @NotBlank(message = "Debe ir una fecha de ascenso")
+    @NotNull(message = "La fecha de ascenso es obligatoria")
     private LocalDate fechaAscenso;
 
-    @NotBlank(message = "Indicar si el estudiante está activo o no")
+    @NotNull
     private boolean activo;
 }

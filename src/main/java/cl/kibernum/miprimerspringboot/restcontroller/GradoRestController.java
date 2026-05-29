@@ -1,6 +1,5 @@
 package cl.kibernum.miprimerspringboot.restcontroller;
 
-import cl.kibernum.miprimerspringboot.bl.entity.Grado;
 import cl.kibernum.miprimerspringboot.dto.request.GradoRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.GradoResponseDto;
 import cl.kibernum.miprimerspringboot.service.GradoService;

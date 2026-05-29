@@ -1,6 +1,7 @@
 package cl.kibernum.miprimerspringboot.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +23,7 @@ public abstract class PersonaRequestDto {
 
     private String apellido2;
 
-    @NotBlank(message = "La fecha de nacimiento es obligatoria")
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
     private LocalDate fechaNac;
 
     @NotBlank(message = "El rut es obligatorio")

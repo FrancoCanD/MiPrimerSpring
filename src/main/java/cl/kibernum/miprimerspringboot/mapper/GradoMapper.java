@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GradoMapper {
 
+
     public Grado gradoDtoToEntity(GradoRequestDto gradoDto) {
         Grado grado = new Grado();
         grado.setNombre(gradoDto.getNombre());
