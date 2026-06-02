@@ -23,7 +23,7 @@
 
         <hr>
 
-        <!-- Historial de Asistencias Corregido -->
+        <!-- Historial de Asistencias -->
         <h3>Historial de Asistencias</h3>
         <table class="table">
             <thead>
@@ -35,17 +35,17 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Iteración con los campos exactos de tu entidad Asistencia -->
+
             <tr th:each="asistencia : ${asistencias}"><!-- 1. Formato seguro para la fecha -->
                 <td th:text="${asistencia?.fechaClase != null ? #temporals.format(asistencia.fechaClase, 'dd/MM/yyyy') : 'Sin fecha'}">01/01/2026</td>
 
-                <!-- 2. Uso de ?.id temporalmente para evitar que se rompa si 'nombre' no existe en Clase -->
+
                 <td th:text="'Clase ID: ' + ${asistencia?.clase?.id}">Clase de Karate</td>
 
-                <!-- 3. Uso de ?. de forma segura para los datos del instructor -->
+
                 <td th:text="${asistencia?.instructor?.nombres != null ? asistencia.instructor.nombres + ' ' + asistencia.instructor.apellido1 : 'No asignado'}">Profesor</td>
             </tr>
-            <!-- Mensaje si la lista viene vacía (por eso el estudiante sin asistencias no fallaba) -->
+            <!-- Mensaje si la lista viene vacía -->
             <tr th:if="${#lists.isEmpty(asistencias)}">
                 <td colspan="3">El estudiante no registra asistencias en el sistema.</td>
             </tr>
