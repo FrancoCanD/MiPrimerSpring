@@ -3,6 +3,7 @@ package cl.kibernum.miprimerspringboot.service;
 import cl.kibernum.miprimerspringboot.bl.entity.Asistencia;
 import cl.kibernum.miprimerspringboot.dto.request.AsistenciaRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.AsistenciaResponseDto;
+import cl.kibernum.miprimerspringboot.repository.AsistenciaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,10 @@ public interface AsistenciaService {
     Asistencia obtenerPorId(Integer id);
     void guardar(Asistencia asistencia);
     void eliminar(Integer id);
+    List<Asistencia> listarPorEstudianteId(Integer estudianteId);
+
+
+
 
     // Métodos API REST con DTOs
     List<AsistenciaResponseDto> listarAsistenciasApi();
@@ -20,4 +25,6 @@ public interface AsistenciaService {
     AsistenciaResponseDto asistenciaPorIdApi(Integer id);
     AsistenciaResponseDto actualizarAsistenciaApi(AsistenciaRequestDto asistenciaRequestDto, Integer id);
     void borrarAsistenciaApi(Integer id);
-}
+
+    }
+

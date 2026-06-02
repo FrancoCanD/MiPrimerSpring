@@ -19,7 +19,7 @@
     <div class="header-section">
         <h1>Alumnos Registrados</h1>
         <div style="display: flex; gap: 10px;">
-            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+
             <a th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
         </div>
     </div>
@@ -35,6 +35,8 @@
             <th>Último Ascenso</th>
             <th>Estado</th>
             <th>Acciones</th>
+            <th>Ver más</th>
+
         </tr>
         </thead>
         <tbody>
@@ -53,6 +55,9 @@
             <td class="actions-cell">
                 <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}" class="link-editar">Editar</a>
                 <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}" class="link-eliminar" onclick="return confirm('¿Eliminar matrícula de este estudiante?')">Eliminar</a>
+            </td>
+            <td class="actions-cell">
+                <a th:href="@{/estudiantes/perfil/{id}(id=${estudiante.id})}" class="btn btn-perfil">Perfil</a>
             </td>
         </tr>
         </tbody>

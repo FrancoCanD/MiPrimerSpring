@@ -1,6 +1,8 @@
 package cl.kibernum.miprimerspringboot.controller;
 
+import cl.kibernum.miprimerspringboot.bl.entity.Asistencia;
 import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
+import cl.kibernum.miprimerspringboot.service.AsistenciaService; // ← Asegúrate de importar el servicio
 import cl.kibernum.miprimerspringboot.service.EstudianteService;
 import cl.kibernum.miprimerspringboot.service.GradoService;
 import jakarta.validation.Valid;
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
 
 /**
  * Controlador MVC para manejar solicitudes web de estudiante
@@ -21,13 +27,17 @@ public class EstudianteController {
     private EstudianteService estudianteService;
 
     @Autowired
-    private GradoService gradoService; // ← inyectamos GradoService
+    private GradoService gradoService;
+
+    @Autowired
+    private AsistenciaService asistenciaService; // ← Inyección única corregida
 
     /**
      * Muestra el listado de Estudiantes
      */
     @GetMapping({"", "/", "/listar"})
     public String listar(Model model) {
+        model.addAttribute("students", estudianteService.listarEstudiantes()); // Ajustado a tu variable original si aplica
         model.addAttribute("estudiantes", estudianteService.listarEstudiantes());
         return "estudiantes/listar";
     }
@@ -38,7 +48,7 @@ public class EstudianteController {
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("estudiante", new Estudiante());
-        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
+        model.addAttribute("grados", gradoService.listarGrados());
         return "estudiantes/form";
     }
 
@@ -49,7 +59,7 @@ public class EstudianteController {
     public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
                           BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("grados", gradoService.listarGrados()); // ← también al recargar por error
+            model.addAttribute("grados", gradoService.listarGrados());
             return "estudiantes/form";
         }
         estudianteService.crearEstudiante(estudiante);
@@ -64,7 +74,7 @@ public class EstudianteController {
         Estudiante estudiante = estudianteService.estudiantePorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado: " + id));
         model.addAttribute("estudiante", estudiante);
-        model.addAttribute("grados", gradoService.listarGrados()); // ← lista de grados al formulario
+        model.addAttribute("grados", gradoService.listarGrados());
         return "estudiantes/form";
     }
 
@@ -75,5 +85,28 @@ public class EstudianteController {
     public String eliminar(@PathVariable Integer id) {
         estudianteService.borrarEstudiante(id);
         return "redirect:/estudiantes";
+    }
+
+    /**
+     * Muestra el perfil de un estudiante específico junto a sus asistencias
+     */
+    @GetMapping("/perfil/{id}")
+    public String perfil(@PathVariable Integer id, Model model) {
+        Estudiante estudiante = estudianteService.estudiantePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado: " + id));
+
+        int edad = 0;
+        if (estudiante.getFechaNac() != null) {
+            edad = Period.between(estudiante.getFechaNac(), LocalDate.now()).getYears();
+        }
+
+        List<Asistencia> asistencias = asistenciaService.listarPorEstudianteId(id);
+
+        model.addAttribute("estudiante", estudiante);
+        model.addAttribute("edad", edad);
+        model.addAttribute("grados", gradoService.listarGrados());
+        model.addAttribute("asistencias", asistencias);
+
+        return "estudiantes/perfil";
     }
 }

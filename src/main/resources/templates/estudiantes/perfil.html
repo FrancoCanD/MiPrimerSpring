@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del Estudiante</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+   </head>
+<body>
+<br>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br>
+<br>
+    <div class="container">
+        <!-- 1. Datos Personales -->
+        <h1 th:text="'Perfil de ' + ${estudiante?.nombres} + ' ' + ${estudiante.apellido1}">Nombre Estudiante</h1>
+
+        <p><strong>ID:</strong> <span th:text="${estudiante?.id}">1</span></p>
+        <p><strong>Edad:</strong> <span th:text="${edad} + ' años'">25 años</span></p>
+        <p><strong>RUT:</strong> <span th:text="${estudiante?.rut}">12345678-9</span></p>
+        <p><strong>Grado:</strong> <span th:text="${estudiante?.grado?.nombre}">Primer Grado</span></p>
+        <p><strong>Estado:</strong> <span th:text="${estudiante?.activo} ? 'Activo' : 'Inactivo'">Activo</span></p>
+
+        <hr>
+
+        <!-- Historial de Asistencias Corregido -->
+        <h3>Historial de Asistencias</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Fecha de Clase</th>
+                <th>Clase / Horario</th>
+                <th>Instructor</th>
+                <th>Modulo Técnico</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iteración con los campos exactos de tu entidad Asistencia -->
+            <tr th:each="asistencia : ${asistencias}"><!-- 1. Formato seguro para la fecha -->
+                <td th:text="${asistencia?.fechaClase != null ? #temporals.format(asistencia.fechaClase, 'dd/MM/yyyy') : 'Sin fecha'}">01/01/2026</td>
+
+                <!-- 2. Uso de ?.id temporalmente para evitar que se rompa si 'nombre' no existe en Clase -->
+                <td th:text="'Clase ID: ' + ${asistencia?.clase?.id}">Clase de Karate</td>
+
+                <!-- 3. Uso de ?. de forma segura para los datos del instructor -->
+                <td th:text="${asistencia?.instructor?.nombres != null ? asistencia.instructor.nombres + ' ' + asistencia.instructor.apellido1 : 'No asignado'}">Profesor</td>
+            </tr>
+            <!-- Mensaje si la lista viene vacía (por eso el estudiante sin asistencias no fallaba) -->
+            <tr th:if="${#lists.isEmpty(asistencias)}">
+                <td colspan="3">El estudiante no registra asistencias en el sistema.</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <a th:href="@{/estudiantes}" class="btn btn-warning">Volver al listado</a>
+</div>
+<br>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

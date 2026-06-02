@@ -62,7 +62,7 @@
                     <option value="">— Seleccione una clase —</option>
                     <option th:each="cl : ${listaClases}"
                             th:value="${cl.id}"
-                            th:text="|${cl.tipoClase} — Cód: ${cl.id}|"
+                            th:text="|${cl.tipoClase} Cód: ${cl.id}|"
                             th:selected="${asistencia.clase != null and asistencia.clase.id == cl.id}">
                     </option>
                 </select>

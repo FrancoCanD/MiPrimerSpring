@@ -5,6 +5,8 @@ import cl.kibernum.miprimerspringboot.service.AsistenciaService;
 import cl.kibernum.miprimerspringboot.service.ClaseService;
 import cl.kibernum.miprimerspringboot.repository.EstudianteRepository;
 import cl.kibernum.miprimerspringboot.repository.InstructorRepository; // Inyección requerida
+import cl.kibernum.miprimerspringboot.service.GradoService;
+import cl.kibernum.miprimerspringboot.service.serviceimpl.EstudianteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ public class AsistenciaController {
     @Autowired private EstudianteRepository estudianteRepository;
     @Autowired private InstructorRepository instructorRepository; // Inyectado
     @Autowired private ClaseService claseService;
+    @Autowired private EstudianteServiceImpl estudianteServiceImpl;
+
 
     @GetMapping({"", "/listar"})
     public String listarAsistencias(Model model) {
@@ -93,4 +97,7 @@ public class AsistenciaController {
         redirectAttributes.addFlashAttribute("exito", "Registro eliminado");
         return "redirect:/asistencias/listar";
     }
+
+
 }
+

@@ -71,4 +71,10 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     public void borrarAsistenciaApi(Integer id) {
         asistenciaRepository.deleteById(id);
     }
+
+    @Override
+    public List<Asistencia> listarPorEstudianteId(Integer estudianteId) {
+        return asistenciaRepository.findByEstudianteId(estudianteId);
+    }
+
 }
