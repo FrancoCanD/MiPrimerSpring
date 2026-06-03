@@ -42,8 +42,8 @@
             <div class="listar-estudiantes">
                 <tr th:each="estudiante : ${estudiantes}">
                     <td th:text="${estudiante.id}" ></td>
-                    <td th:text="${estudiante.nombres}" ></td>
-                    <td th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
+                    <td class="nombre-listarE" th:text="${estudiante.nombres}" ></td>
+                    <td class="nombre-listarE" th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
                     <td th:text="${estudiante.rut}"></td>
                     <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin Grado'}"></td>
                     <td th:text="${estudiante.fechaAscenso}"></td>

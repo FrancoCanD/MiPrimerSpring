@@ -899,3 +899,9 @@ select:focus, input[type="date"]:focus, input[type="datetime-local"]:focus { out
 .Pest-container {
     margin: 0.25rem 0 0;
 }
+
+.nombre-listarE {
+    color: #1e293b;
+    font-size: 1rem;
+    font-weight: bold;
+}
