@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS escuela_kenpo;
 CREATE DATABASE escuela_kenpo;
 USE escuela_kenpo;
 
+
 -- 1. Tabla base
 CREATE TABLE personas (
                           id INT AUTO_INCREMENT PRIMARY KEY,

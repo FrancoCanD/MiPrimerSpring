@@ -19,61 +19,76 @@
         </div>
 
         <!-- Tarjeta de datos personales -->
-        <div style="background: var(--card-bg, #f8fafc); border-radius: 12px; padding: 1.5rem;
-                border: 1px solid var(--border-color, #e2e8f0); margin-bottom: 1.5rem;">
-            <h2 style="margin-top:0; color: var(--primary-color, #1e293b);">📌 Datos Personales</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">Nombre Completo</p>
-                    <p style="font-weight:600; margin:0.25rem 0 0; color:#1e293b;"
-                       th:text="${ficha.nombres + ' ' + ficha.apellido1 + (ficha.apellido2 != null ? ' ' + ficha.apellido2 : '')}"></p>
+        <div class="card-Pest">
+            <h2 class="Pest-titulo">📌 Datos Personales</h2>
+
+            <div class="Pest-grid">
+
+                <div class="Pest-item">
+                    <p class="Pest-label">Nombre Completo</p>
+                    <p class="Pest-valor"
+                       th:text="${ficha.nombres + ' ' + ficha.apellido1 + (ficha.apellido2 != null ? ' ' + ficha.apellido2 : '')}">
+                    </p>
                 </div>
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">RUT</p>
-                    <p style="font-weight:600; margin:0.25rem 0 0; color:#1e293b;" th:text="${ficha.rut}"></p>
+
+                <div class="Pest-item">
+                    <p class="Pest-label">RUT</p>
+                    <p class="Pest-valor" th:text="${ficha.rut}"></p>
                 </div>
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">Edad</p>
-                    <p style="font-weight:600; margin:0.25rem 0 0; color:#1e293b;">
+
+                <div class="Pest-item">
+                    <p class="Pest-label">Edad</p>
+                    <p class="Pest-valor">
                         <span th:text="${ficha.edad}"></span> años
-                        <span style="color:#94a3b8; font-size:0.8rem;"
-                              th:text="'(' + ${#temporals.format(ficha.fechaNac, 'dd/MM/yyyy')} + ')'"></span>
+                        <span class="Pest-secundario"
+                              th:text="'(' + ${#temporals.format(ficha.fechaNac, 'dd/MM/yyyy')} + ')'">
+                </span>
                     </p>
                 </div>
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">Estado</p>
-                    <p style="margin:0.25rem 0 0;">
-                    <span th:class="${ficha.activo} ? 'badge badge-activa' : 'badge badge-inactiva'"
-                          th:text="${ficha.activo} ? 'Vigente' : 'Inactivo'"></span>
+
+                <div class="Pest-item">
+                    <p class="Pest-label">Estado</p>
+                    <p class="Pest-container">
+                <span th:class="${ficha.activo} ? 'badge badge-activa' : 'badge badge-inactiva'"
+                      th:text="${ficha.activo} ? 'Vigente' : 'Inactivo'">
+                </span>
                     </p>
                 </div>
+
             </div>
         </div>
 
         <!-- Tarjeta de datos académicos -->
-        <div style="background: var(--card-bg, #f8fafc); border-radius: 12px; padding: 1.5rem;
-                border: 1px solid var(--border-color, #e2e8f0); margin-bottom: 1.5rem;">
-            <h2 style="margin-top:0; color: var(--primary-color, #1e293b);">🥋 Datos Académicos</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">Grado / Cinturón</p>
-                    <p style="font-weight:600; margin:0.25rem 0 0; color:#1e293b;" th:text="${ficha.grado}"></p>
-                </div>
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">Último Ascenso</p>
-                    <p style="font-weight:600; margin:0.25rem 0 0; color:#1e293b;"
-                       th:text="${ficha.fechaAscenso != null ? #temporals.format(ficha.fechaAscenso, 'dd/MM/yyyy') : '-'}"></p>
-                </div>
-                <div>
-                    <p style="color:#64748b; margin:0; font-size:0.85rem;">Fecha de Inscripción</p>
-                    <p style="font-weight:600; margin:0.25rem 0 0; color:#1e293b;"
-                       th:text="${ficha.fechaInscripcion != null ? #temporals.format(ficha.fechaInscripcion, 'dd/MM/yyyy') : 'No registrada'}"></p>
-                </div>
+        <div class="card-Pest">
+        <h2 class="Pest-titulo">🥋 Datos Académicos</h2>
+
+        <div class="Pest-grid">
+
+            <div class="Pest-item">
+                <p class="Pest-label">Grado / Cinturón</p>
+                <p class="Pest-valor" th:text="${ficha.grado}">
+                </p>
             </div>
+
+            <div class="Pest-item">
+                <p class="Pest-label">Ultimo Ascenso</p>
+                <p class="Pest-valor" th:text="${ficha.fechaAscenso != null ? #temporals.format(ficha.fechaAscenso, 'dd/MM/yyyy') : '-'}"></p>
+            </div>
+
+            <div class="Pest-item">
+                <p class="Pest-label">Fecha de Inscripcion</p>
+                <p class="Pest-valor" th:text="${ficha.fechaInscripcion != null ? #temporals.format(ficha.fechaInscripcion, 'dd/MM/yyyy') : 'No registrada'}"></p>
+            </div>
+
         </div>
+    </div>
 
         <!-- Tabla de clases asistidas con instructor -->
         <h2 style="color: var(--primary-color, #1e293b);">📋 Clases Asistidas</h2>
+
+        <div class="total-clases" th:if="${not #lists.isEmpty(ficha.asistencias)}">
+            Total de clases asistidas: <strong th:text="${#lists.size(ficha.asistencias)}"></strong>
+        </div>
 
         <table th:if="${not #lists.isEmpty(ficha.asistencias)}">
             <thead>
@@ -98,10 +113,6 @@
             Este estudiante no tiene asistencias registradas.
         </div>
 
-        <div th:if="${not #lists.isEmpty(ficha.asistencias)}"
-             style="margin-top:1rem; color:#64748b; font-size:0.9rem;">
-            Total de clases asistidas: <strong th:text="${#lists.size(ficha.asistencias)}"></strong>
-        </div>
 
     </div>
 </div>

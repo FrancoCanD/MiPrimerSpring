@@ -853,3 +853,49 @@ select:focus, input[type="date"]:focus, input[type="datetime-local"]:focus { out
     color: var(--text-muted);
     font-size: 0.85rem;
 }
+
+.total-clases{
+    margin-top:1rem;
+    color:#333333;
+    font-size:1.3rem;
+}
+
+.card-Pest {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1.5rem;
+}
+
+.Pest-titulo {
+    margin-top: 0;
+    color: #1e293b;
+}
+
+.Pest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.Pest-label {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.Pest-valor {
+    font-weight: 600;
+    margin: 0.25rem 0 0;
+    color: #1e293b;
+}
+
+.Pest-secundario {
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.Pest-container {
+    margin: 0.25rem 0 0;
+}
