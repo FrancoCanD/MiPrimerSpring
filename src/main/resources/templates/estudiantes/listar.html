@@ -15,53 +15,55 @@
 <br>
 <br>
 <div class="container-vista-estudiantes">
-<div class="container">
-    <div class="header-section">
-        <h1>Alumnos Registrados</h1>
-        <div style="display: flex; gap: 10px;">
-            <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
-            <a th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
+    <div class="container">
+        <div class="header-section">
+            <h1>Alumnos Registrados</h1>
+            <div style="display: flex; gap: 10px;">
+                <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+                <a th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
+            </div>
         </div>
-    </div>
 
-    <table th:if="${not #lists.isEmpty(estudiantes)}">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>RUT</th>
-            <th>Grado Kenpo</th>
-            <th>Último Ascenso</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="estudiante : ${estudiantes}">
-            <td th:text="${estudiante.id}" style="font-weight:600; color:#64748b;"></td>
-            <td th:text="${estudiante.nombres}" style="font-weight:600; color:#1e293b;"></td>
-            <td th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
-            <td th:text="${estudiante.rut}"></td>
-            <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin Grado'}"></td>
-            <td th:text="${estudiante.fechaAscenso}"></td>
-            <td>
+        <table th:if="${not #lists.isEmpty(estudiantes)}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>RUT</th>
+                <th>Grado Kenpo</th>
+                <th>Último Ascenso</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="estudiante : ${estudiantes}">
+                <td th:text="${estudiante.id}" style="font-weight:600; color:#64748b;"></td>
+                <td th:text="${estudiante.nombres}" style="font-weight:600; color:#1e293b;"></td>
+                <td th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
+                <td th:text="${estudiante.rut}"></td>
+                <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin Grado'}"></td>
+                <td th:text="${estudiante.fechaAscenso}"></td>
+                <td>
                 <span th:class="${estudiante.activo} ? 'badge badge-activa' : 'badge badge-inactiva'"
                       th:text="${estudiante.activo} ? 'Activo' : 'Inactivo'">
                 </span>
-            </td>
-            <td class="actions-cell">
-                <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}" class="link-editar">Editar</a>
-                <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}" class="link-eliminar" onclick="return confirm('¿Eliminar matrícula de este estudiante?')">Eliminar</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                </td>
+                <td class="actions-cell">
+                    <a th:href="@{/estudiantes/perfil(rut=${estudiante.rut})}" class="link-editar">👤 Perfil</a>
+                    <a th:href="@{/estudiantes/asistencias(rut=${estudiante.rut})}" class="link-editar">📋 Asistencias</a>
+                    <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}" class="link-editar">Editar</a>
+                    <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}" class="link-eliminar" onclick="return confirm('¿Eliminar matrícula de este estudiante?')">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-    <div class="empty-msg" th:if="${#lists.isEmpty(estudiantes)}">
-        ℹ️ No existen alumnos registrados en el sistema de la academia.
+        <div class="empty-msg" th:if="${#lists.isEmpty(estudiantes)}">
+            ℹ️ No existen alumnos registrados en el sistema de la academia.
+        </div>
     </div>
-</div>
 </div>
 <br>
 <br>

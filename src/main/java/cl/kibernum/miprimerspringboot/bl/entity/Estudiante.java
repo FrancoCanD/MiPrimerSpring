@@ -22,7 +22,7 @@ public class Estudiante extends Persona {
     /**
      * Grado actual del alumno
      */
-    @ManyToOne(fetch = FetchType.EAGER) // Corregido: EAGER evita LazyInitializationException en la vista listar
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grado_id", referencedColumnName = "id")
     @NotNull(message = "Debe seleccionar un grado")
     private Grado grado;
@@ -35,6 +35,12 @@ public class Estudiante extends Persona {
     private LocalDate fechaAscenso;
 
     /**
+     * Fecha de inscripción del alumno a la academia
+     */
+    @Column(name = "fecha_inscripcion")
+    private LocalDate fechaInscripcion;
+
+    /**
      * Situación actual del alumno en la academia
      */
     @Column(nullable = false)
@@ -45,10 +51,11 @@ public class Estudiante extends Persona {
      */
     public Estudiante(Integer id, String nombres, String apellido1, String apellido2,
                       LocalDate fechaNac, String rut, Grado grado,
-                      LocalDate fechaAscenso, boolean activo) {
+                      LocalDate fechaAscenso, LocalDate fechaInscripcion, boolean activo) {
         super(id, nombres, apellido1, apellido2, fechaNac, rut);
         this.grado = grado;
         this.fechaAscenso = fechaAscenso;
+        this.fechaInscripcion = fechaInscripcion;
         this.activo = activo;
     }
 }
