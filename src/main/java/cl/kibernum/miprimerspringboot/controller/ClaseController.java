@@ -21,7 +21,7 @@ public class ClaseController {
     /**
      * Muestra el listado de clases
      */
-    @GetMapping("/listar")
+    @GetMapping({"", "/", "/listar"})
     public String listar(Model model) {
         model.addAttribute("clases", claseService.listarClases());
         return "clases/listar";

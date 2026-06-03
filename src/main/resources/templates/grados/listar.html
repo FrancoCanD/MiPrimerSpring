@@ -19,7 +19,7 @@
         <div>
             <h1>Escala de Grados y Cinturones</h1>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div>
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
             <a th:href="@{/grados/nuevo}" class="btn-crear">🏆 Crear Grado</a>
         </div>
@@ -33,22 +33,22 @@
     <table th:if="${not #lists.isEmpty(grados)}">
         <thead>
         <tr>
-            <th style="width: 80px;">ID</th>
-            <th style="width: 200px;">Nombre Cinturón</th>
+            <th>ID</th>
+            <th>Nombre Cinturón</th>
             <th>Descripción y Requisitos Técnicos</th>
-            <th style="width: 150px;">Clasificación</th>
-            <th style="width: 150px; text-align: center;">Acciones</th>
+            <th>Clasificación</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="grado : ${grados}">
-            <td th:text="${grado.id}" style="font-weight: 600; color: #64748b;"></td>
-            <td th:text="${grado.nombre}" style="font-weight: 600; color: #1e293b;"></td>
+            <td th:text="${grado.id}"></td>
+            <td class="nombre-negrita" th:text="${grado.nombre}"></td>
             <td th:text="${grado.descripcion != null and !#strings.isEmpty(grado.descripcion) ? grado.descripcion : 'Sin descripción cargada.'}"></td>
             <td>
                 <span th:text="${grado.kyuDan}" class="rank-badge"></span>
             </td>
-            <td class="actions-cell" style="text-align: center;">
+            <td class="actions-cell" >
                 <a th:href="@{/grados/editar/{id}(id=${grado.id})}" class="link-editar">Editar</a>
                 <a th:href="@{/grados/eliminar/{id}(id=${grado.id})}"
                    class="link-eliminar"

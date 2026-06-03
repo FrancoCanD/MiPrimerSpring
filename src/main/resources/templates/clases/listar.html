@@ -18,7 +18,7 @@
         <div>
             <h1>Listado de Clases Impartidas</h1>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div>
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
             <a th:href="@{/clases/nuevo}" class="btn-crear">➕ Nueva Clase</a>
         </div>
@@ -27,17 +27,17 @@
     <table th:if="${not #lists.isEmpty(clases)}">
         <thead>
         <tr>
-            <th style="width: 80px;">ID</th>
-            <th style="width: 200px;">Tipo de Clase</th>
+            <th>ID</th>
+            <th>Tipo de Clase</th>
             <th>Descripción del Módulo</th>
-            <th style="width: 120px;">Estado</th>
-            <th style="width: 150px;">Acciones</th>
+            <th>Estado</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="clase : ${clases}">
-            <td th:text="${clase.id}" style="font-weight: 600; color: #64748b;"></td>
-            <td th:text="${clase.tipoClase}" style="font-weight: 600; color: #1e293b;"></td>
+            <td th:text="${clase.id}" ></td>
+            <td class="nombre-negrita" th:text="${clase.tipoClase}"></td>
             <td th:text="${clase.descripcion}"></td>
             <td>
                 <span th:class="${clase.estado} ? 'badge badge-activa' : 'badge badge-inactiva'"

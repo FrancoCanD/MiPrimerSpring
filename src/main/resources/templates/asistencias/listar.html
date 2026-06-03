@@ -19,7 +19,7 @@
         <div>
             <h1>Registro Histórico de Asistencias</h1>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div>
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
             <a th:href="@{/asistencias/nuevo}" class="btn-crear">📝 Nueva Asistencia</a>
         </div>
@@ -31,13 +31,13 @@
     <table th:if="${not #lists.isEmpty(listaAsistencias)}">
         <thead>
         <tr>
-            <th style="width: 70px;">ID</th>
-            <th style="width: 140px;">Fecha Clase</th>
+            <th>ID</th>
+            <th>Fecha Clase</th>
             <th>Estudiante</th>
             <th>Instructor a Cargo</th>
-            <th style="width: 160px;">Módulo Técnico</th>
-            <th style="width: 180px;">Registro en Sistema</th>
-            <th style="width: 140px; text-align: center;">Acciones</th>
+            <th>Módulo Técnico</th>
+            <th>Registro en Sistema</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
                 <span th:text="${asistencia.clase.tipoClase}" class="class-tag"></span>
             </td>
             <td th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}" style="color: #64748b; font-size: 0.9rem;"></td>
-            <td class="actions-cell" style="text-align: center;">
+            <td class="actions-cell">
                 <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="link-editar">Editar</a>
                 <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
                    class="link-eliminar"

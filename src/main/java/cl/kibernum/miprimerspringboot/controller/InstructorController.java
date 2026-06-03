@@ -26,7 +26,7 @@ public class InstructorController {
     /**
      * Muestra el listado de Instructores
      */
-    @GetMapping("/listar")
+    @GetMapping({"", "/", "/listar"})
     public String listar(Model model) {
         model.addAttribute("instructores", instructorService.listarInstructores());
         return "instructores/listar";

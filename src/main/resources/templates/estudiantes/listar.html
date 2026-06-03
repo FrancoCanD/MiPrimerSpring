@@ -18,7 +18,7 @@
     <div class="container">
         <div class="header-section">
             <h1>Alumnos Registrados</h1>
-            <div style="display: flex; gap: 10px;">
+            <div>
                 <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
                 <a th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
             </div>
@@ -42,8 +42,8 @@
             <div class="listar-estudiantes">
                 <tr th:each="estudiante : ${estudiantes}">
                     <td th:text="${estudiante.id}" ></td>
-                    <td class="nombre-listarE" th:text="${estudiante.nombres}" ></td>
-                    <td class="nombre-listarE" th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
+                    <td class="nombre-negrita" th:text="${estudiante.nombres}" ></td>
+                    <td class="nombre-negrita" th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
                     <td th:text="${estudiante.rut}"></td>
                     <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin Grado'}"></td>
                     <td th:text="${estudiante.fechaAscenso}"></td>

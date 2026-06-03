@@ -523,7 +523,8 @@ tr:hover { background-color: #f8fafc; }
 .rank-badge { background-color: #e2e8f0; color: #334155; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; display: inline-block; border-left: 3px solid #64748b; }
 
 /* Acciones */
-.actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+.actions-cell{text-align: center;}
+.actions-cell a { text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; align-content: center;}
 .link-editar { color: #3b82f6; margin-right: 12px; }
 .link-editar:hover { color: #1d4ed8; text-decoration: underline; }
 .link-eliminar { color: #ef4444; }
@@ -860,6 +861,9 @@ select:focus, input[type="date"]:focus, input[type="datetime-local"]:focus { out
     font-size:1.3rem;
 }
 
+
+
+
 .card-Pest {
     background: #f8fafc;
     border-radius: 12px;
@@ -900,8 +904,9 @@ select:focus, input[type="date"]:focus, input[type="datetime-local"]:focus { out
     margin: 0.25rem 0 0;
 }
 
-.nombre-listarE {
+.nombre-negrita {
     color: #1e293b;
     font-size: 1rem;
     font-weight: bold;
 }
+
