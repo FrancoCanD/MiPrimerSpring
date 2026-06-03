@@ -11,12 +11,12 @@
         <div class="header-section">
             <div>
                 <h1>📋 Asistencias del Estudiante</h1>
-                <p style="color:#64748b; margin-top:0.25rem;">
+                <p >
                     <strong th:text="${estudiante.nombres + ' ' + estudiante.apellido1}"></strong>
                     &nbsp;|&nbsp; RUT: <span th:text="${estudiante.rut}"></span>
                 </p>
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <div>
                 <!-- Navega a perfil con el mismo RUT, sin volver a buscarlo -->
                 <a th:href="@{/estudiantes/perfil(rut=${rut})}" class="btn-crear">👤 Ver Perfil</a>
 
@@ -36,7 +36,7 @@
             </thead>
             <tbody>
             <tr th:each="asistencia, iterStat : ${asistencias}">
-                <td th:text="${iterStat.count}" style="color:#64748b; font-weight:600;"></td>
+                <td th:text="${iterStat.count}"></td>
                 <td th:text="${#temporals.format(asistencia.fechaClase, 'dd/MM/yyyy')}"></td>
                 <td th:text="${asistencia.instructor.nombres + ' ' + asistencia.instructor.apellido1}"></td>
                 <td th:text="${asistencia.clase.tipoClase}"></td>
@@ -50,8 +50,7 @@
         </div>
 
         <!-- Resumen -->
-        <div th:if="${not #lists.isEmpty(asistencias)}"
-             style="margin-top:1rem; color:#64748b; font-size:0.9rem;">
+        <div th:if="${not #lists.isEmpty(asistencias)}">
             Total de asistencias: <strong th:text="${#lists.size(asistencias)}"></strong>
         </div>
 

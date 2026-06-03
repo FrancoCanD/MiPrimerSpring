@@ -46,12 +46,14 @@
             <td>
                 <span th:text="${asistencia.fechaClase}" class="date-badge"></span>
             </td>
-            <td th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|" class="student-cell"></td>
+            <td class="nombre-negrita">
+                <span th:text="|${asistencia.estudiante.nombres} ${asistencia.estudiante.apellido1}|" class="student-cell"></span>
+            </td>
             <td th:text="|Sensei ${asistencia.instructor.nombres} ${asistencia.instructor.apellido1}|" class="instructor-cell"></td>
             <td>
                 <span th:text="${asistencia.clase.tipoClase}" class="class-tag"></span>
             </td>
-            <td th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}" style="color: #64748b; font-size: 0.9rem;"></td>
+            <td class="fecha-tono"  th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}" ></td>
             <td class="actions-cell">
                 <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="link-editar">Editar</a>
                 <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"

@@ -23,15 +23,15 @@
             <h3>Estudiantes</h3>
             <p th:text="${totalEstudiantes}">0</p>
         </div>
-        <div class="card-stat" style="border-top-color: #10b981;">
+        <div class="card-statInstructores" >
             <h3>Instructores</h3>
             <p th:text="${totalInstructores}">0</p>
         </div>
-        <div class="card-stat" style="border-top-color: #f59e0b;">
+        <div class="card-statClaAct" >
             <h3>Clases Activas</h3>
             <p th:text="${totalClases}">0</p>
         </div>
-        <div class="card-stat" style="border-top-color: #8b5cf6;">
+        <div class="card-statAsistencias" >
             <h3>Asistencias</h3>
             <p th:text="${totalAsistencias}">0</p>
         </div>
@@ -59,7 +59,7 @@
             <p>Administración de bloques horarios y tipologías de entrenamiento (Kata, Sparring, Técnica).</p>
         </a>
 
-        <a th:href="@{/grados}" class="menu-item" style="grid-column: 1 / -1; text-align: center;">
+        <a th:href="@{/grados}" class="menu-item" >
             <h2>🏆 Configuración de Grados y Cinturones</h2>
             <p>Administrar la escala jerárquica de la escuela (desde 10° Kyu Blanco hasta los Danes Avanzados).</p>
         </a>

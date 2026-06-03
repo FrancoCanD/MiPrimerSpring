@@ -95,8 +95,48 @@ h1 { color: var(--text-main); text-align: center; margin-bottom: 5px; }
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card-statInstructores{
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    border-top: 4px solid var(--primary);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-top-color: #10b981;
+}
+
+.card-statClaAct{
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    border-top: 4px solid var(--primary);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-top-color: #f59e0b;
+}
+
+.card-statAsistencias{
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    border-top: 4px solid var(--primary);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border-top-color: #8b5cf6;
+}
+
 .card-stat h3 { margin: 0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; }
+.card-statAsistencias h3 { margin: 0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; }
+.card-statClaAct h3 { margin: 0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; }
+.card-statInstructores h3 { margin: 0 0 10px 0; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; }
 .card-stat p { margin: 0; font-size: 2rem; font-weight: bold; color: var(--text-main); }
+.card-statAsistencias p{ margin: 0; font-size: 2rem; font-weight: bold; color: var(--text-main); }
+.card-statClaAct p{ margin: 0; font-size: 2rem; font-weight: bold; color: var(--text-main); }
+.card-statInstructores p{ margin: 0; font-size: 2rem; font-weight: bold; color: var(--text-main); }
+
 
 /* Asignación de colores dinámicos por variable a los bordes superiores */
 .dashboard-grid .card-stat:nth-child(2) { border-top-color: var(--success); }
@@ -904,9 +944,31 @@ select:focus, input[type="date"]:focus, input[type="datetime-local"]:focus { out
     margin: 0.25rem 0 0;
 }
 
+.Pest-nombre{
+    margin: 0.25rem 0 0;
+    color: #0a0a0a;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
 .nombre-negrita {
     color: #1e293b;
     font-size: 1rem;
     font-weight: bold;
 }
+.nombre-negrita2 {
+    color: #1e293b;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
 
+.nombre-verde {
+    color: #28a62e;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.fecha-tono{
+    color: #64748b;
+    font-size: 0.9rem;
+}

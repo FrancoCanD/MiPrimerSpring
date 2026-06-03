@@ -10,7 +10,7 @@
 
         <div class="header-section">
             <h1>👤 Perfil del Estudiante</h1>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <div>
                 <!-- Navega a asistencias con el mismo RUT -->
                 <a th:href="@{/estudiantes/asistencias(rut=${rut})}" class="btn-crear">📋 Ver Asistencias</a>
 
@@ -21,13 +21,14 @@
         <!-- Tarjeta de datos personales -->
         <div class="card-Pest">
             <h2 class="Pest-titulo">📌 Datos Personales</h2>
+            <p></p>
 
             <div class="Pest-grid">
 
                 <div class="Pest-item">
                     <p class="Pest-label">Nombre Completo</p>
-                    <p class="Pest-valor"
-                       th:text="${ficha.nombres + ' ' + ficha.apellido1 + (ficha.apellido2 != null ? ' ' + ficha.apellido2 : '')}">
+                    <p class="Pest-nombre"
+                        th:text="${ficha.nombres + ' ' + ficha.apellido1 + (ficha.apellido2 != null ? ' ' + ficha.apellido2 : '')}">
                     </p>
                 </div>
 
@@ -61,6 +62,7 @@
         <!-- Tarjeta de datos académicos -->
         <div class="card-Pest">
         <h2 class="Pest-titulo">🥋 Datos Académicos</h2>
+            <p></p>
 
         <div class="Pest-grid">
 
@@ -84,12 +86,14 @@
     </div>
 
         <!-- Tabla de clases asistidas con instructor -->
-        <h2 style="color: var(--primary-color, #1e293b);">📋 Clases Asistidas</h2>
 
-        <div class="total-clases" th:if="${not #lists.isEmpty(ficha.asistencias)}">
-            Total de clases asistidas: <strong th:text="${#lists.size(ficha.asistencias)}"></strong>
+        <div class="header-section">
+            <h1> 📋 Clases Asistidas</h1>
+
+            <div class="total-clases" th:if="${not #lists.isEmpty(ficha.asistencias)}">
+                Total de clases asistidas: <strong th:text="${#lists.size(ficha.asistencias)}"></strong>
+            </div>
         </div>
-
         <table th:if="${not #lists.isEmpty(ficha.asistencias)}">
             <thead>
             <tr>
@@ -101,10 +105,10 @@
             </thead>
             <tbody>
             <tr th:each="asistencia, iterStat : ${ficha.asistencias}">
-                <td th:text="${iterStat.count}" style="color:#64748b; font-weight:600;"></td>
+                <td th:text="${iterStat.count}" ></td>
                 <td th:text="${#temporals.format(asistencia.fechaClase, 'dd/MM/yyyy')}"></td>
-                <td th:text="${asistencia.clase.tipoClase}"></td>
-                <td th:text="${asistencia.instructor.nombres + ' ' + asistencia.instructor.apellido1}"></td>
+                <td class="nombre-verde"   th:text="${asistencia.clase.tipoClase}"></td>
+                <td class="nombre-negrita2"   th:text="${asistencia.instructor.nombres + ' ' + asistencia.instructor.apellido1}"></td>
             </tr>
             </tbody>
         </table>

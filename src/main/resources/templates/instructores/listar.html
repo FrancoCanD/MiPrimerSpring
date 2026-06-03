@@ -16,7 +16,7 @@
 <div class="container">
     <div class="header-section">
         <h1>Cuerpo de Instructores</h1>
-        <div style="display: flex; gap: 10px;">
+        <div >
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
             <a th:href="@{/instructores/nuevo}" class="btn-crear">➕ Nuevo Instructor</a>
         </div>
@@ -38,11 +38,11 @@
         </thead>
         <tbody>
         <tr th:each="inst : ${instructores}">
-            <td th:text="${inst.id}" style="font-weight:600; color:#64748b;"></td>
-            <td th:text="|Sensei ${inst.nombres} ${inst.apellido1}|" style="font-weight:600; color:#1e293b;"></td>
+            <td th:text="${inst.id}" ></td>
+            <td class="nombre-negrita" th:text="|Sensei ${inst.nombres} ${inst.apellido1}|"></td>
             <td th:text="${inst.rut}"></td>
             <td th:text="${inst.grado != null ? inst.grado.nombre : 'Sin Grado'}"></td>
-            <td th:text="${inst.especialidad}" style="font-weight:500; color:#047857;"></td>
+            <td class="nombre-verde"   th:text="${inst.especialidad}"></td>
             <td th:text="${inst.fechaInicio}"></td>
             <td th:text="${inst.anosExperiencia != null ? inst.anosExperiencia + ' años' : '0'}"></td>
             <td>
