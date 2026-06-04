@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Entidad Estudiante, representa a los alumnos inscritos
+ * Entidad Usuario, representa a los usuarios registrados
  */
 @AllArgsConstructor
 @NoArgsConstructor

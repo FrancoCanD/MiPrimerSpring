@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repositorio de Grado
+ * Repositorio de Usuario
  * JPA repository entrega automáticamente métodos como:
  * -findAll()
  * -findById
