@@ -64,6 +64,33 @@ CREATE TABLE asistencias (
                              FOREIGN KEY (clase_id)      REFERENCES clases(id)
 );
 
+-- 7. Tabla Usuarios
+CREATE TABLE usuarios (
+                            id       INT AUTO_INCREMENT PRIMARY KEY,
+                            username VARCHAR(100)  NOT NULL UNIQUE,
+                            password VARCHAR(255) NOT NULL,
+                            estado   BOOLEAN      NOT NULL DEFAULT TRUE
+);
+
+-- 8. Tabla Roles
+CREATE TABLE roles(
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- 9. Tabla Intermedia
+CREATE TABLE usuario_rol(
+                            usuario_id INT NOT NULL,
+                            rol_id INT NOT NULL,
+                            PRIMARY KEY (usuario_id, rol_id),
+                            CONSTRAINT fk_usuario_rol_usuario
+                                FOREIGN KEY (usuario_id)
+                                REFERENCES usuarios(id),
+                            CONSTRAINT fk_usuario_rol_rol
+                                FOREIGN KEY (rol_id)
+                                REFERENCES roles(id)
+);
+
 -- ==========================================
 -- INSERCIÓN DE DATA DE PRUEBA SANEADA
 -- ==========================================
@@ -100,3 +127,25 @@ INSERT INTO instructores (persona_id, grado_id, especialidad, fecha_inicio, acti
 -- Inserción de asistencia utilizando los IDs reales que ya existen en las tablas anteriores
 INSERT INTO asistencias (registro, fecha_clase, estudiante_id, instructor_id, clase_id) VALUES
     ('2026-05-05 20:30:00', '2026-05-05', 1, 3, 1);
+
+-- Inserción de roles
+INSERT INTO roles(nombre) VALUES
+                                ('ROL_ADMIN'),
+                                ('ROL_INSTRUCTOR'),
+                                ('ROL_ESTUDIANTE');
+
+-- Inserción de Usuarios
+INSERT INTO usuarios(username, password, estado) VALUES
+                                                     ('admin','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true),
+                                                     ('instructor1','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true),
+                                                     ('estudiante1','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true),
+                                                     ('superAdmin','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true);
+
+-- Inserción de usuarios y roles tabla usuario_rol
+INSERT INTO usuario_rol(usuario_id, rol_id) VALUES
+                                                (1,1),
+                                                (2,2),
+                                                (3,3),
+                                                (4,1),
+                                                (4,2);
+

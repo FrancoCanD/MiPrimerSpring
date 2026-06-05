@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Entidad Usuario, representa a los usuarios registrados
  */
@@ -32,5 +35,16 @@ public class Usuario {
 
     @Column(nullable = false)
     @NotNull(message = "Debe seleccionar el estado del usuario")
-    private Boolean activo = true;
+    private Boolean estado = true;
+
+    /**
+     * Relación muchos a muchos, Rol y Usuario
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private Set<Rol> roles = new HashSet<>();
 }
