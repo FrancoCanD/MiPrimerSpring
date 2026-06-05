@@ -1,6 +1,7 @@
 package cl.kibernum.miprimerspringboot.bl.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,8 @@ public class Rol {
      * Rol_Instructor
      * Rol_Estudiante
      */
+    @Column(nullable = false, unique = true, length = 50)
+    @NotBlank(message = "Debe ingresar un nombre para el rol")
     private String nombre;
     /**
      * Relación muchos a muchos, inversa.

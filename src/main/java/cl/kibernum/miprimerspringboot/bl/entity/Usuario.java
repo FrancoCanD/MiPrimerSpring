@@ -29,7 +29,7 @@ public class Usuario {
     @NotBlank(message = "Debe ingresar un nombre de usuario")
     private String username;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     @NotBlank(message = "Debe ingresar una contraseña")
     private String password;
 
