@@ -1,11 +1,15 @@
 package cl.kibernum.miprimerspringboot.controller;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Persona;
+import cl.kibernum.miprimerspringboot.bl.entity.Rol;
 import cl.kibernum.miprimerspringboot.bl.entity.Usuario;
+import cl.kibernum.miprimerspringboot.dto.request.UsuarioCreateRequestDto;
 import cl.kibernum.miprimerspringboot.repository.PersonaRepository;
+import cl.kibernum.miprimerspringboot.repository.RolRepository;
 import cl.kibernum.miprimerspringboot.repository.UsuarioRepository;
 import cl.kibernum.miprimerspringboot.service.UsuarioDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,105 +17,144 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 /**
  * CONTROLADOR DE ADMINISTRACIÓN DE USUARIOS
  * ───────────────────────────────────────────
- * Maneja el panel para que el administrador pueda vincular y desvincular
- * personas (Estudiante/Instructor) a sus cuentas de usuario del sistema.
+ * Maneja el panel de administración de cuentas de usuario:
+ *   - Listar todos los usuarios con sus personas y roles
+ *   - Crear nuevos usuarios (con persona y rol asignados de inmediato)
+ *   - Vincular / desvincular personas a cuentas existentes
  *
- * @RequestMapping("/admin") establece un prefijo común para todas las rutas
- * de este controlador. Cada método agrega su propia sub-ruta.
- * Ejemplo: @GetMapping("/usuarios") → ruta completa: GET /admin/usuarios
+ * Acceso: ROL_ADMIN y ROL_SUPERADMIN (configurado en SecurityConfig).
  *
- * Acceso restringido a ROL_ADMIN (configurado en SecurityConfig).
+ * RESTRICCIÓN ESPECIAL:
+ *   Al cargar la vista, el controlador filtra los roles disponibles según
+ *   el rol del usuario autenticado:
+ *     - ROL_ADMIN     → puede asignar ROL_INSTRUCTOR y ROL_ESTUDIANTE
+ *     - ROL_SUPERADMIN→ puede asignar además ROL_ADMIN
+ *   ROL_SUPERADMIN nunca aparece en el formulario (no es asignable desde la UI).
  */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-    /**
-     * Inyectamos el servicio de negocio de usuarios (interfaz UsuarioDetailsService).
-     * Spring busca automáticamente la clase que implementa esa interfaz: UsuarioServiceImpl.
-     */
     @Autowired private UsuarioDetailsService usuarioService;
-
-    /**
-     * Repositorio de personas: necesario para obtener la lista de personas disponibles
-     * para vincular (las que aún no tienen un usuario asignado).
-     */
     @Autowired private PersonaRepository personaRepository;
-
-    /**
-     * Repositorio de usuarios: usado para verificar si una persona ya está vinculada
-     * a algún usuario (método existsByPersonaId).
-     */
     @Autowired private UsuarioRepository usuarioRepository;
 
     /**
-     * RUTA: GET /admin/usuarios
-     * ──────────────────────────
-     * Muestra la tabla con todos los usuarios y sus personas vinculadas.
-     * Para los usuarios sin persona, muestra un dropdown con las personas disponibles.
+     * RolRepository: necesario para cargar la lista de roles disponibles
+     * y filtrarlos según el privilegio del usuario autenticado.
+     */
+    @Autowired private RolRepository rolRepository;
+
+    /**
+     * GET /admin/usuarios
+     * ────────────────────
+     * Carga y envía a la vista:
+     *   - Lista de todos los usuarios del sistema
+     *   - Personas disponibles para vincular (sin usuario asignado)
+     *   - Roles disponibles para crear nuevos usuarios (filtrados por privilegio)
+     *   - Flag isSuperAdmin para que la vista muestre/oculte opciones especiales
      *
-     * Lógica de "personas disponibles":
-     *   1. Obtenemos TODAS las personas de la BD
-     *   2. Filtramos solo aquellas que NO están asignadas a ningún usuario
-     *      (usando existsByPersonaId: si retorna false, está disponible)
-     *   3. Enviamos esa lista a la vista para poblar el dropdown
+     * Authentication auth: Spring Security inyecta el objeto con el usuario autenticado.
+     * auth.getAuthorities() retorna los roles del usuario actual como strings.
      */
     @GetMapping("/usuarios")
-    public String listarUsuarios(Model model) {
-        // Cargamos todos los usuarios del sistema
+    public String listarUsuarios(Model model, Authentication auth) {
+
         List<Usuario> usuarios = usuarioService.listarUsuarios();
 
-        // Obtenemos todas las personas y filtramos las que no tienen usuario vinculado.
-        // stream() convierte la lista en un flujo de datos para procesarlo.
-        // filter() descarta las personas que ya tienen usuario (existsByPersonaId = true).
-        // toList() convierte el resultado de vuelta a una List.
+        // Personas sin usuario asignado (disponibles para vincular o asignar al crear)
         List<Persona> personasDisponibles = personaRepository.findAll().stream()
                 .filter(p -> !usuarioRepository.existsByPersonaId(p.getId()))
                 .toList();
 
-        // Enviamos ambas listas a la vista Thymeleaf
+        // Determinamos si el usuario actual es superAdmin
+        boolean esSuperAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROL_SUPERADMIN"));
+
+        // Filtramos los roles disponibles para crear usuarios:
+        //   - ROL_SUPERADMIN nunca es asignable desde la UI (solo existe en data.sql)
+        //   - ROL_ADMIN solo lo puede asignar ROL_SUPERADMIN
+        List<Rol> rolesDisponibles = rolRepository.findAll().stream()
+                .filter(r -> !r.getNombre().equals("ROL_SUPERADMIN"))
+                .filter(r -> esSuperAdmin || !r.getNombre().equals("ROL_ADMIN"))
+                .toList();
+
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("personasDisponibles", personasDisponibles);
+        model.addAttribute("rolesDisponibles", rolesDisponibles);
+        // La vista usa este flag para mostrar mensajes informativos contextuales
+        model.addAttribute("esSuperAdmin", esSuperAdmin);
 
-        return "admin/usuarios"; // Thymeleaf busca templates/admin/usuarios.html
+        return "admin/usuarios";
     }
 
     /**
-     * RUTA: POST /admin/usuarios/{id}/vincular-persona
-     * ──────────────────────────────────────────────────
-     * Recibe el formulario de la vista y vincula la persona seleccionada al usuario.
+     * POST /admin/usuarios/crear
+     * ───────────────────────────
+     * Procesa el formulario de creación de un nuevo usuario.
+     * Recibe cada campo como @RequestParam individual para un manejo más seguro y explícito.
      *
-     * @PathVariable Integer id: extrae el ID del usuario directamente de la URL.
-     *   Ejemplo: POST /admin/usuarios/2/vincular-persona → id = 2
+     * @RequestParam(required = false) Integer personaId:
+     *   required = false → si el campo viene vacío (""), Spring lo convierte a null
+     *   automáticamente para tipos Integer (wrapper). Esto permite que el campo sea opcional.
      *
-     * @RequestParam Integer personaId: extrae el valor del campo "personaId"
-     *   del formulario HTML (el select/dropdown).
+     * Delega la lógica completa (validación, encriptado, vínculo, rol) al servicio.
+     * Los errores se capturan con try/catch y se muestran como mensajes flash en la vista.
      *
-     * Usamos POST (no GET) porque está modificando datos en la BD.
-     * Al finalizar, redirige de vuelta a la lista para ver el cambio aplicado.
+     * RedirectAttributes: permite enviar mensajes que se muestran UNA SOLA VEZ
+     * después del redirect (desaparecen tras recargar la página).
      */
-    @PostMapping("/usuarios/{id}/vincular-persona")
-    public String vincularPersona(@PathVariable Integer id, @RequestParam Integer personaId) {
-        usuarioService.vincularPersona(id, personaId);
-        // "redirect:" le dice a Spring que envíe al navegador a esa URL (HTTP 302)
-        // en vez de renderizar una vista directamente
+    @PostMapping("/usuarios/crear")
+    public String crearUsuario(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam(required = false) Integer personaId,
+            @RequestParam String rolNombre,
+            Authentication auth,
+            RedirectAttributes redirectAttributes) {
+
+        // Construimos el DTO con los parámetros recibidos del formulario
+        UsuarioCreateRequestDto dto = new UsuarioCreateRequestDto();
+        dto.setUsername(username);
+        dto.setPassword(password);
+        dto.setPersonaId(personaId);
+        dto.setRolNombre(rolNombre);
+
+        try {
+            usuarioService.crearUsuarioConPersonaYRol(dto, auth);
+            redirectAttributes.addFlashAttribute("exito",
+                    "Usuario '" + username + "' creado correctamente con rol " + rolNombre + ".");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error",
+                    "No se pudo crear el usuario: " + e.getMessage());
+        }
+
         return "redirect:/admin/usuarios";
     }
 
     /**
-     * RUTA: GET /admin/usuarios/{id}/desvincular-persona
-     * ────────────────────────────────────────────────────
-     * Elimina el vínculo entre el usuario indicado y su persona.
-     * Deja persona_id = NULL en la base de datos.
-     *
-     * Usamos GET para simplificar el enlace en la vista (sin formulario),
-     * igual que el patrón de los botones "Eliminar" del resto del proyecto.
+     * POST /admin/usuarios/{id}/vincular-persona
+     * ────────────────────────────────────────────
+     * Vincula una persona existente a un usuario ya creado (sin rol).
+     * Usado desde la tabla de usuarios para los que se crearon sin persona.
+     */
+    @PostMapping("/usuarios/{id}/vincular-persona")
+    public String vincularPersona(@PathVariable Integer id, @RequestParam Integer personaId) {
+        usuarioService.vincularPersona(id, personaId);
+        return "redirect:/admin/usuarios";
+    }
+
+    /**
+     * GET /admin/usuarios/{id}/desvincular-persona
+     * ──────────────────────────────────────────────
+     * Elimina el vínculo entre un usuario y su persona (persona_id = NULL en BD).
      */
     @GetMapping("/usuarios/{id}/desvincular-persona")
     public String desvincularPersona(@PathVariable Integer id) {

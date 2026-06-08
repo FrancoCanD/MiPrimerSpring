@@ -1,6 +1,9 @@
 package cl.kibernum.miprimerspringboot.service;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Usuario;
+import cl.kibernum.miprimerspringboot.dto.request.UsuarioCreateRequestDto;
+import cl.kibernum.miprimerspringboot.dto.response.UsuarioResponseDto;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,56 +11,68 @@ import java.util.Optional;
 /**
  * INTERFAZ DE NEGOCIO PARA EL SERVICIO DE USUARIOS
  * ──────────────────────────────────────────────────
- * Una interfaz define el CONTRATO: dice QUÉ operaciones existen,
- * pero no CÓMO están programadas.
+ * Define el CONTRATO de operaciones sobre usuarios.
+ * La implementación está en UsuarioServiceImpl.
  *
- * La implementación real está en UsuarioServiceImpl.
+ * NOTA: Esta interfaz es para lógica de negocio.
+ * La interfaz de Spring Security (UserDetailsService) está en el paquete serviceimpl.
  *
- * Ventaja: si en el futuro queremos cambiar cómo se guardan los usuarios
- * (por ejemplo, pasar a MongoDB), solo cambiamos la implementación sin
- * tocar los controladores que usan esta interfaz.
- *
- * NOTA: Esta interfaz es diferente a la de Spring Security (UserDetailsService).
- * Esta es para operaciones de negocio (CRUD + vínculos con personas).
+ * MÉTODOS AGRUPADOS POR FUNCIÓN:
+ *   - CRUD básico       → listarUsuarios, usuarioPorId, crearUsuario, borrarUsuario
+ *   - Vínculo persona   → vincularPersona, desvincularPersona
+ *   - Creación completa → crearUsuarioConPersonaYRol (web + API)
+ *   - API REST          → listarUsuariosApi
  */
 public interface UsuarioDetailsService {
 
-    /**
-     * Retorna la lista completa de usuarios registrados en el sistema.
-     */
+    /** Retorna todos los usuarios (entidades, para vistas web). */
     List<Usuario> listarUsuarios();
 
-    /**
-     * Busca un usuario por su ID.
-     * Retorna Optional para forzar al que llame a manejar el caso en que no exista.
-     */
+    /** Busca un usuario por ID. Optional porque puede no existir. */
     Optional<Usuario> usuarioPorId(Integer id);
 
-    /**
-     * Crea o actualiza un usuario en la base de datos.
-     * Retorna el objeto guardado (con el ID generado si es nuevo).
-     */
+    /** Guarda un usuario en la BD (sin validaciones especiales, usado internamente). */
     Usuario crearUsuario(Usuario usuario);
 
-    /**
-     * Elimina un usuario según su ID.
-     */
+    /** Elimina un usuario por su ID. */
     void borrarUsuario(Integer id);
 
     /**
-     * Asocia una Persona existente (Estudiante o Instructor) a una cuenta de Usuario.
-     * La persona queda identificable a través del campo persona_id en la tabla usuarios.
-     *
-     * @param usuarioId ID del usuario al que se le asignará la persona
-     * @param personaId ID de la persona (de la tabla personas) a vincular
+     * Asocia una Persona existente a una cuenta de Usuario.
+     * Actualiza el campo persona_id en la tabla usuarios.
      */
     void vincularPersona(Integer usuarioId, Integer personaId);
 
     /**
-     * Elimina la asociación entre un usuario y su persona vinculada.
-     * El usuario sigue existiendo, pero persona_id quedará en NULL en la BD.
-     *
-     * @param usuarioId ID del usuario al que se le quitará la persona
+     * Elimina el vínculo entre un usuario y su persona.
+     * Deja persona_id = NULL en la BD.
      */
     void desvincularPersona(Integer usuarioId);
+
+    /**
+     * CREACIÓN COMPLETA DE USUARIO (WEB + API)
+     * ─────────────────────────────────────────
+     * Crea un usuario nuevo con:
+     *   1. Contraseña encriptada con BCrypt
+     *   2. Persona vinculada (si se provee personaId)
+     *   3. Rol asignado inmediatamente
+     *
+     * RESTRICCIÓN DE SEGURIDAD:
+     *   Solo el usuario con ROL_SUPERADMIN puede asignar ROL_ADMIN.
+     *   Esta regla se verifica usando el objeto Authentication del usuario autenticado.
+     *
+     * @param dto  datos del nuevo usuario (username, password, personaId opcional, rolNombre)
+     * @param auth objeto de Spring Security con el usuario que hace la petición
+     * @return UsuarioResponseDto con los datos del usuario creado (sin contraseña)
+     * @throws IllegalArgumentException si el username ya existe, la persona ya tiene usuario,
+     *                                  o el rol no existe
+     * @throws SecurityException        si un no-superAdmin intenta asignar ROL_ADMIN
+     */
+    UsuarioResponseDto crearUsuarioConPersonaYRol(UsuarioCreateRequestDto dto, Authentication auth);
+
+    /**
+     * Lista todos los usuarios formateados como DTOs para la API REST.
+     * No incluye contraseñas.
+     */
+    List<UsuarioResponseDto> listarUsuariosApi();
 }

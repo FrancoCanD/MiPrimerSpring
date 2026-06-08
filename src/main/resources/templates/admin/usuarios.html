@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración de Usuarios — Kenpo</title>
     <link rel="stylesheet" th:href="@{/css/global.css}">
+    <style>
+        /* Estilos específicos del panel de usuarios */
+        .form-crear-usuario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 720px;
+            margin-top: 16px;
+        }
+        .form-crear-usuario .campo-completo {
+            grid-column: 1 / -1; /* ocupa todo el ancho de la grilla */
+        }
+        .input-field {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--color-input-border);
+            border-radius: 6px;
+            background: var(--bg-card);
+            color: var(--color-text-dark);
+            font-size: 0.95rem;
+        }
+        .input-field:focus { outline: 2px solid var(--border-color); }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .seccion-crear {
+            margin-top: 40px;
+            padding: 24px;
+            border: 1px solid var(--color-border-soft);
+            border-radius: 10px;
+            background: var(--bg-card);
+        }
+        .seccion-crear h2 {
+            margin: 0 0 4px 0;
+            color: var(--color-h1);
+            font-size: 1.2rem;
+        }
+        .nota-superadmin {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+    </style>
 </head>
 <body>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
@@ -12,11 +60,27 @@
 <br><br>
 
 <div class="container">
+
+    <!-- ── ENCABEZADO ────────────────────────────────────────────────────── -->
     <div class="header-section">
         <h1>Gestión de Usuarios y Personas</h1>
         <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
     </div>
 
+    <!--
+        MENSAJES FLASH (th:if + addFlashAttribute)
+        Los mensajes flash se muestran UNA SOLA VEZ tras un redirect.
+        Se agregan con redirectAttributes.addFlashAttribute("exito"/"error", "mensaje")
+        en AdminController y desaparecen al recargar la página.
+    -->
+    <div th:if="${exito}" class="alert alert-success" style="margin-bottom:16px; padding:10px 16px; border-radius:8px; background:#d1fae5; color:#065f46; border:1px solid #6ee7b7;">
+        ✅ <span th:text="${exito}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-error" style="margin-bottom:16px; padding:10px 16px; border-radius:8px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5;">
+        ❌ <span th:text="${error}"></span>
+    </div>
+
+    <!-- ── TABLA DE USUARIOS EXISTENTES ─────────────────────────────────── -->
     <table th:if="${not #lists.isEmpty(usuarios)}">
         <thead>
         <tr>
@@ -33,6 +97,10 @@
             <td th:text="${u.id}"></td>
             <td class="nombre-negrita" th:text="${u.username}"></td>
             <td>
+                <!--
+                    th:each sobre u.roles: itera el Set<Rol>.
+                    iter.last: true si es el último elemento (para no agregar coma al final).
+                -->
                 <span th:each="rol, iter : ${u.roles}"
                       th:text="${rol.nombre + (iter.last ? '' : ', ')}"
                       class="class-tag">
@@ -44,15 +112,15 @@
                 </span>
             </td>
 
-            <!-- Persona vinculada -->
+            <!-- Persona vinculada o mensaje -->
             <td th:if="${u.persona != null}" class="nombre-negrita"
                 th:text="|${u.persona.nombres} ${u.persona.apellido1} (RUT: ${u.persona.rut})|">
             </td>
             <td th:if="${u.persona == null}" class="fecha-tono">Sin persona vinculada</td>
 
-            <!-- Acciones -->
+            <!-- Acciones de vínculo / desvínculo -->
             <td class="actions-cell">
-                <!-- Desvincular si ya tiene persona -->
+                <!-- Desvincular persona si ya tiene una asignada -->
                 <a th:if="${u.persona != null}"
                    th:href="@{/admin/usuarios/{id}/desvincular-persona(id=${u.id})}"
                    class="link-eliminar"
@@ -60,14 +128,17 @@
                     Desvincular
                 </a>
 
-                <!-- Vincular si no tiene persona -->
+                <!--
+                    Formulario para vincular persona a un usuario sin persona.
+                    Solo se muestra si hay personas disponibles (sin usuario asignado).
+                -->
                 <form th:if="${u.persona == null and not #lists.isEmpty(personasDisponibles)}"
                       th:action="@{/admin/usuarios/{id}/vincular-persona(id=${u.id})}"
                       method="post"
                       style="display:inline-flex; gap:6px; align-items:center;">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                    <select name="personaId" class="form-control" style="padding:4px 8px;">
-                        <option value="" disabled selected>— Seleccionar persona —</option>
+                    <select name="personaId" class="input-field" style="width:auto;">
+                        <option value="" disabled selected>— Seleccionar —</option>
                         <option th:each="p : ${personasDisponibles}"
                                 th:value="${p.id}"
                                 th:text="|${p.nombres} ${p.apellido1} (${p.rut})|">
@@ -77,9 +148,7 @@
                 </form>
 
                 <span th:if="${u.persona == null and #lists.isEmpty(personasDisponibles)}"
-                      class="fecha-tono">
-                    No hay personas disponibles
-                </span>
+                      class="fecha-tono">No hay personas disponibles</span>
             </td>
         </tr>
         </tbody>
@@ -88,6 +157,89 @@
     <div class="empty-msg" th:if="${#lists.isEmpty(usuarios)}">
         ℹ️ No existen usuarios registrados en el sistema.
     </div>
+
+    <!-- ── FORMULARIO CREAR NUEVO USUARIO ───────────────────────────────── -->
+    <!--
+        Este formulario crea un usuario completo de una sola vez:
+        username + contraseña + persona vinculada (opcional) + rol asignado.
+
+        POST /admin/usuarios/crear → AdminController.crearUsuario()
+        El controlador pasa los datos al servicio que valida, encripta y persiste.
+
+        Token CSRF: obligatorio en formularios POST con Spring Security habilitado.
+        Si falta → Spring rechaza la petición con error 403.
+    -->
+    <div class="seccion-crear">
+        <h2>➕ Crear Nuevo Usuario</h2>
+        <p class="nota-superadmin"
+           th:if="${esSuperAdmin}">
+            Sesión como <strong>SuperAdmin</strong>: puedes asignar el rol Administrador.
+        </p>
+        <p class="nota-superadmin"
+           th:if="${!esSuperAdmin}">
+            Solo el SuperAdmin puede crear usuarios con rol Administrador.
+        </p>
+
+        <form th:action="@{/admin/usuarios/crear}" method="post" class="form-crear-usuario">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <!-- Username -->
+            <div>
+                <label class="form-label" for="username">Username *</label>
+                <input id="username" type="text" name="username"
+                       class="input-field" placeholder="ej: instructor2" required>
+            </div>
+
+            <!-- Contraseña -->
+            <div>
+                <label class="form-label" for="password">Contraseña * (mín. 4 caracteres)</label>
+                <input id="password" type="password" name="password"
+                       class="input-field" placeholder="••••••" required minlength="4">
+            </div>
+
+            <!--
+                Persona (opcional):
+                Se listan solo las personas SIN usuario asignado (personasDisponibles).
+                Si el campo se deja en "Sin persona", se envía value="" y el controlador
+                lo convierte a null para Integer (gracias a required=false en @RequestParam).
+            -->
+            <div>
+                <label class="form-label" for="personaId">Persona vinculada (opcional)</label>
+                <select id="personaId" name="personaId" class="input-field">
+                    <option value="">— Sin persona vinculada (cuenta de sistema) —</option>
+                    <option th:each="p : ${personasDisponibles}"
+                            th:value="${p.id}"
+                            th:text="|${p.nombres} ${p.apellido1} (${p.rut})|">
+                    </option>
+                </select>
+            </div>
+
+            <!--
+                Rol:
+                Los rolesDisponibles vienen filtrados desde el controlador según el
+                rol del usuario autenticado:
+                  - ROL_ADMIN (admin normal) → ve: ROL_INSTRUCTOR, ROL_ESTUDIANTE
+                  - ROL_SUPERADMIN           → ve además: ROL_ADMIN
+                ROL_SUPERADMIN nunca aparece (no es asignable desde la UI).
+            -->
+            <div>
+                <label class="form-label" for="rolNombre">Rol *</label>
+                <select id="rolNombre" name="rolNombre" class="input-field" required>
+                    <option value="" disabled selected>— Seleccionar rol —</option>
+                    <option th:each="r : ${rolesDisponibles}"
+                            th:value="${r.nombre}"
+                            th:text="${r.nombre}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Botón de envío (ocupa todo el ancho gracias a .campo-completo) -->
+            <div class="campo-completo">
+                <button type="submit" class="btn-crear">➕ Crear Usuario</button>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 <br><br>
