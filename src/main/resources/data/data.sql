@@ -64,7 +64,7 @@ CREATE TABLE asistencias (
                              FOREIGN KEY (clase_id)      REFERENCES clases(id)
 );
 
--- 7. Tabla Usuarios
+-- 7. Tabla Usuarios (persona_id es FK opcional: los admins pueden no tener persona vinculada)
 CREATE TABLE usuarios (
                             id       INT AUTO_INCREMENT PRIMARY KEY,
                             username VARCHAR(100)  NOT NULL UNIQUE,
@@ -76,12 +76,16 @@ CREATE TABLE usuarios (
 );
 
 -- 8. Tabla Roles
+-- ROL_ADMIN     : acceso completo al sistema (gestión de todas las entidades)
+-- ROL_INSTRUCTOR: acceso a clases, estudiantes y asistencias
+-- ROL_ESTUDIANTE: acceso limitado a sus propios datos
+-- ROL_SUPERADMIN: todos los permisos de ADMIN + puede asignar el rol ADMIN a otros usuarios
 CREATE TABLE roles(
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
--- 9. Tabla Intermedia
+-- 9. Tabla Intermedia: relaciona usuarios con sus roles (muchos a muchos)
 CREATE TABLE usuario_rol(
                             usuario_id INT NOT NULL,
                             rol_id INT NOT NULL,
@@ -127,31 +131,35 @@ INSERT INTO instructores (persona_id, grado_id, especialidad, fecha_inicio, acti
                                                                                                           (4, 7, 'Kata', '2018-06-15', true, 8),
                                                                                                           (5, 6, 'Kumite', '2020-03-20', true, 6);
 
--- Inserción de asistencia utilizando los IDs reales que ya existen en las tablas anteriores
 INSERT INTO asistencias (registro, fecha_clase, estudiante_id, instructor_id, clase_id) VALUES
     ('2026-05-05 20:30:00', '2026-05-05', 1, 3, 1);
 
--- Inserción de roles
+-- Roles del sistema:
+--   id=1 ROL_ADMIN      → administrador general
+--   id=2 ROL_INSTRUCTOR → docente
+--   id=3 ROL_ESTUDIANTE → alumno
+--   id=4 ROL_SUPERADMIN → administrador raíz (puede asignar ROL_ADMIN a otros usuarios)
 INSERT INTO roles(nombre) VALUES
                                 ('ROL_ADMIN'),
                                 ('ROL_INSTRUCTOR'),
-                                ('ROL_ESTUDIANTE');
+                                ('ROL_ESTUDIANTE'),
+                                ('ROL_SUPERADMIN');
 
--- En los INSERT de usuarios, actualizar para enlazar:
--- instructor1 → Carlos Muñoz (persona_id = 3)
--- estudiante1 → Juan Pérez   (persona_id = 1)
--- admin y superAdmin → NULL (son cuentas de sistema, sin persona)
+-- Contraseña de todos los usuarios de prueba: "1234" (hash BCrypt)
 INSERT INTO usuarios(username, password, estado, persona_id) VALUES
-                                                     ('admin','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, null),
-                                                     ('instructor1','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, 3),
-                                                     ('estudiante1','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, 1),
-                                                     ('superAdmin','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, null);
+                                                     ('admin',        '$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW', true, null),
+                                                     ('instructor1',  '$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW', true, 3),
+                                                     ('estudiante1',  '$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW', true, 1),
+                                                     ('superAdmin',   '$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW', true, null);
 
--- Inserción de usuarios y roles tabla usuario_rol
+-- Asignación de roles a usuarios:
+--   admin      → ROL_ADMIN
+--   instructor1→ ROL_INSTRUCTOR  (vinculado a Carlos Muñoz, persona_id=3)
+--   estudiante1→ ROL_ESTUDIANTE  (vinculado a Juan Pérez,   persona_id=1)
+--   superAdmin → ROL_ADMIN + ROL_SUPERADMIN (puede asignar ROL_ADMIN a otros)
 INSERT INTO usuario_rol(usuario_id, rol_id) VALUES
-                                                (1,1),
-                                                (2,2),
-                                                (3,3),
-                                                (4,1),
-                                                (4,2);
-
+                                                (1, 1),   -- admin → ROL_ADMIN
+                                                (2, 2),   -- instructor1 → ROL_INSTRUCTOR
+                                                (3, 3),   -- estudiante1 → ROL_ESTUDIANTE
+                                                (4, 1),   -- superAdmin → ROL_ADMIN
+                                                (4, 4);   -- superAdmin → ROL_SUPERADMIN
