@@ -6,44 +6,58 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface del servicio de Usuario
- * contiene los metodos abstractos del Usuario
+ * INTERFAZ DE NEGOCIO PARA EL SERVICIO DE USUARIOS
+ * ──────────────────────────────────────────────────
+ * Una interfaz define el CONTRATO: dice QUÉ operaciones existen,
+ * pero no CÓMO están programadas.
+ *
+ * La implementación real está en UsuarioServiceImpl.
+ *
+ * Ventaja: si en el futuro queremos cambiar cómo se guardan los usuarios
+ * (por ejemplo, pasar a MongoDB), solo cambiamos la implementación sin
+ * tocar los controladores que usan esta interfaz.
+ *
+ * NOTA: Esta interfaz es diferente a la de Spring Security (UserDetailsService).
+ * Esta es para operaciones de negocio (CRUD + vínculos con personas).
  */
 public interface UsuarioDetailsService {
+
     /**
-     * Lista todos los usuarios existentes en la BD
-     * @return Lista de Usuarios
+     * Retorna la lista completa de usuarios registrados en el sistema.
      */
     List<Usuario> listarUsuarios();
 
     /**
-     * Buscar usuario por ID
-     * @param id
-     * @return usuario según id
+     * Busca un usuario por su ID.
+     * Retorna Optional para forzar al que llame a manejar el caso en que no exista.
      */
-
     Optional<Usuario> usuarioPorId(Integer id);
 
     /**
-     * Crear un nuevo usuario
-     * @param usuario (Objeto de tipo usuario)
-     * @return 1
+     * Crea o actualiza un usuario en la base de datos.
+     * Retorna el objeto guardado (con el ID generado si es nuevo).
      */
     Usuario crearUsuario(Usuario usuario);
 
     /**
-     * Borra un usuario según id
-     * @param id del usuario a borrar
+     * Elimina un usuario según su ID.
      */
     void borrarUsuario(Integer id);
 
     /**
-     * Vincula una persona existente a un usuario
+     * Asocia una Persona existente (Estudiante o Instructor) a una cuenta de Usuario.
+     * La persona queda identificable a través del campo persona_id en la tabla usuarios.
+     *
+     * @param usuarioId ID del usuario al que se le asignará la persona
+     * @param personaId ID de la persona (de la tabla personas) a vincular
      */
     void vincularPersona(Integer usuarioId, Integer personaId);
 
     /**
-     * Desvincula la persona de un usuario
+     * Elimina la asociación entre un usuario y su persona vinculada.
+     * El usuario sigue existiendo, pero persona_id quedará en NULL en la BD.
+     *
+     * @param usuarioId ID del usuario al que se le quitará la persona
      */
     void desvincularPersona(Integer usuarioId);
 }
