@@ -5,11 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * DTO de entrada para crear o actualizar una Clase
- * Este objeto representa los datos que llegan desde una petición Http
- * Se usa un objeto intermedio para no exponer la entidad del modelo interno
+ * DTO DE ENTRADA PARA CLASES
+ * ───────────────────────────
+ * Datos que debe enviar el cliente para crear o actualizar una clase.
+ *
+ * Ejemplo de JSON esperado:
+ * {
+ *   "tipoClase": "Kata",
+ *   "descripcion": "Kata Pinan Shodan",
+ *   "estado": true
+ * }
  */
-
 @Getter
 @Setter
 public class ClaseRequestDto {
@@ -17,7 +23,8 @@ public class ClaseRequestDto {
     @NotBlank(message = "El tipo de clase es obligatorio")
     private String tipoClase;
 
-    private String descripcion; //preguntar si debe ser igual a la Entidad Clase, con notblank
+    private String descripcion; // Opcional según decisión del equipo
 
+    /** true = clase activa, false = inactiva. Valor boolean (primitivo), siempre requerido. */
     private boolean estado;
 }

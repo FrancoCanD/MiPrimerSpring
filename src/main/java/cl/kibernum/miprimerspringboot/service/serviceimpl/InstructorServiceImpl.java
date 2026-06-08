@@ -13,58 +13,43 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación de los servicios del instructor
+ * IMPLEMENTACIÓN DEL SERVICIO DE INSTRUCTORES
+ * ─────────────────────────────────────────────
+ * Gestiona el cuerpo docente de la academia.
+ * Sigue exactamente el mismo patrón que GradoServiceImpl y ClaseServiceImpl.
  */
 @Service
 public class InstructorServiceImpl implements InstructorService {
 
-    /**
-     * Inyección de dependencias por anotación Autowired
-     */
     @Autowired
     private InstructorRepository instructorRepository;
 
     @Autowired
     private InstructorMapper instructorMapper;
 
-    /**
-     * Implementación de Lista todos los instructores
-     * @return Lista de Instructores
-     */
     @Override
     public List<Instructor> listarInstructores() {
         return instructorRepository.findAll();
     }
 
-    /**
-     * Implementación búsqueda Instructor por id
-     * @param id del instructor
-     * @return Instructor
-     */
     @Override
     public Optional<Instructor> instructorPorId(Integer id) {
         return instructorRepository.findById(id);
     }
 
-    /**
-     * Implementación de Creación o guardado de instructor
-     * @param instructor (Objeto de tipo instructor)
-     * @return Instructor guardado
-     */
     @Override
     public Instructor crearInstructor(Instructor instructor) {
         return instructorRepository.save(instructor);
     }
 
-    /**
-     * Implementación Eliminar instructor por ID
-     * @param id del instructor a borrar
-     */
     @Override
     public void borrarInstructor(Integer id) {
         instructorRepository.deleteById(id);
     }
 
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
+
+    /** Convierte cada Instructor a InstructorResponseDto. */
     @Override
     public List<InstructorResponseDto> listarInstructoresApi() {
         return instructorRepository.findAll()
@@ -73,6 +58,7 @@ public class InstructorServiceImpl implements InstructorService {
                 .toList();
     }
 
+    /** Convierte RequestDto → entidad → guarda → ResponseDto. */
     @Override
     public InstructorResponseDto crearInstructorApi(InstructorRequestDto instructorRequestDto) {
         Instructor instructor = instructorMapper.instructorDtoToEntity(instructorRequestDto);

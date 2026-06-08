@@ -5,9 +5,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * DTO de entrada para crear o actualizar Grados
- * Este objeto representa los datos que llegan desde una petición Http
- * Se usa un objeto intermedio para no exponer la entidad del modelo interno
+ * DTO DE ENTRADA PARA GRADOS
+ * ───────────────────────────
+ * Contiene los datos que debe enviar el cliente para crear o actualizar un grado.
+ * Se usa como @RequestBody en los métodos POST y PUT del GradoRestController.
+ *
+ * Ejemplo de JSON esperado en el body de la petición:
+ * {
+ *   "nombre": "Verde",
+ *   "descripcion": "Nivel intermedio",
+ *   "kyuDan": "7° Kyu"
+ * }
+ *
+ * @NotBlank lanza un error de validación si el campo llega vacío o como espacios.
  */
 @Getter @Setter
 public class GradoRequestDto {
@@ -15,7 +25,7 @@ public class GradoRequestDto {
     @NotBlank(message = "El nombre del cinturón es obligatorio")
     private String nombre;
 
-    private String descripcion;
+    private String descripcion; // Opcional
 
     @NotBlank(message = "El kyu/Dan es obligatorio")
     private String kyuDan;

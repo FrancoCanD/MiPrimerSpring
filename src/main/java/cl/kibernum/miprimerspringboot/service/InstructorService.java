@@ -8,42 +8,30 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface del servicio de instructor
- * contiene los metodos abstractos del Instructor
+ * INTERFAZ DEL SERVICIO DE INSTRUCTORES
+ * ───────────────────────────────────────
+ * Define las operaciones para gestionar el cuerpo docente de la academia.
+ * Implementada por InstructorServiceImpl.
  */
 public interface InstructorService {
 
-    /**
-     * Lista de Instructores existentes en la BD
-     * @return Lista de Instructores de la BD
-     */
+    /** Retorna la lista completa de instructores. */
     List<Instructor> listarInstructores();
 
-    /**
-     * Buscar al instructor por id
-     * @param id del instructor
-     * @return el instructor según id
-     */
+    /** Busca un instructor por ID. Optional porque puede no existir. */
     Optional<Instructor> instructorPorId(Integer id);
 
-    /**
-     * Crea un instructor nuevo o actualiza uno existente
-     * @param instructor (objeto de tipo Instructor)
-     * @return Instructor guardado
-     */
+    /** Crea un instructor nuevo o actualiza uno existente. */
     Instructor crearInstructor(Instructor instructor);
 
-    /**
-     * Borra un instructor según ID
-     * @param id del instructor a eliminar
-     */
+    /** Elimina un instructor por ID. */
     void borrarInstructor(Integer id);
 
-    // Métodos API REST con DTOs
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
+
     List<InstructorResponseDto> listarInstructoresApi();
     InstructorResponseDto crearInstructorApi(InstructorRequestDto instructorRequestDto);
     InstructorResponseDto instructorPorIdApi(Integer id);
     InstructorResponseDto actualizarInstructorApi(InstructorRequestDto instructorRequestDto, Integer id);
     void borrarInstructorApi(Integer id);
 }
-

@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación de los servicios del estudiante
+ * IMPLEMENTACIÓN DEL SERVICIO DE ESTUDIANTES
+ * ────────────────────────────────────────────
+ * Contiene la lógica de negocio para gestionar alumnos.
+ * Destaca el método obtenerFicha() que construye un objeto complejo
+ * combinando datos de estudiante, cálculo de edad y sus asistencias.
  */
 @Service
 public class EstudianteServiceImpl implements EstudianteService {
@@ -53,18 +56,26 @@ public class EstudianteServiceImpl implements EstudianteService {
         estudianteRepository.deleteById(id);
     }
 
-    /**
-     * Busca un estudiante por su RUT
-     */
     @Override
     public Optional<Estudiante> buscarPorRut(String rut) {
         return estudianteRepository.findByRut(rut);
     }
 
     /**
-     * Arma la ficha completa del estudiante
-     * Calcula la edad a partir de la fecha de nacimiento
-     * Obtiene sus asistencias filtrando por su ID
+     * CONSTRUYE LA FICHA COMPLETA DEL ESTUDIANTE
+     * ────────────────────────────────────────────
+     * Este método es más complejo porque arma un objeto FichaEstudianteDto
+     * con datos de múltiples fuentes: el propio estudiante y sus asistencias.
+     *
+     * CÁLCULO DE EDAD con Period.between():
+     *   Period calcula la diferencia exacta entre dos fechas considerando años bisiestos.
+     *   between(fechaNac, hoy).getYears() retorna los años completos cumplidos.
+     *   Ejemplo: nacido el 2009-01-01, hoy 2026-06-08 → 17 años.
+     *
+     * FILTRO DE ASISTENCIAS:
+     *   Como no hay un método findByEstudiante en el repositorio, se obtienen
+     *   todas las asistencias y se filtran en memoria con stream().filter().
+     *   (Para producción con muchos datos, sería mejor agregar una query en el repositorio.)
      */
     @Override
     public FichaEstudianteDto obtenerFicha(String rut) {
@@ -73,13 +84,13 @@ public class EstudianteServiceImpl implements EstudianteService {
 
         FichaEstudianteDto ficha = new FichaEstudianteDto();
 
-        // Datos personales
+        // Datos personales básicos
         ficha.setNombres(estudiante.getNombres());
         ficha.setApellido1(estudiante.getApellido1());
         ficha.setApellido2(estudiante.getApellido2());
         ficha.setRut(estudiante.getRut());
 
-        // Cálculo de edad
+        // Calcula la edad exacta desde la fecha de nacimiento hasta hoy
         int edad = Period.between(estudiante.getFechaNac(), LocalDate.now()).getYears();
         ficha.setEdad(edad);
         ficha.setFechaNac(estudiante.getFechaNac());
@@ -90,7 +101,7 @@ public class EstudianteServiceImpl implements EstudianteService {
         ficha.setFechaInscripcion(estudiante.getFechaInscripcion());
         ficha.setActivo(estudiante.isActivo());
 
-        // Asistencias del estudiante
+        // Filtra las asistencias que pertenecen a este estudiante
         List<Asistencia> asistencias = asistenciaRepository.findAll()
                 .stream()
                 .filter(a -> a.getEstudiante().getId().equals(estudiante.getId()))
@@ -101,7 +112,8 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     /**
-     * Lista las asistencias de un estudiante buscando por RUT
+     * Lista las asistencias de un estudiante buscando primero por RUT.
+     * Lanza RuntimeException si el RUT no existe (el controlador lo captura con try/catch).
      */
     @Override
     public List<Asistencia> listarAsistenciasPorRut(String rut) {
@@ -114,14 +126,14 @@ public class EstudianteServiceImpl implements EstudianteService {
                 .toList();
     }
 
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
+
     @Override
     public List<EstudianteResponseDto> listarEstudiantesApi() {
-        List<EstudianteResponseDto> listaEstudianteResponseDto = new ArrayList<>();
-        listaEstudianteResponseDto = estudianteRepository.findAll()
+        return estudianteRepository.findAll()
                 .stream()
                 .map(estudianteMapper::estudianteToEstudianteResponseDto)
                 .toList();
-        return listaEstudianteResponseDto;
     }
 
     @Override

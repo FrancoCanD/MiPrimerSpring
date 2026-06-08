@@ -8,9 +8,12 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 /**
- * DTO de entrada para crear o actualizar Instructores
- * Este objeto representa los datos que llegan desde una petición Http
- * Se usa un objeto intermedio para no exponer la entidad del modelo interno
+ * DTO DE ENTRADA PARA INSTRUCTORES
+ * ─────────────────────────────────
+ * A diferencia de EstudianteRequestDto, InstructorRequestDto NO extiende PersonaRequestDto.
+ * Declara los campos personales directamente en esta clase (decisión de diseño del equipo).
+ *
+ * Contiene todos los datos necesarios para crear o actualizar un instructor.
  */
 @Getter @Setter
 public class InstructorRequestDto {
@@ -21,7 +24,7 @@ public class InstructorRequestDto {
     @NotBlank(message = "El primer apellido es obligatorio")
     private String apellido1;
 
-    private String apellido2;
+    private String apellido2; // Opcional
 
     @NotNull(message = "La fecha de nacimiento es obligatoria")
     private LocalDate fechaNac;
@@ -29,6 +32,10 @@ public class InstructorRequestDto {
     @NotBlank(message = "El RUT es obligatorio")
     private String rut;
 
+    /**
+     * ID del grado del instructor.
+     * El InstructorMapper lo convierte al objeto Grado completo buscando en GradoRepository.
+     */
     @NotNull(message = "El grado es obligatorio")
     private Integer gradoId;
 
@@ -40,6 +47,5 @@ public class InstructorRequestDto {
 
     private boolean activo;
 
-    private Integer anosExperiencia;
+    private Integer anosExperiencia; // Opcional
 }
-

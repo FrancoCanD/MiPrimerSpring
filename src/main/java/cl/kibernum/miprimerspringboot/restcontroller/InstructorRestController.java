@@ -11,6 +11,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * CONTROLADOR REST DE INSTRUCTORES
+ * ─────────────────────────────────
+ * API REST para gestionar instructores. Acceso: ROL_ADMIN y ROL_INSTRUCTOR.
+ *
+ * Operaciones disponibles:
+ *   GET    /api/instructores        → lista todos
+ *   GET    /api/instructores/{id}   → busca por ID
+ *   POST   /api/instructores        → crea nuevo
+ *   PUT    /api/instructores/{id}   → actualiza
+ *   DELETE /api/instructores/{id}   → elimina
+ */
 @RestController
 @RequestMapping("/api/instructores")
 public class InstructorRestController {
@@ -40,7 +52,7 @@ public class InstructorRestController {
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar Instructor")
     public InstructorResponseDto actualizarInstructor(@PathVariable Integer id,
-                                                      @RequestBody InstructorRequestDto instructorRequestDto) {
+                                                       @RequestBody InstructorRequestDto instructorRequestDto) {
         return instructorService.actualizarInstructorApi(instructorRequestDto, id);
     }
 
@@ -51,4 +63,3 @@ public class InstructorRestController {
         instructorService.borrarInstructorApi(id);
     }
 }
-

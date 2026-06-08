@@ -5,12 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repositorio de Grado
- * JPA repository entrega automáticamente métodos como:
- * -findAll()
- * -findById
- * -save()
- * -deleteById()
+ * REPOSITORIO DE GRADOS
+ * ──────────────────────
+ * Accede a la tabla "grados".
+ * Todos los métodos necesarios son heredados de JpaRepository.
+ * No se requieren consultas personalizadas para esta entidad.
  */
 @Repository
 public interface GradoRepository extends JpaRepository<Grado, Integer> {

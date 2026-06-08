@@ -10,59 +10,43 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface del servicio de estudiante
- * contiene los metodos abstractos del Estudiante
+ * INTERFAZ DEL SERVICIO DE ESTUDIANTES
+ * ──────────────────────────────────────
+ * Define todas las operaciones sobre los alumnos de la academia.
+ * Implementada por EstudianteServiceImpl.
  */
 public interface EstudianteService {
 
-    /**
-     * Lista de Estudiantes de Existentes en la BD
-     * @return Lista de Estudiantes de la BD
-     */
+    /** Retorna la lista completa de estudiantes. */
     List<Estudiante> listarEstudiantes();
 
-    /**
-     * Buscar al estudiante por id
-     * @param id del estudiante
-     * @return el estudiante según id
-     */
+    /** Busca un estudiante por su ID. Optional porque puede no existir. */
     Optional<Estudiante> estudiantePorId(Integer id);
 
-    /**
-     * Crea un estudiante nuevo
-     * @param estudiante (objeto de tipo Estudiante)
-     * @return Estudiante guardado
-     */
+    /** Crea o actualiza un estudiante en la BD. */
     Estudiante crearEstudiante(Estudiante estudiante);
 
-    /**
-     * Borra un estudiante según ID
-     * @param id del estudiante a eliminar
-     */
+    /** Elimina un estudiante por ID (también elimina su persona por la FK CASCADE). */
     void borrarEstudiante(Integer id);
 
-    /**
-     * Busca un estudiante por su RUT
-     * @param rut del estudiante
-     * @return Optional con el estudiante encontrado
-     */
+    /** Busca un estudiante por su RUT. Usado en las vistas de perfil y asistencias. */
     Optional<Estudiante> buscarPorRut(String rut);
 
     /**
-     * Arma la ficha completa del estudiante para la vista perfil
-     * @param rut del estudiante
-     * @return FichaEstudianteDto con todos los datos
+     * Construye la ficha completa del estudiante para la vista de perfil.
+     * Incluye: datos personales, edad calculada, grado, historial de asistencias.
+     * Retorna un FichaEstudianteDto (objeto de transferencia específico para esa vista).
      */
     FichaEstudianteDto obtenerFicha(String rut);
 
     /**
-     * Lista las asistencias de un estudiante por su RUT
-     * @param rut del estudiante
-     * @return lista de asistencias del estudiante
+     * Lista todas las asistencias de un estudiante identificado por su RUT.
+     * Usado en la vista "asistencias-estudiante.html".
      */
     List<Asistencia> listarAsistenciasPorRut(String rut);
 
-    // Métodos API REST con DTOs
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
+
     List<EstudianteResponseDto> listarEstudiantesApi();
     EstudianteResponseDto crearEstudianteApi(EstudianteRequestDto estudianteRequestDto);
     EstudianteResponseDto estudiantePorIdApi(Integer id);

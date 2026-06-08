@@ -8,40 +8,42 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface del servicio de Clase
- * contiene los metodos abstractos del clase
+ * INTERFAZ DEL SERVICIO DE CLASES
+ * ────────────────────────────────
+ * Define las operaciones para gestionar los tipos de clase impartidos en la academia.
+ * Implementada por ClaseServiceImpl.
  */
-
 public interface ClaseService {
-    /**
-     * Lista todas las clases existentes en la BD
-     * @return Lista de clases
-     */
+
+    /** Retorna todas las clases de la BD. Usado en el listado y en dropdowns de formularios. */
     List<Clase> listarClases();
 
     /**
-     * Buscar clase por ID
-     * @param id
-     * @return Clase según id
+     * Busca una clase por su ID.
+     * Optional obliga al llamador a manejar el caso en que no exista.
      */
     Optional<Clase> clasePorId(Integer id);
 
-    /**
-     * Crear una nueva clase
-     * @param clase (Objeto de tipo clase)
-     * @return 1
-     */
+    /** Crea o actualiza una clase. */
     Clase crearClase(Clase clase);
 
-    /**
-     * Borra una clase según id
-     * @param id de la clase a borrar
-     */
+    /** Elimina una clase por ID. */
     void borrarClase(Integer id);
 
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
+
+    /** Lista todas las clases como DTOs para la API. */
     List<ClaseResponseDto> listarClasesApi();
+
+    /** Busca una clase por ID y la retorna como DTO. */
     ClaseResponseDto clasePorIdApi(Integer id);
+
+    /** Crea una clase desde un RequestDto. */
     ClaseResponseDto crearClaseApi(ClaseRequestDto claseRequestDto);
+
+    /** Actualiza los campos de una clase existente. */
     ClaseResponseDto actualizarClaseApi(ClaseRequestDto claseRequestDto, Integer id);
+
+    /** Elimina una clase por ID (versión API). */
     void borrarClaseApi(Integer id);
 }

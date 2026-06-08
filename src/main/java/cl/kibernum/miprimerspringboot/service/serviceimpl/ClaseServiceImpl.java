@@ -13,57 +13,42 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Implementación de los servicios de clase
+ * IMPLEMENTACIÓN DEL SERVICIO DE CLASES
+ * ───────────────────────────────────────
+ * Gestiona los tipos de clase impartidas en la academia (Técnica, Kata, Sparring...).
  */
 @Service
 public class ClaseServiceImpl implements ClaseService {
-    /**
-     * Inyección de dependencias por anotación Autowired
-     */
+
     @Autowired
     private ClaseRepository claseRepository;
 
     @Autowired
     private ClaseMapper claseMapper;
 
-    /**
-     * Implementación de Lista todas las clases
-     * @return Lista de Clases
-     */
     @Override
     public List<Clase> listarClases() {
         return claseRepository.findAll();
     }
 
-    /**
-     * Implementación búsqueda de clases por id
-     * @param id
-     * @return Clase
-     */
     @Override
     public Optional<Clase> clasePorId(Integer id) {
         return claseRepository.findById(id);
     }
 
-    /**
-     * Implementación de Creación o guardado de clase
-     * @param clase (Objeto de tipo clase)
-     * @return 1
-     */
     @Override
     public Clase crearClase(Clase clase) {
         return claseRepository.save(clase);
     }
 
-    /**
-     * Implementación Eliminar clase por ID.
-     * @param id de la clase a borrar
-     */
     @Override
     public void borrarClase(Integer id) {
         claseRepository.deleteById(id);
     }
 
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
+
+    /** Convierte cada Clase a ClaseResponseDto con el mapper. */
     @Override
     public List<ClaseResponseDto> listarClasesApi() {
         return claseRepository.findAll()

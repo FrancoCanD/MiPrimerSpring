@@ -10,57 +10,58 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controlador MVC para manejar solicitudes web de clase
+ * CONTROLADOR WEB DE CLASES
+ * ──────────────────────────
+ * Maneja el CRUD de tipos de clase en las vistas Thymeleaf.
+ * Acceso: ROL_ADMIN y ROL_INSTRUCTOR (configurado en SecurityConfig).
+ *
+ * Mismo patrón que GradoController: listar, nuevo, guardar, editar, eliminar.
  */
 @Controller
 @RequestMapping("/clases")
 public class ClaseController {
+
     @Autowired
     private ClaseService claseService;
 
-    /**
-     * Muestra el listado de clases
-     */
+    /** GET /clases — muestra listado de todas las clases. */
     @GetMapping({"", "/", "/listar"})
     public String listar(Model model) {
         model.addAttribute("clases", claseService.listarClases());
         return "clases/listar";
     }
 
-    /**
-     * Muestra el formulario para crear una nueva clase
-     */
+    /** GET /clases/nuevo — formulario vacío para crear una clase. */
     @GetMapping("/nuevo")
-        public String nuevo(Model model) {
+    public String nuevo(Model model) {
         model.addAttribute("clase", new Clase());
         return "clases/form";
     }
 
     /**
-     * Guarda una clase nueva o actualizada
+     * POST /clases/guardar — procesa el formulario.
+     * Si hay errores de validación → vuelve al formulario.
+     * Si todo es correcto → guarda y redirige al listado.
      */
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("clase") Clase clase, BindingResult result, Model model) { // Corregido: Agregado Model model
+    public String guardar(@Valid @ModelAttribute("clase") Clase clase, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "clases/form"; // Ahora recargará la vista sin errores de renderizado
+            return "clases/form";
         }
         claseService.crearClase(clase);
         return "redirect:/clases";
     }
 
-    /**
-     * Muestra el formulario de clases con los datos cargados para la edición
-     */
+    /** GET /clases/editar/{id} — carga los datos de la clase para editar. */
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
-        Clase clase = claseService.clasePorId(id).orElseThrow(() -> new IllegalArgumentException("Clase no encontrada" + id));
+        Clase clase = claseService.clasePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Clase no encontrada: " + id));
         model.addAttribute("clase", clase);
         return "clases/form";
     }
 
-    /**
-     * Elimina una clase por ID
-     */
+    /** GET /clases/eliminar/{id} — elimina la clase y redirige. */
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         claseService.borrarClase(id);

@@ -11,7 +11,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controlador MVC para manejar solicitudes web de instructor
+ * CONTROLADOR WEB DE INSTRUCTORES
+ * ────────────────────────────────
+ * Maneja el CRUD de instructores en las vistas Thymeleaf.
+ * Acceso: ROL_ADMIN y ROL_INSTRUCTOR (configurado en SecurityConfig).
+ *
+ * Necesita dos servicios:
+ *   - InstructorService: operaciones CRUD sobre instructores
+ *   - GradoService: para cargar la lista de grados en el formulario (dropdown de cinturones)
  */
 @Controller
 @RequestMapping("/instructores")
@@ -23,9 +30,7 @@ public class InstructorController {
     @Autowired
     private GradoService gradoService;
 
-    /**
-     * Muestra el listado de Instructores
-     */
+    /** GET /instructores — lista todos los instructores. */
     @GetMapping({"", "/", "/listar"})
     public String listar(Model model) {
         model.addAttribute("instructores", instructorService.listarInstructores());
@@ -33,7 +38,8 @@ public class InstructorController {
     }
 
     /**
-     * Muestra el formulario para crear un nuevo instructor
+     * GET /instructores/nuevo — formulario vacío.
+     * Se agrega también la lista de grados al modelo para poblar el dropdown de cinturones.
      */
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
@@ -43,22 +49,21 @@ public class InstructorController {
     }
 
     /**
-     * Guarda un instructor nuevo o actualizado
+     * POST /instructores/guardar — procesa el formulario.
+     * Si hay errores → recarga el formulario con la lista de grados (necesaria para el dropdown).
      */
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("instructor") Instructor instructor,
-                          BindingResult result, Model model) { // Asegurado el parámetro Model
+                          BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("grados", gradoService.listarGrados());
-            return "instructores/form"; // Recarga de forma segura con la lista de cinturones
+            return "instructores/form";
         }
         instructorService.crearInstructor(instructor);
         return "redirect:/instructores";
     }
 
-    /**
-     * Muestra el formulario con los datos cargados para la edición
-     */
+    /** GET /instructores/editar/{id} — carga los datos del instructor más la lista de grados. */
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Instructor instructor = instructorService.instructorPorId(id)
@@ -68,9 +73,7 @@ public class InstructorController {
         return "instructores/form";
     }
 
-    /**
-     * Elimina un Instructor por el ID
-     */
+    /** GET /instructores/eliminar/{id} — elimina y redirige al listado. */
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         instructorService.borrarInstructor(id);

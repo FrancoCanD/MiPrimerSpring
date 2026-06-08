@@ -11,6 +11,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * CONTROLADOR REST DE CLASES
+ * ───────────────────────────
+ * API REST para gestionar tipos de clase. Acceso: ROL_ADMIN y ROL_INSTRUCTOR.
+ *
+ * Operaciones disponibles:
+ *   GET    /api/clases        → lista todas
+ *   GET    /api/clases/{id}   → busca por ID
+ *   POST   /api/clases        → crea nueva
+ *   PUT    /api/clases/{id}   → actualiza
+ *   DELETE /api/clases/{id}   → elimina
+ */
 @RestController
 @RequestMapping("/api/clases")
 public class ClaseRestController {
@@ -25,7 +37,7 @@ public class ClaseRestController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "buscar clase por Id")
+    @Operation(summary = "Buscar clase por Id")
     public ClaseResponseDto clasePorId(@PathVariable Integer id) {
         return claseService.clasePorIdApi(id);
     }
@@ -39,7 +51,8 @@ public class ClaseRestController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar clase")
-    public ClaseResponseDto actualizarClase(@PathVariable Integer id, @RequestBody ClaseRequestDto claseRequestDto) {
+    public ClaseResponseDto actualizarClase(@PathVariable Integer id,
+                                             @RequestBody ClaseRequestDto claseRequestDto) {
         return claseService.actualizarClaseApi(claseRequestDto, id);
     }
 

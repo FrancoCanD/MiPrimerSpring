@@ -10,7 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Controlador principal para la página de inicio del sistema
+ * CONTROLADOR PRINCIPAL — DASHBOARD
+ * ─────────────────────────────────
+ * Maneja la ruta raíz "/" que muestra el dashboard del sistema con estadísticas
+ * en tiempo real: total de estudiantes, instructores, clases y asistencias.
+ *
+ * Es la primera página que ve el usuario tras iniciar sesión
+ * (configurado en SecurityConfig: defaultSuccessUrl("/", true)).
  */
 @Controller
 public class IndexController {
@@ -21,16 +27,17 @@ public class IndexController {
     @Autowired private AsistenciaService asistenciaService;
 
     /**
-     * Renderiza el menú principal y envía estadísticas rápidas a la vista
+     * GET /
+     * Consulta los contadores de cada entidad y los envía a la vista.
+     * .size() cuenta los elementos de cada lista para mostrar el total en las tarjetas del dashboard.
+     * La vista indexadm.html accede a estos valores con ${totalEstudiantes}, ${totalInstructores}, etc.
      */
     @GetMapping("/")
     public String index(Model model) {
-        // Envíamos contadores dinámicos para hacer el dashboard atractivo
         model.addAttribute("totalEstudiantes", estudianteService.listarEstudiantes().size());
         model.addAttribute("totalInstructores", instructorService.listarInstructores().size());
         model.addAttribute("totalClases", claseService.listarClases().size());
         model.addAttribute("totalAsistencias", asistenciaService.listarTodas().size());
-
-        return "indexadm"; // Busca el archivo footer.html en templates/
+        return "indexadm"; // → templates/indexadm.html
     }
 }

@@ -8,40 +8,48 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface del servicio de grado
- * contiene los metodos abstractos del Grado
+ * INTERFAZ DEL SERVICIO DE GRADOS
+ * ────────────────────────────────
+ * Define las operaciones disponibles para gestionar la escala de grados/cinturones.
+ * Implementada por GradoServiceImpl.
+ *
+ * Los métodos sin "Api" trabajan con la entidad Grado directamente (para vistas web).
+ * Los métodos con "Api" trabajan con DTOs (para la API REST).
  */
 public interface GradoService {
-    /**
-     * Lista todos los grados existentes en la BD
-     * @return Lista de Grados
-     */
+
+    /** Retorna la lista completa de grados almacenados en la BD. */
     List<Grado> listarGrados();
 
     /**
-     * Buscar grado por ID
-     * @param id
-     * @return Grado según id
+     * Busca un grado por su ID.
+     * Retorna Optional<Grado> para forzar al código que llama a verificar si existe.
      */
     Optional<Grado> gradoPorId(Integer id);
 
     /**
-     * Crear un nuevo grado
-     * @param grado (Objeto de tipo grado)
-     * @return 1
+     * Crea un grado nuevo o actualiza uno existente.
+     * Si el objeto Grado tiene ID → UPDATE; sin ID → INSERT.
      */
     Grado crearGrado(Grado grado);
 
-    /**
-     * Borra un grado según id
-     * @param id del grado a borrar
-     */
-   void borrarGrado(Integer id);
+    /** Elimina un grado por su ID. Fallará si algún estudiante/instructor lo tiene asignado. */
+    void borrarGrado(Integer id);
 
-   List<GradoResponseDto> listarGradosApi();
-   GradoResponseDto crearGradoApi(GradoRequestDto gradoRequestDto);
-   GradoResponseDto gradoPorIdApi(Integer id);
-   GradoResponseDto actualizarGradoApi(GradoRequestDto gradoRequestDto, Integer id);
-   void borrarGradoApi(Integer id);
+    // ── MÉTODOS API REST ────────────────────────────────────────────────
 
+    /** Lista todos los grados como DTOs para la API. */
+    List<GradoResponseDto> listarGradosApi();
+
+    /** Crea un grado desde un RequestDto y retorna el ResponseDto con el ID generado. */
+    GradoResponseDto crearGradoApi(GradoRequestDto gradoRequestDto);
+
+    /** Busca un grado por ID y lo retorna como ResponseDto. */
+    GradoResponseDto gradoPorIdApi(Integer id);
+
+    /** Actualiza los campos de un grado existente. */
+    GradoResponseDto actualizarGradoApi(GradoRequestDto gradoRequestDto, Integer id);
+
+    /** Elimina un grado por ID (versión API). */
+    void borrarGradoApi(Integer id);
 }

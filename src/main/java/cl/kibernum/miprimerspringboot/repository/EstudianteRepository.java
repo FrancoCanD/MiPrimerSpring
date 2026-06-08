@@ -7,21 +7,22 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Repositorio de Estudiante
- * JPA repository entrega automáticamente métodos como:
- * -findAll()
- * -findById
- * -save()
- * -deleteById()
+ * REPOSITORIO DE ESTUDIANTES
+ * ───────────────────────────
+ * Accede a la tabla "estudiantes" (con JOIN automático a "personas" por la herencia JOINED).
+ * Los métodos básicos son heredados de JpaRepository.
  */
 @Repository
 public interface EstudianteRepository extends JpaRepository<Estudiante, Integer> {
 
     /**
-     * Busca un estudiante por su RUT
-     * Spring Data JPA genera la consulta automáticamente
-     * @param rut del estudiante
-     * @return Optional con el estudiante encontrado
+     * CONSULTA DERIVADA: buscar estudiante por RUT
+     * ─────────────────────────────────────────────
+     * Spring Data lee el nombre del método y genera el SQL:
+     *   SELECT * FROM personas p JOIN estudiantes e ON p.id = e.persona_id WHERE p.rut = ?
+     *
+     * Retorna Optional<Estudiante> porque el RUT puede no existir.
+     * Usado por EstudianteController para mostrar perfil y asistencias.
      */
     Optional<Estudiante> findByRut(String rut);
 }

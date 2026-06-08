@@ -16,7 +16,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 /**
- * Controlador MVC para manejar solicitudes web de estudiante
+ * CONTROLADOR WEB DE ESTUDIANTES
+ * ───────────────────────────────
+ * Maneja el CRUD de alumnos y además dos vistas especiales:
+ *   - /estudiantes/asistencias?rut=XXX → historial de asistencias del alumno
+ *   - /estudiantes/perfil?rut=XXX      → ficha completa del alumno
+ *
+ * Acceso: ROL_ADMIN, ROL_INSTRUCTOR y ROL_ESTUDIANTE (ver SecurityConfig).
  */
 @Controller
 @RequestMapping("/estudiantes")
@@ -28,18 +34,14 @@ public class EstudianteController {
     @Autowired
     private GradoService gradoService;
 
-    /**
-     * Muestra el listado de Estudiantes
-     */
+    /** GET /estudiantes — lista todos los alumnos. */
     @GetMapping({"", "/", "/listar"})
     public String listar(Model model) {
         model.addAttribute("estudiantes", estudianteService.listarEstudiantes());
         return "estudiantes/listar";
     }
 
-    /**
-     * Muestra el formulario para crear un nuevo estudiante
-     */
+    /** GET /estudiantes/nuevo — formulario vacío + lista de grados para el dropdown. */
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("estudiante", new Estudiante());
@@ -48,7 +50,9 @@ public class EstudianteController {
     }
 
     /**
-     * Guarda un estudiante nuevo o actualizado
+     * POST /estudiantes/guardar — guarda el alumno nuevo o actualizado.
+     * Si hay errores → recarga el formulario CON la lista de grados para el dropdown.
+     * (Si no se recarga la lista, el dropdown queda vacío y el formulario no funciona.)
      */
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
@@ -61,9 +65,7 @@ public class EstudianteController {
         return "redirect:/estudiantes";
     }
 
-    /**
-     * Muestra el formulario con los datos cargados para la edición
-     */
+    /** GET /estudiantes/editar/{id} — carga los datos del alumno para editar. */
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Estudiante estudiante = estudianteService.estudiantePorId(id)
@@ -73,24 +75,23 @@ public class EstudianteController {
         return "estudiantes/form";
     }
 
-    /**
-     * Elimina un Estudiante por el ID
-     */
+    /** GET /estudiantes/eliminar/{id} — elimina el alumno y redirige. */
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         estudianteService.borrarEstudiante(id);
         return "redirect:/estudiantes";
     }
 
-    // =========================================================
-    // NUEVAS VISTAS: Asistencias por estudiante y Perfil
-    // El RUT viene directamente desde los botones del listar.html
-    // =========================================================
-
     /**
-     * Vista 1 — Asistencias del estudiante
-     * Se accede desde el botón "Asistencias" en listar.html
-     * Muestra: fecha de clase, instructor, módulo/clase
+     * VISTA ESPECIAL 1: HISTORIAL DE ASISTENCIAS DEL ALUMNO
+     * ────────────────────────────────────────────────────────
+     * GET /estudiantes/asistencias?rut=11111111-1
+     *
+     * @RequestParam("rut") extrae el parámetro de la URL (la parte después de ?rut=).
+     * RedirectAttributes permite enviar mensajes flash a la vista de redirección
+     *   (los mensajes flash se muestran una vez y luego desaparecen).
+     *
+     * try/catch: si el RUT no existe, se redirige al listado con un mensaje de error.
      */
     @GetMapping("/asistencias")
     public String verAsistencias(@RequestParam("rut") String rut,
@@ -111,9 +112,12 @@ public class EstudianteController {
     }
 
     /**
-     * Vista 2 — Perfil completo del estudiante
-     * Se accede desde el botón "Perfil" en listar.html
-     * Muestra: nombre, edad, grado, clases asistidas, instructores, fecha inscripción, vigente
+     * VISTA ESPECIAL 2: PERFIL COMPLETO DEL ALUMNO
+     * ──────────────────────────────────────────────
+     * GET /estudiantes/perfil?rut=11111111-1
+     *
+     * Llama a obtenerFicha() que construye el FichaEstudianteDto con datos
+     * personales, edad calculada, grado y todas sus asistencias.
      */
     @GetMapping("/perfil")
     public String verPerfil(@RequestParam("rut") String rut,
