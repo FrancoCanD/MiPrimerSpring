@@ -31,6 +31,6 @@ public class IndexController {
         model.addAttribute("totalClases", claseService.listarClases().size());
         model.addAttribute("totalAsistencias", asistenciaService.listarTodas().size());
 
-        return "index"; // Busca el archivo footer.html en templates/
+        return "indexadm"; // Busca el archivo footer.html en templates/
     }
 }

@@ -22,7 +22,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 
         Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"+ username));
 
-        String[] authories = usuario.getRoles()
+        String[] authorities = usuario.getRoles()
                 .stream()
                 .map(Rol::getNombre)
                 .toArray(String[]::new);
@@ -30,8 +30,8 @@ public class UsuarioDetailsService implements UserDetailsService {
         return User.builder()
                 .username(usuario.getUsername())
                 .password(usuario.getPassword())
-                .authorities(authories)
-                .disabled(usuario.getEstado())
+                .authorities(authorities)
+                .disabled(!Boolean.TRUE.equals(usuario.getEstado()))
                 .build();
     }
 }

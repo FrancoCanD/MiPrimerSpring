@@ -69,7 +69,10 @@ CREATE TABLE usuarios (
                             id       INT AUTO_INCREMENT PRIMARY KEY,
                             username VARCHAR(100)  NOT NULL UNIQUE,
                             password VARCHAR(255) NOT NULL,
-                            estado   BOOLEAN      NOT NULL DEFAULT TRUE
+                            estado   BOOLEAN      NOT NULL DEFAULT TRUE,
+                            persona_id INT NULL UNIQUE,
+                            CONSTRAINT fk_usuario_persona
+                                FOREIGN KEY (persona_id) REFERENCES personas(id)
 );
 
 -- 8. Tabla Roles
@@ -134,12 +137,15 @@ INSERT INTO roles(nombre) VALUES
                                 ('ROL_INSTRUCTOR'),
                                 ('ROL_ESTUDIANTE');
 
--- Inserción de Usuarios
-INSERT INTO usuarios(username, password, estado) VALUES
-                                                     ('admin','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true),
-                                                     ('instructor1','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true),
-                                                     ('estudiante1','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true),
-                                                     ('superAdmin','$2a$10$X5j7zNQX8L3l2OeY6m4d0.8Qf4m4N0Zt7l3N5gYh2m8f2aT6zYv4W',true);
+-- En los INSERT de usuarios, actualizar para enlazar:
+-- instructor1 → Carlos Muñoz (persona_id = 3)
+-- estudiante1 → Juan Pérez   (persona_id = 1)
+-- admin y superAdmin → NULL (son cuentas de sistema, sin persona)
+INSERT INTO usuarios(username, password, estado, persona_id) VALUES
+                                                     ('admin','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, null),
+                                                     ('instructor1','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, 3),
+                                                     ('estudiante1','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, 1),
+                                                     ('superAdmin','$2a$10$Nfr3A60qbfgYbdHVC2cKNOZt/ggEh3XQiXGd0xsQoU0Qwy4DQbWpW',true, null);
 
 -- Inserción de usuarios y roles tabla usuario_rol
 INSERT INTO usuario_rol(usuario_id, rol_id) VALUES

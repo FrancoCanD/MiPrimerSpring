@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Usuarios — Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br><br>
+
+<div class="container">
+    <div class="header-section">
+        <h1>Gestión de Usuarios y Personas</h1>
+        <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
+    </div>
+
+    <table th:if="${not #lists.isEmpty(usuarios)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Estado</th>
+            <th>Persona Vinculada</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${usuarios}">
+            <td th:text="${u.id}"></td>
+            <td class="nombre-negrita" th:text="${u.username}"></td>
+            <td>
+                <span th:each="rol, iter : ${u.roles}"
+                      th:text="${rol.nombre + (iter.last ? '' : ', ')}"
+                      class="class-tag">
+                </span>
+            </td>
+            <td>
+                <span th:class="${u.estado} ? 'badge badge-activa' : 'badge badge-inactiva'"
+                      th:text="${u.estado} ? 'Activo' : 'Inactivo'">
+                </span>
+            </td>
+
+            <!-- Persona vinculada -->
+            <td th:if="${u.persona != null}" class="nombre-negrita"
+                th:text="|${u.persona.nombres} ${u.persona.apellido1} (RUT: ${u.persona.rut})|">
+            </td>
+            <td th:if="${u.persona == null}" class="fecha-tono">Sin persona vinculada</td>
+
+            <!-- Acciones -->
+            <td class="actions-cell">
+                <!-- Desvincular si ya tiene persona -->
+                <a th:if="${u.persona != null}"
+                   th:href="@{/admin/usuarios/{id}/desvincular-persona(id=${u.id})}"
+                   class="link-eliminar"
+                   onclick="return confirm('¿Desvincular la persona de este usuario?')">
+                    Desvincular
+                </a>
+
+                <!-- Vincular si no tiene persona -->
+                <form th:if="${u.persona == null and not #lists.isEmpty(personasDisponibles)}"
+                      th:action="@{/admin/usuarios/{id}/vincular-persona(id=${u.id})}"
+                      method="post"
+                      style="display:inline-flex; gap:6px; align-items:center;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <select name="personaId" class="form-control" style="padding:4px 8px;">
+                        <option value="" disabled selected>— Seleccionar persona —</option>
+                        <option th:each="p : ${personasDisponibles}"
+                                th:value="${p.id}"
+                                th:text="|${p.nombres} ${p.apellido1} (${p.rut})|">
+                        </option>
+                    </select>
+                    <button type="submit" class="btn-crear" style="padding:5px 12px;">Vincular</button>
+                </form>
+
+                <span th:if="${u.persona == null and #lists.isEmpty(personasDisponibles)}"
+                      class="fecha-tono">
+                    No hay personas disponibles
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="empty-msg" th:if="${#lists.isEmpty(usuarios)}">
+        ℹ️ No existen usuarios registrados en el sistema.
+    </div>
+</div>
+
+<br><br>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -22,14 +23,14 @@ public class SecurityConfig {
      * Encriptador de contraseñas
      */
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
     /**
      * Proveedor de autenticación contra BD
      */
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(UsuarioDetailsService usuarioDetailsService, BCryptPasswordEncoder passwordEncoder) {
+    public DaoAuthenticationProvider daoAuthenticationProvider(UsuarioDetailsService usuarioDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider =new DaoAuthenticationProvider(usuarioDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
@@ -47,7 +48,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("api/grados/**").hasAuthority("ROL_ADMIN")
+                        .requestMatchers("/api/grados/**").hasAuthority("ROL_ADMIN")
                         .requestMatchers("/api/clases/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR")
                         .requestMatchers("/api/estudiantes/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR")
                         .requestMatchers("/api/instructores/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR")
@@ -77,6 +78,7 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/img/**",
+                                "/assets/**",
                                 "/webjars/**"
                         ).permitAll()
                         // Swagger solo para ADMIN
@@ -84,13 +86,15 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
-                        ).hasAuthority("ROLE_ADMIN")
+                        ).hasAuthority("ROL_ADMIN")
+                        // Panel de administración de usuarios
+                        .requestMatchers("/admin/**").hasAuthority("ROL_ADMIN")
                         // Vistas por rol
-                        .requestMatchers("/grados/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/clases/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_INSTRUCTOR")
-                        .requestMatchers("/instructores/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_INSTRUCTOR")
-                        .requestMatchers("/estudiantes/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_INSTRUCTOR", "ROLE_ESTUDIANTE")
-                        .requestMatchers("/asistencias/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_INSTRUCTOR")
+                        .requestMatchers("/grados/**").hasAuthority("ROL_ADMIN")
+                        .requestMatchers("/clases/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR")
+                        .requestMatchers("/instructores/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR")
+                        .requestMatchers("/estudiantes/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR", "ROL_ESTUDIANTE")
+                        .requestMatchers("/asistencias/**").hasAnyAuthority("ROL_ADMIN", "ROL_INSTRUCTOR")
                         // Inicio requiere login
                         .requestMatchers("/inicio").authenticated()
                         // Para todas las demás cosas requiere autenticación

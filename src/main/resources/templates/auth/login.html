@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión</title>
+</head>
+<body>
+
+<h1>Ingreso al Sistema Kenpo</h1>
+
+<div th:if="${param.error}">
+  <p style="color:red;">Usuario o contraseña incorrectos.</p>
+</div>
+
+<div th:if="${param.logout}">
+  <p style="color:green;">Sesión cerrada correctamente.</p>
+</div>
+
+<div th:if="${param.invalid}">
+  <p style="color:red;">La sesión expiró o no es válida.</p>
+</div>
+
+<form th:action="@{/login}" method="post">
+
+  <input type="hidden"
+         th:name="${_csrf.parameterName}"
+         th:value="${_csrf.token}">
+
+  <label>Usuario:</label>
+  <input type="text" name="username">
+  <br><br>
+
+  <label>Contraseña:</label>
+  <input type="password" name="password">
+  <br><br>
+
+  <button type="submit">Ingresar</button>
+</form>
+
+</body>
+</html>

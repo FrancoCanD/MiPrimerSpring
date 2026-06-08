@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <!-- Fragmento del HEAD -->
 <head th:fragment="estilos-globales">
     <meta charset="UTF-8">
@@ -27,6 +28,13 @@
             <li><a th:href="@{/asistencias/listar}">Asistencias</a></li>
             <li>
                 <button type="button" id="theme-toggle" class="btn-theme">🌓 Modo</button>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="navbar-session">
+                <span class="navbar-user" sec:authentication="name">Usuario</span>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button type="submit" class="btn-logout">Cerrar sesión</button>
+                </form>
             </li>
         </ul>
     </nav>

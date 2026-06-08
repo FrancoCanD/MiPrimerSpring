@@ -47,4 +47,8 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private Set<Rol> roles = new HashSet<>();
+
+    @OneToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "persona_id", unique = true)
+    private Persona persona;
 }

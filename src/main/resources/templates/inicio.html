@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio — Escuela Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br><br>
+
+<div class="container">
+    <h1>Panel Principal — Escuela Kenpo</h1>
+
+    <!-- Tarjeta de identidad del usuario autenticado -->
+    <div class="card-stat" style="max-width:450px; margin-bottom:24px;">
+        <h3>Sesión activa</h3>
+        <p>
+            Usuario: <strong sec:authentication="name"></strong>
+        </p>
+        <p th:if="${usuario.persona != null}">
+            Nombre: <strong th:text="|${usuario.persona.nombres} ${usuario.persona.apellido1}|"></strong>
+        </p>
+        <p th:if="${usuario.persona == null}" style="color:var(--text-muted); font-size:0.9rem;">
+            (Sin persona vinculada — cuenta de sistema)
+        </p>
+        <p>
+            Rol(es): <strong sec:authentication="authorities"></strong>
+        </p>
+    </div>
+
+    <!-- Menú de navegación por rol -->
+    <nav>
+        <ul class="navbar-links" style="flex-direction:column; gap:12px; align-items:flex-start;">
+            <li sec:authorize="hasAuthority('ROL_ADMIN')">
+                <a th:href="@{/grados}" class="btn-crear">🏆 Gestión de Grados</a>
+            </li>
+            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_INSTRUCTOR')">
+                <a th:href="@{/clases}" class="btn-crear">⏱️ Gestión de Clases</a>
+            </li>
+            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_INSTRUCTOR')">
+                <a th:href="@{/instructores}" class="btn-crear">🥋 Gestión de Instructores</a>
+            </li>
+            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_INSTRUCTOR','ROL_ESTUDIANTE')">
+                <a th:href="@{/estudiantes}" class="btn-crear">🎓 Gestión de Estudiantes</a>
+            </li>
+            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_INSTRUCTOR')">
+                <a th:href="@{/asistencias}" class="btn-crear">📝 Gestión de Asistencias</a>
+            </li>
+            <li sec:authorize="hasAuthority('ROL_ADMIN')">
+                <a th:href="@{/admin/usuarios}" class="btn-crear">👥 Gestión de Usuarios</a>
+            </li>
+            <li sec:authorize="hasAuthority('ROL_ADMIN')">
+                <a th:href="@{/swagger-ui.html}" class="btn-crear">📖 Swagger API</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<br><br>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

@@ -36,4 +36,14 @@ public interface UsuarioDetailsService {
      * @param id del usuario a borrar
      */
     void borrarUsuario(Integer id);
+
+    /**
+     * Vincula una persona existente a un usuario
+     */
+    void vincularPersona(Integer usuarioId, Integer personaId);
+
+    /**
+     * Desvincula la persona de un usuario
+     */
+    void desvincularPersona(Integer usuarioId);
 }
