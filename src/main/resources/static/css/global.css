@@ -732,3 +732,10 @@ input[type="checkbox"] {
 .Pest-secundario { color: #94a3b8; font-size: 0.8rem; }
 .Pest-container { margin: 0.25rem 0 0; }
 .fecha-tono { color: #64748b; font-size: 0.9rem; }
+
+.logo-centrado {
+    display: block;
+    margin: 0 auto;
+    /* Puedes agregar más estilos globales aquí, como el tamaño */
+    max-width: 150px;
+}
