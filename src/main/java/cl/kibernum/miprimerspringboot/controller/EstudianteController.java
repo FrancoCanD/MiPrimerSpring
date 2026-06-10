@@ -7,6 +7,7 @@ import cl.kibernum.miprimerspringboot.service.EstudianteService;
 import cl.kibernum.miprimerspringboot.service.GradoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +43,7 @@ public class EstudianteController {
     }
 
     /** GET /estudiantes/nuevo — formulario vacío + lista de grados para el dropdown. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("estudiante", new Estudiante());
@@ -54,6 +56,7 @@ public class EstudianteController {
      * Si hay errores → recarga el formulario CON la lista de grados para el dropdown.
      * (Si no se recarga la lista, el dropdown queda vacío y el formulario no funciona.)
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
                           BindingResult result, Model model) {
@@ -66,6 +69,7 @@ public class EstudianteController {
     }
 
     /** GET /estudiantes/editar/{id} — carga los datos del alumno para editar. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Estudiante estudiante = estudianteService.estudiantePorId(id)
@@ -76,6 +80,7 @@ public class EstudianteController {
     }
 
     /** GET /estudiantes/eliminar/{id} — elimina el alumno y redirige. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         estudianteService.borrarEstudiante(id);

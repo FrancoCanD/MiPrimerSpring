@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Estudiantes — Kenpo</title>
     <link rel="stylesheet" th:href="@{/css/global.css}">
-
 </head>
 <body>
-<br>
-<br>
+<br><br>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
 <header th:insert="~{fragments/header :: menu-navegacion}"></header>
-<br>
-<br>
+<br><br>
 <div class="container-vista-estudiantes">
     <div class="container">
         <div class="header-section">
             <h1>Alumnos Registrados</h1>
             <div>
                 <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
-                <a th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
+                <!-- Solo ADMIN e INSTRUCTOR pueden crear nuevos estudiantes -->
+                <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+                   th:href="@{/estudiantes/nuevo}" class="btn-crear">➕ Nuevo Alumno</a>
             </div>
         </div>
 
@@ -34,31 +34,38 @@
                 <th>Grado Kenpo</th>
                 <th>Último Ascenso</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <!-- Columna acciones solo visible para ADMIN e INSTRUCTOR -->
+                <th sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')">Acciones</th>
                 <th>Perfil</th>
             </tr>
             </thead>
             <tbody>
             <div class="listar-estudiantes">
                 <tr th:each="estudiante : ${estudiantes}">
-                    <td th:text="${estudiante.id}" ></td>
-                    <td class="nombre-negrita" th:text="${estudiante.nombres}" ></td>
+                    <td th:text="${estudiante.id}"></td>
+                    <td class="nombre-negrita" th:text="${estudiante.nombres}"></td>
                     <td class="nombre-negrita" th:text="|${estudiante.apellido1} ${estudiante.apellido2 != null ? estudiante.apellido2 : ''}|"></td>
                     <td th:text="${estudiante.rut}"></td>
                     <td th:text="${estudiante.grado != null ? estudiante.grado.nombre : 'Sin Grado'}"></td>
                     <td th:text="${estudiante.fechaAscenso}"></td>
                     <td>
-                    <span th:class="${estudiante.activo} ? 'badge badge-activa' : 'badge badge-inactiva'"
-                          th:text="${estudiante.activo} ? 'Activo' : 'Inactivo'">
-                    </span>
+                        <span th:class="${estudiante.activo} ? 'badge badge-activa' : 'badge badge-inactiva'"
+                              th:text="${estudiante.activo} ? 'Activo' : 'Inactivo'">
+                        </span>
+                    </td>
+                    <!-- Botones Editar y Eliminar según rol -->
+                    <td class="actions-cell" sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')">
+                        <!-- Editar: ADMIN e INSTRUCTOR -->
+                        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+                           th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}" class="link-editar">Editar</a>
+                        <!-- Eliminar: solo ADMIN -->
+                        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
+                           th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
+                           class="link-eliminar"
+                           onclick="return confirm('¿Eliminar matrícula de este estudiante?')">Eliminar</a>
                     </td>
                     <td class="actions-cell">
-                        <a th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}" class="link-editar">Editar</a>
-                        <a th:href="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}" class="link-eliminar" onclick="return confirm('¿Eliminar matrícula de este estudiante?')">Eliminar</a>
-                    </td>
-                    <td
-                        class="actions-cell">
-                        <a th:href="@{/estudiantes/perfil(rut=${estudiante.rut})}" class="link-editar">👤 Ver </a>
+                        <a th:href="@{/estudiantes/perfil(rut=${estudiante.rut})}" class="link-editar">👤 Ver</a>
                     </td>
                 </tr>
             </div>
@@ -70,8 +77,7 @@
         </div>
     </div>
 </div>
-<br>
-<br>
+<br><br>
 <div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

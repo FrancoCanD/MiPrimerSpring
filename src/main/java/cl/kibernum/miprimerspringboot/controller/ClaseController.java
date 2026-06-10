@@ -4,6 +4,7 @@ import cl.kibernum.miprimerspringboot.bl.entity.Clase;
 import cl.kibernum.miprimerspringboot.service.ClaseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class ClaseController {
     }
 
     /** GET /clases/nuevo — formulario vacío para crear una clase. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("clase", new Clase());
@@ -43,6 +45,7 @@ public class ClaseController {
      * Si hay errores de validación → vuelve al formulario.
      * Si todo es correcto → guarda y redirige al listado.
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("clase") Clase clase, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -53,6 +56,7 @@ public class ClaseController {
     }
 
     /** GET /clases/editar/{id} — carga los datos de la clase para editar. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Clase clase = claseService.clasePorId(id)
@@ -62,6 +66,7 @@ public class ClaseController {
     }
 
     /** GET /clases/eliminar/{id} — elimina la clase y redirige. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         claseService.borrarClase(id);

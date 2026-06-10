@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +11,16 @@
 <br>
 <header th:replace="~{fragments/header :: estilos-globales}"></header>
 <header th:insert="~{fragments/header :: menu-navegacion}"></header>
-<br>
-<br>
+<br><br>
 <div class="container vista instructores">
 <div class="container">
     <div class="header-section">
         <h1>Cuerpo de Instructores</h1>
-        <div >
+        <div>
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
-            <a th:href="@{/instructores/nuevo}" class="btn-crear">➕ Nuevo Instructor</a>
+            <!-- Solo ADMIN puede crear instructores -->
+            <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
+               th:href="@{/instructores/nuevo}" class="btn-crear">➕ Nuevo Instructor</a>
         </div>
     </div>
 
@@ -33,16 +35,17 @@
             <th>Fecha Ingreso</th>
             <th>Experiencia</th>
             <th>Estado</th>
-            <th>Acciones</th>
+            <!-- Columna acciones solo para ADMIN -->
+            <th sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')">Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="inst : ${instructores}">
-            <td th:text="${inst.id}" ></td>
+            <td th:text="${inst.id}"></td>
             <td class="nombre-negrita" th:text="|Sensei ${inst.nombres} ${inst.apellido1}|"></td>
             <td th:text="${inst.rut}"></td>
             <td th:text="${inst.grado != null ? inst.grado.nombre : 'Sin Grado'}"></td>
-            <td class="nombre-verde"   th:text="${inst.especialidad}"></td>
+            <td class="nombre-verde" th:text="${inst.especialidad}"></td>
             <td th:text="${inst.fechaInicio}"></td>
             <td th:text="${inst.anosExperiencia != null ? inst.anosExperiencia + ' años' : '0'}"></td>
             <td>
@@ -50,9 +53,12 @@
                       th:text="${inst.activo} ? 'Activo' : 'Licencia'">
                 </span>
             </td>
-            <td class="actions-cell">
+            <!-- Solo ADMIN puede editar y eliminar instructores -->
+            <td class="actions-cell" sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')">
                 <a th:href="@{/instructores/editar/{id}(id=${inst.id})}" class="link-editar">Editar Ficha</a>
-                <a th:href="@{/instructores/eliminar/{id}(id=${inst.id})}" class="link-eliminar" onclick="return confirm('¿Dar de baja esta ficha de instructor?')">Eliminar</a>
+                <a th:href="@{/instructores/eliminar/{id}(id=${inst.id})}"
+                   class="link-eliminar"
+                   onclick="return confirm('¿Dar de baja esta ficha de instructor?')">Eliminar</a>
             </td>
         </tr>
         </tbody>
@@ -62,8 +68,7 @@
         ℹ️ No existen instructores registrados en la nómina.
     </div>
 </div>
-<br>
-<br>
+<br><br>
 <div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </div>
 </body>

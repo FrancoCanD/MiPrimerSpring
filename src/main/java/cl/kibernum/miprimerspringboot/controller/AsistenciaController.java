@@ -6,6 +6,7 @@ import cl.kibernum.miprimerspringboot.service.ClaseService;
 import cl.kibernum.miprimerspringboot.repository.EstudianteRepository;
 import cl.kibernum.miprimerspringboot.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class AsistenciaController {
      * GET /asistencias — lista todas las asistencias con sus datos relacionados.
      * La variable en el modelo se llama "listaAsistencias" (accesible como ${listaAsistencias} en HTML).
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @GetMapping({"", "/listar"})
     public String listarAsistencias(Model model) {
         model.addAttribute("listaAsistencias", asistenciaService.listarTodas());
@@ -51,6 +53,7 @@ public class AsistenciaController {
      * Para que el usuario pueda seleccionar: estudiante, instructor y clase,
      * se envían las tres listas al modelo para poblar los <select> del HTML.
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @GetMapping("/nuevo")
     public String mostrarFormularioCrear(Model model) {
         model.addAttribute("asistencia", new Asistencia());
@@ -72,6 +75,7 @@ public class AsistenciaController {
      * RedirectAttributes.addFlashAttribute() envía mensajes que se muestran
      * UNA SOLA VEZ después del redirect (mensajes flash).
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @PostMapping("/guardar")
     public String guardarAsistencia(
             @RequestParam(value = "id", required = false) Integer id,
@@ -119,6 +123,7 @@ public class AsistenciaController {
      * GET /asistencias/editar/{id} — carga la asistencia existente y los dropdowns para editar.
      * Se pre-cargan las mismas listas que en /nuevo para que los selects funcionen.
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable("id") Integer id, Model model) {
         Asistencia asistencia = asistenciaService.obtenerPorId(id);
@@ -130,6 +135,7 @@ public class AsistenciaController {
     }
 
     /** GET /asistencias/eliminar/{id} — elimina y redirige con mensaje de éxito. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/eliminar/{id}")
     public String eliminarAsistencia(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         asistenciaService.eliminar(id);

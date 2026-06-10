@@ -43,6 +43,30 @@ public class AuthController {
     }
 
     /**
+     * RUTA: GET /dashboard-instructor
+     * ──────────────────────────────────
+     * Dashboard personalizado para el instructor autenticado.
+     */
+    @GetMapping("/dashboard-instructor")
+    public String dashboardInstructor(Authentication auth, Model model) {
+        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).orElseThrow();
+        model.addAttribute("usuario", usuario);
+        return "dashboards/dashboard-instructor";
+    }
+
+    /**
+     * RUTA: GET /dashboard-estudiante
+     * ──────────────────────────────────
+     * Dashboard personalizado para el estudiante autenticado.
+     */
+    @GetMapping("/dashboard-estudiante")
+    public String dashboardEstudiante(Authentication auth, Model model) {
+        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).orElseThrow();
+        model.addAttribute("usuario", usuario);
+        return "dashboards/dashboard-estudiante";
+    }
+
+    /**
      * RUTA: GET /inicio
      * ──────────────────
      * Panel principal del usuario autenticado con menú filtrado por rol.

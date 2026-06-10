@@ -1,77 +1,86 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control — Kenpo Talcahuano</title>
     <link rel="stylesheet" th:href="@{/css/global.css}">
-
 </head>
 <body>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
 <header th:insert="~{fragments/header :: menu-navegacion}"></header>
-<br>
-<br>
+<br><br>
 
 <div class="container">
     <h1>Escuela de Kenpo Internacional</h1>
     <p class="subtitle">Sistema de Gestión de Alumnos, Clases y Asistencias</p>
 
-    <!-- Panel de Resumen Estadístico -->
-    <div class="dashboard-grid">
+    <!-- Panel de Resumen Estadístico — solo ADMIN -->
+    <div sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')" class="dashboard-grid">
         <div class="card-stat">
             <h3>Estudiantes</h3>
             <p th:text="${totalEstudiantes}">0</p>
         </div>
-        <div class="card-statInstructores" >
+        <div class="card-statInstructores">
             <h3>Instructores</h3>
             <p th:text="${totalInstructores}">0</p>
         </div>
-        <div class="card-statClaAct" >
+        <div class="card-statClaAct">
             <h3>Clases Activas</h3>
             <p th:text="${totalClases}">0</p>
         </div>
-        <div class="card-statAsistencias" >
+        <div class="card-statAsistencias">
             <h3>Asistencias</h3>
             <p th:text="${totalAsistencias}">0</p>
         </div>
     </div>
 
-    <!-- Menú de Navegación del Sistema -->
+    <!-- Menú de Navegación filtrado por rol -->
     <div class="menu-grid">
-        <a th:href="@{/estudiantes}" class="menu-item">
+
+        <!-- Todos los autenticados ven Estudiantes -->
+        <a sec:authorize="isAuthenticated()"
+           th:href="@{/estudiantes}" class="menu-item">
             <h2>🎓 Estudiantes</h2>
             <p>Inscripciones, actualizaciones de alumnos activos e historiales de membresía.</p>
         </a>
 
-        <a th:href="@{/instructores}" class="menu-item">
+        <!-- ADMIN e INSTRUCTOR ven Instructores, Asistencias y Clases -->
+        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+           th:href="@{/instructores}" class="menu-item">
             <h2>🥋 Instructores</h2>
             <p>Gestión de profesores, asignación de especialidades técnicas y años de experiencia.</p>
         </a>
 
-        <a th:href="@{/asistencias}" class="menu-item">
+        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+           th:href="@{/asistencias}" class="menu-item">
             <h2>📝 Registro de Asistencias</h2>
             <p>Control diario de asistencia vinculando estudiantes, clases e instructores a cargo.</p>
         </a>
 
-        <a th:href="@{/clases}" class="menu-item">
+        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+           th:href="@{/clases}" class="menu-item">
             <h2>⏱️ Configuración de Clases Impartidas</h2>
             <p>Administración de bloques horarios y tipologías de entrenamiento (Kata, Sparring, Técnica).</p>
         </a>
 
-        <a th:href="@{/grados}" class="menu-item" >
+        <!-- Solo ADMIN ve Grados y Usuarios -->
+        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
+           th:href="@{/grados}" class="menu-item">
             <h2>🏆 Configuración de Grados y Cinturones</h2>
             <p>Administrar la escala jerárquica de la escuela (desde 10° Kyu Blanco hasta los Danes Avanzados).</p>
         </a>
 
-        <a th:href="@{/admin/usuarios}" class="menu-item">
+        <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
+           th:href="@{/admin/usuarios}" class="menu-item">
             <h2>👥 Gestión de Usuarios</h2>
-            <p>Vincular y administrar las cuentas de acceso al sistema con sus personas (estudiantes e instructores).</p>
+            <p>Vincular y administrar las cuentas de acceso al sistema con sus personas.</p>
         </a>
+
     </div>
 </div>
-<br>
-<br>
+<br><br>
 <div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

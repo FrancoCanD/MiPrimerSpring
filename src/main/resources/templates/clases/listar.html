@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Clases — Kenpo</title>
     <link rel="stylesheet" th:href="@{/css/global.css}">
-
 </head>
 <body>
 <br>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
 <header th:insert="~{fragments/header :: menu-navegacion}"></header>
-<br>
-<br>
+<br><br>
 <div class="container">
     <div class="header-section">
         <div>
@@ -20,7 +19,9 @@
         </div>
         <div>
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
-            <a th:href="@{/clases/nuevo}" class="btn-crear">➕ Nueva Clase</a>
+            <!-- Solo ADMIN puede crear clases -->
+            <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
+               th:href="@{/clases/nuevo}" class="btn-crear">➕ Nueva Clase</a>
         </div>
     </div>
 
@@ -31,12 +32,13 @@
             <th>Tipo de Clase</th>
             <th>Descripción del Módulo</th>
             <th>Estado</th>
-            <th>Acciones</th>
+            <!-- Columna acciones solo para ADMIN -->
+            <th sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')">Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="clase : ${clases}">
-            <td th:text="${clase.id}" ></td>
+            <td th:text="${clase.id}"></td>
             <td class="nombre-negrita" th:text="${clase.tipoClase}"></td>
             <td th:text="${clase.descripcion}"></td>
             <td>
@@ -44,7 +46,8 @@
                       th:text="${clase.estado} ? 'Activa' : 'Inactiva'">
                 </span>
             </td>
-            <td class="actions-cell">
+            <!-- Solo ADMIN puede editar y eliminar clases -->
+            <td class="actions-cell" sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')">
                 <a th:href="@{/clases/editar/{id}(id=${clase.id})}" class="link-editar">Editar</a>
                 <a th:href="@{/clases/eliminar/{id}(id=${clase.id})}"
                    class="link-eliminar"
@@ -58,8 +61,7 @@
         ℹ️ No existen módulos de clases registrados en la academia actualmente.
     </div>
 </div>
-<br>
-<br>
+<br><br>
 <div th:replace="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

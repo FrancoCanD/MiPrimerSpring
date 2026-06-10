@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Asistencias — Kenpo</title>
     <link rel="stylesheet" th:href="@{/css/global.css}">
-
 </head>
 <body>
 <br>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
 <header th:insert="~{fragments/header :: menu-navegacion}"></header>
-<br>
-<br>
+<br><br>
 <div class="container-vista-asistencia">
 <div class="container">
     <div class="header-section">
@@ -21,7 +20,9 @@
         </div>
         <div>
             <a th:href="@{/}" class="btn-inicio">🏠 Menú Principal</a>
-            <a th:href="@{/asistencias/nuevo}" class="btn-crear">📝 Nueva Asistencia</a>
+            <!-- ADMIN e INSTRUCTOR pueden registrar asistencias -->
+            <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+               th:href="@{/asistencias/nuevo}" class="btn-crear">📝 Nueva Asistencia</a>
         </div>
     </div>
 
@@ -53,10 +54,14 @@
             <td>
                 <span th:text="${asistencia.clase.tipoClase}" class="class-tag"></span>
             </td>
-            <td class="fecha-tono"  th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}" ></td>
+            <td class="fecha-tono" th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}"></td>
             <td class="actions-cell">
-                <a th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="link-editar">Editar</a>
-                <a th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
+                <!-- Editar: ADMIN e INSTRUCTOR -->
+                <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+                   th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="link-editar">Editar</a>
+                <!-- Eliminar: solo ADMIN -->
+                <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
+                   th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
                    class="link-eliminar"
                    onclick="return confirm('¿Seguro que deseas eliminar permanentemente este registro de asistencia?')">
                     Eliminar
@@ -71,8 +76,7 @@
     </div>
 </div>
 </div>
-<br>
-<br>
+<br><br>
 <div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>

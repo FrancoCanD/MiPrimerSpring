@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Instructor — Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br><br>
+
+<div class="container">
+    <!-- Saludo personalizado -->
+    <h1>🥋 Panel del Instructor</h1>
+    <p class="subtitle"
+       th:text="${usuario.persona != null}
+           ? 'Bienvenido, Sensei ' + ${usuario.persona.nombres} + ' ' + ${usuario.persona.apellido1}
+           : 'Bienvenido, ' + ${usuario.username}">
+        Bienvenido
+    </p>
+
+    <!-- Menú de acciones disponibles para el instructor -->
+    <div class="menu-grid">
+
+        <a th:href="@{/estudiantes/listar}" class="menu-item">
+            <h2>🎓 Estudiantes</h2>
+            <p>Ver el listado de alumnos. Puedes registrar nuevos y editar fichas existentes.</p>
+        </a>
+
+        <a th:href="@{/asistencias/listar}" class="menu-item">
+            <h2>📝 Asistencias</h2>
+            <p>Registrar y editar asistencias de clase. Control diario de alumnos.</p>
+        </a>
+
+        <a th:href="@{/clases/listar}" class="menu-item">
+            <h2>⏱️ Clases</h2>
+            <p>Ver los módulos de entrenamiento disponibles (Kata, Sparring, Técnica).</p>
+        </a>
+
+        <a th:href="@{/instructores/listar}" class="menu-item">
+            <h2>🥋 Instructores</h2>
+            <p>Ver el cuerpo docente de la escuela.</p>
+        </a>
+
+    </div>
+</div>
+<br><br>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

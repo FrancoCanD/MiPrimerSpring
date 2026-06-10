@@ -5,6 +5,7 @@ import cl.kibernum.miprimerspringboot.service.InstructorService;
 import cl.kibernum.miprimerspringboot.service.GradoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,7 @@ public class InstructorController {
      * GET /instructores/nuevo — formulario vacío.
      * Se agrega también la lista de grados al modelo para poblar el dropdown de cinturones.
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("instructor", new Instructor());
@@ -52,6 +54,7 @@ public class InstructorController {
      * POST /instructores/guardar — procesa el formulario.
      * Si hay errores → recarga el formulario con la lista de grados (necesaria para el dropdown).
      */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("instructor") Instructor instructor,
                           BindingResult result, Model model) {
@@ -64,6 +67,7 @@ public class InstructorController {
     }
 
     /** GET /instructores/editar/{id} — carga los datos del instructor más la lista de grados. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Instructor instructor = instructorService.instructorPorId(id)
@@ -74,6 +78,7 @@ public class InstructorController {
     }
 
     /** GET /instructores/eliminar/{id} — elimina y redirige al listado. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         instructorService.borrarInstructor(id);

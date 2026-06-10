@@ -163,7 +163,18 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
+                        // Redirige directamente segun el rol sin pasar por controlador extra
+                        .successHandler((request, response, authentication) -> {
+                            boolean esAdmin = authentication.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROL_ADMIN") ||
+                                                   a.getAuthority().equals("ROL_SUPERADMIN"));
+                            boolean esInstructor = authentication.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROL_INSTRUCTOR"));
+
+                            if (esAdmin)           response.sendRedirect("/");
+                            else if (esInstructor) response.sendRedirect("/dashboard-instructor");
+                            else                   response.sendRedirect("/dashboard-estudiante");
+                        })
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel — Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br><br>
+
+<div class="container">
+    <!-- Saludo personalizado -->
+    <h1>🎓 Mi Panel</h1>
+    <p class="subtitle"
+       th:text="${usuario.persona != null}
+           ? 'Bienvenido, ' + ${usuario.persona.nombres} + ' ' + ${usuario.persona.apellido1}
+           : 'Bienvenido, ' + ${usuario.username}">
+        Bienvenido
+    </p>
+
+    <!-- Solo puede ver su perfil y sus asistencias -->
+    <div class="menu-grid">
+
+        <a th:href="@{/estudiantes/perfil(rut=${usuario.persona != null ? usuario.persona.rut : ''})}"
+           class="menu-item">
+            <h2>👤 Mi Perfil</h2>
+            <p>Ver tu ficha completa: datos personales, grado actual y fecha de inscripción.</p>
+        </a>
+
+        <a th:href="@{/estudiantes/asistencias(rut=${usuario.persona != null ? usuario.persona.rut : ''})}"
+           class="menu-item">
+            <h2>📋 Mis Asistencias</h2>
+            <p>Consultar tu historial completo de asistencias a clases.</p>
+        </a>
+
+        <a th:href="@{/estudiantes/listar}" class="menu-item">
+            <h2>🎓 Compañeros</h2>
+            <p>Ver el listado general de alumnos de la escuela.</p>
+        </a>
+
+    </div>
+</div>
+<br><br>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

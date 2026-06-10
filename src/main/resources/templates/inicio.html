@@ -11,12 +11,13 @@
 <body>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
 <header th:insert="~{fragments/header :: menu-navegacion}"></header>
-<br>
-<br>
+<br><br>
+
 <div class="container">
     <h1>Panel Principal — Escuela Kenpo</h1>
 
     <!-- Tarjeta de identidad del usuario autenticado -->
+    <div class="card-stat" style="max-width:450px; margin-bottom:24px;">
         <h3>Sesión activa</h3>
         <p>
             Usuario: <strong sec:authentication="name"></strong>
@@ -60,8 +61,7 @@
     </nav>
 </div>
 
-<br>
-<br>
+<br><br>
 <div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </body>
 </html>
