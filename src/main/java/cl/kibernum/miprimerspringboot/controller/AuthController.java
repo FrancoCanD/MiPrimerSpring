@@ -1,7 +1,7 @@
 package cl.kibernum.miprimerspringboot.controller;
 
 import cl.kibernum.miprimerspringboot.bl.entity.Usuario;
-import cl.kibernum.miprimerspringboot.repository.UsuarioRepository;
+import cl.kibernum.miprimerspringboot.service.serviceimpl.UsuarioDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ public class AuthController {
      * (incluyendo su persona vinculada) y enviárselos a la vista.
      */
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioDetailsService usuarioDetailsService;
 
     /**
      * RUTA: GET /login
@@ -86,7 +86,7 @@ public class AuthController {
     @GetMapping("/inicio")
     public String inicio(Authentication auth, Model model) {
         // Cargamos el usuario completo desde la BD usando el username de la sesión activa
-        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).orElseThrow();
+        Usuario usuario = usuarioDetailsService.encontrarPorUsername(auth);
 
         // Agregamos el usuario al modelo con la clave "usuario"
         // En la vista se accede así: ${usuario.username}, ${usuario.persona.nombres}, etc.

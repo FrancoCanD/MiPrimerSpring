@@ -4,6 +4,7 @@ import cl.kibernum.miprimerspringboot.bl.entity.Rol;
 import cl.kibernum.miprimerspringboot.bl.entity.Usuario;
 import cl.kibernum.miprimerspringboot.repository.UsuarioRepository;
 import org.jspecify.annotations.NonNull;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -77,5 +78,10 @@ public class UsuarioDetailsService implements UserDetailsService {
                 //   estado=false → disabled=true  → cuenta deshabilitada ✗
                 .disabled(!Boolean.TRUE.equals(usuario.getEstado()))
                 .build();
+    }
+
+    public Usuario encontrarPorUsername(Authentication auth) {
+        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).orElseThrow();
+        return usuario;
     }
 }
