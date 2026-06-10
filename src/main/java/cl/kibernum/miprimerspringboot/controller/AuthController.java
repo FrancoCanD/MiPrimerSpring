@@ -49,7 +49,7 @@ public class AuthController {
      */
     @GetMapping("/dashboard-instructor")
     public String dashboardInstructor(Authentication auth, Model model) {
-        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).orElseThrow();
+        Usuario usuario = usuarioDetailsService.encontrarPorUsername(auth);
         model.addAttribute("usuario", usuario);
         return "dashboards/dashboard-instructor";
     }
@@ -61,7 +61,7 @@ public class AuthController {
      */
     @GetMapping("/dashboard-estudiante")
     public String dashboardEstudiante(Authentication auth, Model model) {
-        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).orElseThrow();
+        Usuario usuario = usuarioDetailsService.encontrarPorUsername(auth);
         model.addAttribute("usuario", usuario);
         return "dashboards/dashboard-estudiante";
     }
