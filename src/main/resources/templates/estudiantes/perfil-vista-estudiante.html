@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-<head th:insert="~{fragments/header :: estilos-globales}"></head>
+<head th:insert="~{fragments/header-estudiante :: estilos-globales}"></head>
 <body>
-<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<header th:insert="~{fragments/header-estudiante :: menu-navegacion}"></header>
 <br><br>
 
 <div class="container-vista-estudiantes">
@@ -15,7 +15,6 @@
                 <!-- Navega a asistencias con el mismo RUT -->
                 <a th:href="@{/estudiantes/asistencias(rut=${rut})}" class="btn-crear">📋 Ver Asistencias</a>
 
-                <a th:href="@{/estudiantes/listar}" class="btn-inicio">← Listado</a>
             </div>
         </div>
 
@@ -29,7 +28,7 @@
                 <div class="Pest-item">
                     <p class="Pest-label">Nombre Completo</p>
                     <p class="Pest-nombre"
-                        th:text="${ficha.nombres + ' ' + ficha.apellido1 + (ficha.apellido2 != null ? ' ' + ficha.apellido2 : '')}">
+                       th:text="${ficha.nombres + ' ' + ficha.apellido1 + (ficha.apellido2 != null ? ' ' + ficha.apellido2 : '')}">
                     </p>
                 </div>
 
@@ -62,29 +61,29 @@
 
         <!-- Tarjeta de datos académicos -->
         <div class="card-Pest">
-        <h2 class="Pest-titulo">🥋 Datos Académicos</h2>
+            <h2 class="Pest-titulo">🥋 Datos Académicos</h2>
             <p></p>
 
-        <div class="Pest-grid">
+            <div class="Pest-grid">
 
-            <div class="Pest-item">
-                <p class="Pest-label">Grado / Cinturón</p>
-                <p class="Pest-valor" th:text="${ficha.grado}">
-                </p>
+                <div class="Pest-item">
+                    <p class="Pest-label">Grado / Cinturón</p>
+                    <p class="Pest-valor" th:text="${ficha.grado}">
+                    </p>
+                </div>
+
+                <div class="Pest-item">
+                    <p class="Pest-label">Ultimo Ascenso</p>
+                    <p class="Pest-valor" th:text="${ficha.fechaAscenso != null ? #temporals.format(ficha.fechaAscenso, 'dd/MM/yyyy') : '-'}"></p>
+                </div>
+
+                <div class="Pest-item">
+                    <p class="Pest-label">Fecha de Inscripcion</p>
+                    <p class="Pest-valor" th:text="${ficha.fechaInscripcion != null ? #temporals.format(ficha.fechaInscripcion, 'dd/MM/yyyy') : 'No registrada'}"></p>
+                </div>
+
             </div>
-
-            <div class="Pest-item">
-                <p class="Pest-label">Ultimo Ascenso</p>
-                <p class="Pest-valor" th:text="${ficha.fechaAscenso != null ? #temporals.format(ficha.fechaAscenso, 'dd/MM/yyyy') : '-'}"></p>
-            </div>
-
-            <div class="Pest-item">
-                <p class="Pest-label">Fecha de Inscripcion</p>
-                <p class="Pest-valor" th:text="${ficha.fechaInscripcion != null ? #temporals.format(ficha.fechaInscripcion, 'dd/MM/yyyy') : 'No registrada'}"></p>
-            </div>
-
         </div>
-    </div>
 
         <!-- Tabla de clases asistidas con instructor -->
 

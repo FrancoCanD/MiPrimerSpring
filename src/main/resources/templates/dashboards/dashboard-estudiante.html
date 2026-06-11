@@ -8,8 +8,8 @@
     <link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
 <body>
-<header th:insert="~{fragments/header :: estilos-globales}"></header>
-<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<header th:insert="~{fragments/header-estudiante :: estilos-globales}"></header>
+<header th:insert="~{fragments/header-estudiante :: menu-navegacion}"></header>
 <br><br>
 
 <div class="container">
@@ -25,7 +25,7 @@
     <!-- Solo puede ver su perfil y sus asistencias -->
     <div class="menu-grid">
 
-        <a th:href="@{/estudiantes/perfil(rut=${usuario.persona != null ? usuario.persona.rut : ''})}"
+        <a th:href="@{/estudiantes/perfilEstudiante(rut=${usuario.persona != null ? usuario.persona.rut : ''})}"
            class="menu-item">
             <h2>👤 Mi Perfil</h2>
             <p>Ver tu ficha completa: datos personales, grado actual y fecha de inscripción.</p>
@@ -37,10 +37,10 @@
             <p>Consultar tu historial completo de asistencias a clases.</p>
         </a>
 
-        <a th:href="@{/estudiantes/listar}" class="menu-item">
+        <!--<a th:href="@{/estudiantes/listar}" class="menu-item">
             <h2>🎓 Compañeros</h2>
             <p>Ver el listado general de alumnos de la escuela.</p>
-        </a>
+        </a>-->
 
     </div>
 </div>

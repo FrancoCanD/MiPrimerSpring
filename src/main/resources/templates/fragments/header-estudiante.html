@@ -19,23 +19,12 @@
 
 <header th:fragment="menu-navegacion">
     <nav class="navbar">
-        <a th:href="@{/}" class="navbar-logo">Escuela Kenpo</a>
+        <a th:href="@{/dashboard-estudiante}" class="navbar-logo">Escuela Kenpo</a>
 
         <ul class="navbar-links">
             <!-- Todos los roles autenticados ven Estudiantes -->
-            <!--<li sec:authorize="isAuthenticated()"><a th:href="@{/estudiantes/perfil(rut=${estudiante.rut})}"">Mi perfil</a></li> -->
-            <!-- Solo admin e instructor pueden ver Estudiantes -->
-            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"><a th:href="@{/estudiantes/listar}">Estudiantes</a></li>
-            <!-- Solo ADMIN e INSTRUCTOR ven Instructores, Clases y Asistencias -->
-            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"><a th:href="@{/instructores/listar}">Instructores</a></li>
-            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"><a th:href="@{/clases/listar}">Clases</a></li>
-            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"><a th:href="@{/asistencias/listar}">Asistencias</a></li>
-            <!-- Solo ADMIN ve Grados y Usuarios -->
-            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"><a th:href="@{/grados}">Grados</a></li>
-            <li sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"><a th:href="@{/admin/usuarios}">Usuarios</a></li>
-            <li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/estudiantes/perfilEstudiante(rut=${usuario.persona != null ? usuario.persona.rut : ''})}">Mi perfil</a></li>
                 <button type="button" id="theme-toggle" class="btn-theme">🌓 Modo</button>
-            </li>
             <li sec:authorize="isAuthenticated()" class="navbar-session">
                 <span class="navbar-user" sec:authentication="name">Usuario</span>
                 <form th:action="@{/logout}" method="post" style="display:inline;">

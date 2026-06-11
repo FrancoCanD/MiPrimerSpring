@@ -138,4 +138,19 @@ public class EstudianteController {
             return "redirect:/estudiantes/listar";
         }
     }
+
+    @GetMapping("/perfilEstudiante")
+    public String verPerfilVistaEstudiante(@RequestParam("rut") String rut,
+                            Model model,
+                            RedirectAttributes redirectAttributes) {
+        try {
+            FichaEstudianteDto ficha = estudianteService.obtenerFicha(rut);
+            model.addAttribute("ficha", ficha);
+            model.addAttribute("rut", rut);
+            return "estudiantes/perfil-vista-estudiante";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró un estudiante con RUT: " + rut);
+            return "redirect:/estudiantes/listar";
+        }
+    }
 }
