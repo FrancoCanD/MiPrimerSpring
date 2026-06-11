@@ -153,4 +153,22 @@ public class EstudianteController {
             return "redirect:/estudiantes/listar";
         }
     }
+
+    @GetMapping("/asistenciasEstudiante")
+    public String verAsistenciasVistaEstudiante(@RequestParam("rut") String rut,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            List<Asistencia> asistencias = estudianteService.listarAsistenciasPorRut(rut);
+            Estudiante estudiante = estudianteService.buscarPorRut(rut)
+                    .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+            model.addAttribute("asistencias", asistencias);
+            model.addAttribute("estudiante", estudiante);
+            model.addAttribute("rut", rut);
+            return "estudiantes/asistencia-vista-estudiante";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró un estudiante con RUT: " + rut);
+            return "redirect:/estudiantes/listar";
+        }
+    }
 }

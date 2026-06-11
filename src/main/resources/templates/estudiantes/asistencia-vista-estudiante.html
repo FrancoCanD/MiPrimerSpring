@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/header-estudiante :: estilos-globales}"></head>
+<body>
+<header th:insert="~{fragments/header-estudiante :: menu-navegacion}"></header>
+<br><br>
+
+<div class="container-vista-estudiantes">
+    <div class="container">
+
+        <div class="header-section">
+            <div>
+                <h1>📋 Asistencias del Estudiante</h1>
+                <p >
+                    <strong th:text="${estudiante.nombres + ' ' + estudiante.apellido1}"></strong>
+                    &nbsp;|&nbsp; RUT: <span th:text="${estudiante.rut}"></span>
+                </p>
+            </div>
+            <div>
+                <!-- Navega a perfil con el mismo RUT, sin volver a buscarlo -->
+                <a th:href="@{/estudiantes/perfilEstudiante(rut=${rut})}" class="btn-crear">👤 Ver Perfil</a>
+
+            </div>
+        </div>
+
+        <!-- Tabla de asistencias -->
+        <table th:if="${not #lists.isEmpty(asistencias)}">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha de Clase</th>
+                <th>Instructor</th>
+                <th>Módulo / Clase</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="asistencia, iterStat : ${asistencias}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${#temporals.format(asistencia.fechaClase, 'dd/MM/yyyy')}"></td>
+                <td th:text="${asistencia.instructor.nombres + ' ' + asistencia.instructor.apellido1}"></td>
+                <td th:text="${asistencia.clase.tipoClase}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Mensaje si no tiene asistencias -->
+        <div class="empty-msg" th:if="${#lists.isEmpty(asistencias)}">
+            Este estudiante no tiene asistencias registradas.
+        </div>
+
+        <!-- Resumen -->
+        <div th:if="${not #lists.isEmpty(asistencias)}">
+            Total de asistencias: <strong th:text="${#lists.size(asistencias)}"></strong>
+        </div>
+
+    </div>
+</div>
+
+<br><br>
+<div th:replace="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

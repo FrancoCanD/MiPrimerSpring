@@ -31,7 +31,7 @@
             <p>Ver tu ficha completa: datos personales, grado actual y fecha de inscripción.</p>
         </a>
 
-        <a th:href="@{/estudiantes/asistencias(rut=${usuario.persona != null ? usuario.persona.rut : ''})}"
+        <a th:href="@{/estudiantes/asistenciasEstudiante(rut=${usuario != null and usuario.persona != null ? usuario.persona.rut : ''})}"
            class="menu-item">
             <h2>📋 Mis Asistencias</h2>
             <p>Consultar tu historial completo de asistencias a clases.</p>
