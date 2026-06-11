@@ -23,7 +23,7 @@
 
         <ul class="navbar-links">
             <!-- Todos los roles autenticados ven Estudiantes -->
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/estudiantes/perfilEstudiante(rut=${usuario.persona != null ? usuario.persona.rut : ''})}">Mi perfil</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/estudiantes/perfilEstudiante(rut=${usuario != null && usuario.persona != null ? usuario.persona.rut : ''})}">Mi perfil</a></li>
                 <button type="button" id="theme-toggle" class="btn-theme">🌓 Modo</button>
             <li sec:authorize="isAuthenticated()" class="navbar-session">
                 <span class="navbar-user" sec:authentication="name">Usuario</span>
