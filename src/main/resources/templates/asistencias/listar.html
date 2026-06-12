@@ -56,10 +56,9 @@
             </td>
             <td class="fecha-tono" th:text="${#temporals.format(asistencia.registro, 'dd-MM-yyyy HH:mm')}"></td>
             <td class="actions-cell">
-                <!-- Editar: ADMIN e INSTRUCTOR -->
-                <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN','ROL_INSTRUCTOR')"
+                <!-- Editar y Eliminar: solo ADMIN -->
+                <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
                    th:href="@{/asistencias/editar/{id}(id=${asistencia.id})}" class="link-editar">Editar</a>
-                <!-- Eliminar: solo ADMIN -->
                 <a sec:authorize="hasAnyAuthority('ROL_ADMIN','ROL_SUPERADMIN')"
                    th:href="@{/asistencias/eliminar/{id}(id=${asistencia.id})}"
                    class="link-eliminar"

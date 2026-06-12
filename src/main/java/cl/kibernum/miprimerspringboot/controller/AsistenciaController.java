@@ -120,10 +120,10 @@ public class AsistenciaController {
     }
 
     /**
-     * GET /asistencias/editar/{id} — carga la asistencia existente y los dropdowns para editar.
-     * Se pre-cargan las mismas listas que en /nuevo para que los selects funcionen.
+     * GET /asistencias/editar/{id} — edición de un registro existente. Solo admin.
+     * El instructor puede crear asistencias pero no modificar las ya registradas.
      */
-    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable("id") Integer id, Model model) {
         Asistencia asistencia = asistenciaService.obtenerPorId(id);

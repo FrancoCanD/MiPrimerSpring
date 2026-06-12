@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Grado — Kenpo</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+</head>
+<body>
+<br>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
+<header th:insert="~{fragments/header :: menu-navegacion}"></header>
+<br><br>
+
+<div class="container-estudiantes-form">
+<div class="main-container">
+
+    <div class="breadcrumb">
+        <a th:href="@{/estudiantes/listar}">← Volver al listado</a>
+    </div>
+
+    <h2>Kenpo International</h2>
+    <h3>Actualizar Grado y Fecha de Examen</h3>
+
+    <!-- Datos del alumno en modo lectura -->
+    <div class="form-card" style="margin-bottom: 1.5rem;">
+        <p style="font-size: 0.85rem; color: var(--color-muted); margin-bottom: 0.8rem;">
+            Datos del Alumno (solo lectura)
+        </p>
+        <div class="Pest-grid">
+            <div class="Pest-item">
+                <p class="Pest-label">Nombre</p>
+                <p class="Pest-nombre"
+                   th:text="${estudiante.nombres + ' ' + estudiante.apellido1 + (estudiante.apellido2 != null ? ' ' + estudiante.apellido2 : '')}">
+                </p>
+            </div>
+            <div class="Pest-item">
+                <p class="Pest-label">RUT</p>
+                <p class="Pest-valor" th:text="${estudiante.rut}"></p>
+            </div>
+            <div class="Pest-item">
+                <p class="Pest-label">Grado Actual</p>
+                <p class="Pest-valor"
+                   th:text="${estudiante.grado != null ? estudiante.grado.nombre + ' (' + estudiante.grado.kyuDan + ')' : 'Sin grado'}">
+                </p>
+            </div>
+            <div class="Pest-item">
+                <p class="Pest-label">Último Ascenso</p>
+                <p class="Pest-valor"
+                   th:text="${estudiante.fechaAscenso != null ? #temporals.format(estudiante.fechaAscenso, 'dd/MM/yyyy') : '-'}">
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario de actualización de grado -->
+    <div class="form-card">
+        <div class="info-registro">
+            <strong>🥋 Promoción de Grado</strong><br>
+            Selecciona el nuevo grado obtenido en el examen e indica la fecha en que se realizó.
+        </div>
+
+        <form th:action="@{/estudiantes/guardar-grado}" method="post" class="form-box">
+            <input type="hidden" name="id" th:value="${estudiante.id}" />
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gradoId">Nuevo Grado <span class="required">*</span></label>
+                    <select name="gradoId" id="gradoId" required>
+                        <option value="">— Seleccione el grado obtenido —</option>
+                        <option th:each="g : ${grados}"
+                                th:value="${g.id}"
+                                th:text="|${g.nombre} (${g.kyuDan})|"
+                                th:selected="${estudiante.grado != null and estudiante.grado.id == g.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaAscenso">Fecha del Examen <span class="required">*</span></label>
+                    <input type="date"
+                           name="fechaAscenso"
+                           id="fechaAscenso"
+                           th:value="${estudiante.fechaAscenso}"
+                           required />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/estudiantes/listar}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-guardar">Confirmar Ascenso</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+</div>
+
+<br><br>
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
+</body>
+</html>

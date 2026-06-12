@@ -5,9 +5,11 @@ import cl.kibernum.miprimerspringboot.bl.entity.Estudiante;
 import cl.kibernum.miprimerspringboot.dto.FichaEstudianteDto;
 import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
+import cl.kibernum.miprimerspringboot.bl.entity.Grado;
 import cl.kibernum.miprimerspringboot.mapper.EstudianteMapper;
 import cl.kibernum.miprimerspringboot.repository.AsistenciaRepository;
 import cl.kibernum.miprimerspringboot.repository.EstudianteRepository;
+import cl.kibernum.miprimerspringboot.repository.GradoRepository;
 import cl.kibernum.miprimerspringboot.service.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,9 @@ public class EstudianteServiceImpl implements EstudianteService {
 
     @Autowired
     private AsistenciaRepository asistenciaRepository;
+
+    @Autowired
+    private GradoRepository gradoRepository;
 
     @Autowired
     private EstudianteMapper estudianteMapper;
@@ -124,6 +129,17 @@ public class EstudianteServiceImpl implements EstudianteService {
                 .stream()
                 .filter(a -> a.getEstudiante().getId().equals(estudiante.getId()))
                 .toList();
+    }
+
+    @Override
+    public void actualizarGradoEstudiante(Integer estudianteId, Integer gradoId, LocalDate fechaAscenso) {
+        Estudiante estudiante = estudianteRepository.findById(estudianteId)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado: " + estudianteId));
+        Grado grado = gradoRepository.findById(gradoId)
+                .orElseThrow(() -> new RuntimeException("Grado no encontrado: " + gradoId));
+        estudiante.setGrado(grado);
+        estudiante.setFechaAscenso(fechaAscenso);
+        estudianteRepository.save(estudiante);
     }
 
     // ── MÉTODOS API REST ────────────────────────────────────────────────

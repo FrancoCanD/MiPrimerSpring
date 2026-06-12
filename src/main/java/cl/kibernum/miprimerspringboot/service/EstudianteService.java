@@ -6,6 +6,7 @@ import cl.kibernum.miprimerspringboot.dto.FichaEstudianteDto;
 import cl.kibernum.miprimerspringboot.dto.request.EstudianteRequestDto;
 import cl.kibernum.miprimerspringboot.dto.response.EstudianteResponseDto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,12 @@ public interface EstudianteService {
      * Usado en la vista "asistencias-estudiante.html".
      */
     List<Asistencia> listarAsistenciasPorRut(String rut);
+
+    /**
+     * Actualiza únicamente el grado y la fecha de ascenso/examen de un estudiante.
+     * Operación exclusiva del instructor: no toca ningún otro dato personal.
+     */
+    void actualizarGradoEstudiante(Integer estudianteId, Integer gradoId, LocalDate fechaAscenso);
 
     // ── MÉTODOS API REST ────────────────────────────────────────────────
 

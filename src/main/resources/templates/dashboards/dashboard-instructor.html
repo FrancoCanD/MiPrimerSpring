@@ -27,22 +27,22 @@
 
         <a th:href="@{/estudiantes/listar}" class="menu-item">
             <h2>🎓 Estudiantes</h2>
-            <p>Ver el listado de alumnos. Puedes registrar nuevos y editar fichas existentes.</p>
+            <p>Ver el listado de alumnos y actualizar su grado y fecha de examen cuando corresponda.</p>
+        </a>
+
+        <a th:href="@{/asistencias/nuevo}" class="menu-item">
+            <h2>📝 Registrar Asistencia</h2>
+            <p>Registrar la asistencia de un alumno a una clase. Un paso, sin formularios complejos.</p>
         </a>
 
         <a th:href="@{/asistencias/listar}" class="menu-item">
-            <h2>📝 Asistencias</h2>
-            <p>Registrar y editar asistencias de clase. Control diario de alumnos.</p>
+            <h2>📋 Historial de Asistencias</h2>
+            <p>Consultar el registro histórico de asistencias de todos los alumnos.</p>
         </a>
 
         <a th:href="@{/clases/listar}" class="menu-item">
             <h2>⏱️ Clases</h2>
             <p>Ver los módulos de entrenamiento disponibles (Kata, Sparring, Técnica).</p>
-        </a>
-
-        <a th:href="@{/instructores/listar}" class="menu-item">
-            <h2>🥋 Instructores</h2>
-            <p>Ver el cuerpo docente de la escuela.</p>
         </a>
 
     </div>

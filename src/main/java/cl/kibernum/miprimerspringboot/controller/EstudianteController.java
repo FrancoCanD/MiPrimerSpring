@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -42,8 +43,8 @@ public class EstudianteController {
         return "estudiantes/listar";
     }
 
-    /** GET /estudiantes/nuevo — formulario vacío + lista de grados para el dropdown. */
-    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
+    /** GET /estudiantes/nuevo — formulario vacío. Solo admin puede crear estudiantes. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("estudiante", new Estudiante());
@@ -51,12 +52,8 @@ public class EstudianteController {
         return "estudiantes/form";
     }
 
-    /**
-     * POST /estudiantes/guardar — guarda el alumno nuevo o actualizado.
-     * Si hay errores → recarga el formulario CON la lista de grados para el dropdown.
-     * (Si no se recarga la lista, el dropdown queda vacío y el formulario no funciona.)
-     */
-    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
+    /** POST /estudiantes/guardar — crea o actualiza un alumno. Solo admin. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("estudiante") Estudiante estudiante,
                           BindingResult result, Model model) {
@@ -68,8 +65,8 @@ public class EstudianteController {
         return "redirect:/estudiantes";
     }
 
-    /** GET /estudiantes/editar/{id} — carga los datos del alumno para editar. */
-    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
+    /** GET /estudiantes/editar/{id} — formulario completo de edición. Solo admin. */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Integer id, Model model) {
         Estudiante estudiante = estudianteService.estudiantePorId(id)
@@ -79,12 +76,48 @@ public class EstudianteController {
         return "estudiantes/form";
     }
 
-    /** GET /estudiantes/eliminar/{id} — elimina el alumno y redirige. */
+    /** GET /estudiantes/eliminar/{id} — elimina el alumno y redirige. Solo admin. */
     @Secured({"ROL_ADMIN", "ROL_SUPERADMIN"})
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id) {
         estudianteService.borrarEstudiante(id);
         return "redirect:/estudiantes";
+    }
+
+    /**
+     * GET /estudiantes/actualizar-grado/{id}
+     * Formulario reducido para el instructor: muestra datos del alumno en modo
+     * lectura y solo permite cambiar el grado y la fecha de ascenso/examen.
+     */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
+    @GetMapping("/actualizar-grado/{id}")
+    public String mostrarFormActualizarGrado(@PathVariable Integer id, Model model) {
+        Estudiante estudiante = estudianteService.estudiantePorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Estudiante no encontrado: " + id));
+        model.addAttribute("estudiante", estudiante);
+        model.addAttribute("grados", gradoService.listarGrados());
+        return "estudiantes/form-grado-instructor";
+    }
+
+    /**
+     * POST /estudiantes/guardar-grado
+     * Persiste únicamente el nuevo grado y la fecha de examen/ascenso.
+     * No toca ningún otro dato personal del alumno.
+     */
+    @Secured({"ROL_ADMIN", "ROL_SUPERADMIN", "ROL_INSTRUCTOR"})
+    @PostMapping("/guardar-grado")
+    public String guardarActualizacionGrado(
+            @RequestParam Integer id,
+            @RequestParam Integer gradoId,
+            @RequestParam String fechaAscenso,
+            RedirectAttributes redirectAttributes) {
+        try {
+            estudianteService.actualizarGradoEstudiante(id, gradoId, LocalDate.parse(fechaAscenso));
+            redirectAttributes.addFlashAttribute("exito", "Grado actualizado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al actualizar grado: " + e.getMessage());
+        }
+        return "redirect:/estudiantes/listar";
     }
 
     /**
