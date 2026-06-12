@@ -737,5 +737,5 @@ input[type="checkbox"] {
     display: block;
     margin: 0 auto;
     /* Puedes agregar más estilos globales aquí, como el tamaño */
-    max-width: 150px;
+    max-width: 260px;
 }
