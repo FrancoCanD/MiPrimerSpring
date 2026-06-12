@@ -3,39 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>Iniciar sesión</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
 </head>
 <body>
+<header th:insert="~{fragments/header :: estilos-globales}"></header>
 
+<img th:src="@{/assets/logoEscuelaKenpo.jpeg}" alt="Logo Escuela Kenpo" class="logo-centrado">
 <h1>Ingreso al Sistema Kenpo</h1>
+<div class="container">
+  <div class="form-box">
+    <div th:if="${param.error}">
+      <p style="color:red;">Usuario o contraseña incorrectos.</p>
+    </div>
 
-<div th:if="${param.error}">
-  <p style="color:red;">Usuario o contraseña incorrectos.</p>
+    <div th:if="${param.logout}">
+      <p style="color:green;">Sesión cerrada correctamente.</p>
+    </div>
+
+    <div th:if="${param.invalid}">
+      <p style="color:red;">La sesión expiró o no es válida.</p>
+    </div>
+
+    <form th:action="@{/login}" method="post">
+
+      <input type="hidden"
+             th:name="${_csrf.parameterName}"
+             th:value="${_csrf.token}">
+
+      <label>Usuario:</label>
+      <input type="text" name="username">
+
+      <label>Contraseña:</label>
+      <input type="password" name="password">
+
+      <button type="submit">Ingresar</button>
+    </form>
+  </div>
 </div>
 
-<div th:if="${param.logout}">
-  <p style="color:green;">Sesión cerrada correctamente.</p>
-</div>
-
-<div th:if="${param.invalid}">
-  <p style="color:red;">La sesión expiró o no es válida.</p>
-</div>
-
-<form th:action="@{/login}" method="post">
-
-  <input type="hidden"
-         th:name="${_csrf.parameterName}"
-         th:value="${_csrf.token}">
-
-  <label>Usuario:</label>
-  <input type="text" name="username">
-  <br><br>
-
-  <label>Contraseña:</label>
-  <input type="password" name="password">
-  <br><br>
-
-  <button type="submit">Ingresar</button>
-</form>
-
+<div th:insert="~{fragments/footer :: pie-pagina}"></div>
 </body>
-</html>
