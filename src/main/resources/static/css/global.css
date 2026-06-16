@@ -739,3 +739,46 @@ input[type="checkbox"] {
     /* Puedes agregar más estilos globales aquí, como el tamaño */
     max-width: 260px;
 }
+.form-crear-usuario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 720px;
+    margin-top: 16px;
+}
+.form-crear-usuario .campo-completo {
+    grid-column: 1 / -1; /* ocupa todo el ancho de la grilla */
+}
+.input-field {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--color-input-border);
+    border-radius: 6px;
+    background: var(--bg-card);
+    color: var(--color-text-dark);
+    font-size: 0.95rem;
+}
+.input-field:focus { outline: 2px solid var(--border-color); }
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+.seccion-crear {
+    margin-top: 40px;
+    padding: 24px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: 10px;
+    background: var(--bg-card);
+}
+.seccion-crear h2 {
+    margin: 0 0 4px 0;
+    color: var(--color-h1);
+    font-size: 1.2rem;
+}
+.nota-superadmin {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
