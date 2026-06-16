@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración de Usuarios — Kenpo</title>
     <link rel="stylesheet" th:href="@{/css/global.css}">
+
 </head>
 <body>
 <header th:insert="~{fragments/header :: estilos-globales}"></header>
@@ -98,7 +99,7 @@
                                 th:text="|${p.nombres} ${p.apellido1} (${p.rut})|">
                         </option>
                     </select>
-                    <button type="submit" class="btn-crear" style="padding:5px 12px;">Vincular</button>
+                    <button type="submit" class="btn-crear" id="boton-alerta" style="padding:5px 12px;" onclick="ValidacionesForm.validarBotonPersona(this, event)">Vincular</button>
                 </form>
 
                 <span th:if="${u.persona == null and #lists.isEmpty(personasDisponibles)}"
@@ -198,5 +199,6 @@
 
 <br><br>
 <div th:insert="~{fragments/footer :: pie-pagina}"></div>
+<script th:src="@{/JavaScript/alertas.js}"></script>
 </body>
 </html>
